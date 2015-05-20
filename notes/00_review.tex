@@ -3,6 +3,8 @@
 
 This section highlights many of the key definitions and theorems studied in a first-year graduate (or advanced undergraduate) course in complexity theory. We assume the reader knows about finite automata (DFAs/NFAs), grammars (CFGs), and Turing machines (TMs), and their respective language classes.
 
+\subsection{(Un)Decidability}
+
 \begin{definition}
 A TM is a \emph{decider} if it halts (accepts or rejects) on every input.
 \end{definition}
@@ -31,3 +33,44 @@ The following are undecidable:
 \item $A_{TM} = \{\langle M, w \rangle : M$ is a TM that accepts $w$\}.
 \end{itemize}
 \end{theorem}
+
+\begin{theorem}
+The class of decidable languages is closed under complement.
+\end{theorem}
+
+\begin{definition}
+A language $B$ is \emph{Turing-recognizable} if there exists a TM that recognizes $B$. A language $C$ is co-Turing-recognizable (or co-recognizable) if it is the complement of some Turing-recognizable language. 
+\end{definition}
+
+\begin{theorem}
+$A_{TM}$ is not co-recognizable.
+\end{theorem}
+
+\begin{theorem}
+A language $B$ is decidable if and only if $B$ is recognizable and co-recognizable.
+\end{theorem}
+
+\begin{definition}
+A function $f: \Sigma^* \rightarrow \Sigma^*$ is a \emph{computable function} if there exists a TM that, on input $w$, halts with $f(w)$ on its tape.
+\end{definition}
+
+\subsection{Reducibility}
+
+\begin{definition}
+A language $A$ is \emph{mapping-reducible} to language $B$, written $A \le_m B$, if there exists a computable function such that $w \in A$ if and only if $f(w) \in B$.
+\end{definition}
+
+\begin{theorem}
+If $A \le_m B$ and $B$ is decidable, then $A$ is decidable; if $A$ is undecidable, then $B$ is undecidable.
+\end{theorem}
+
+\begin{corollary}
+$HALT_{TM} = \{\langle M, w \rangle : M$ is a TM that halts on input $w$\} is undecidable.
+\end{corollary}
+
+\begin{definition}
+A TM's language has a \emph{property} $P$ (a subset of all TM descriptions) such that whenever $M_1, M_2$ are TMs, and $L(M_1) = L(M_2)$, $\langle M_1 \rangle \in P$ if and only if $\langle M_2 \rangle \in P$. A property $P$ is \emph{nontrivial} if some TM has property $P$ and some other TM does not.
+\end{definition}
+\spnewtheorem{ricethm}[theorem]{(Rice's Theorem)}{\bfseries}{\itshape}
+\begin{ricethm}Deciding whether a TM has a nontrivial property $P$ of its language is undecidable.
+\end{ricethm}
