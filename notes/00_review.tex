@@ -6,11 +6,7 @@ This section highlights many of the key definitions and theorems studied in a fi
 \subsection{(Un)Decidability}
 
 \begin{definition}
-A TM is a \emph{decider} if it halts (accepts or rejects) on every input.
-\end{definition}
-
-\begin{definition}
-A language $B$ is \emph{decidable} if there exists a decider $D$ such that $L(D) = B$. A language $C$ is \emph{undecidable} if $C$ is not decidable.
+A TM is a \emph{decider} if it halts (accepts or rejects) on every input. A language $B$ is \emph{decidable} if there exists a decider $D$ such that $L(D) = B$. A language $C$ is \emph{undecidable} if $C$ is not decidable.
 \end{definition}
 
 \begin{theorem}
@@ -57,7 +53,7 @@ A function $f: \Sigma^* \rightarrow \Sigma^*$ is a \emph{computable function} if
 \subsection{Reducibility}
 
 \begin{definition}
-A language $A$ is \emph{mapping-reducible} to language $B$, written $A \le_m B$, if there exists a computable function such that $w \in A$ if and only if $f(w) \in B$.
+A language $A$ is \emph{mapping-reducible} to language $B$, written $A \le_m B$, if there exists a computable function $f$ such that $w \in A$ if and only if $f(w) \in B$.
 \end{definition}
 
 \begin{theorem}
