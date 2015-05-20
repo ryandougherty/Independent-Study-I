@@ -1,2 +1,33 @@
 \section{Review}
 \label{sec:review}
+
+This section highlights many of the key definitions and theorems studied in a first-year graduate (or advanced undergraduate) course in complexity theory. We assume the reader knows about finite automata (DFAs/NFAs), grammars (CFGs), and Turing machines (TMs), and their respective language classes.
+
+\begin{definition}
+A TM is a \emph{decider} if it halts (accepts or rejects) on every input.
+\end{definition}
+
+\begin{definition}
+A language $B$ is \emph{decidable} if there exists a decider $D$ such that $L(D) = B$. A language $C$ is \emph{undecidable} if $C$ is not decidable.
+\end{definition}
+
+\begin{theorem}
+The following are decidable:
+\begin{itemize}
+\item $A_{DFA} = \{\langle M, w \rangle : M$ is a DFA that accepts $w$\}.
+\item $E_{DFA} = \{\langle M \rangle : M$ is a DFA whose language is empty\}.
+\item $ALL_{DFA} = \{\langle M \rangle : M$ is a DFA whose language is $\Sigma^*$\}.
+\item $EQ_{DFA} = \{\langle M_1, M_2 \rangle : M_1$ and $M_2$ are DFAs and $L(M_1) = L(M_2)$\}.
+\item $A_{CFG} = \{\langle G, w \rangle : G$ is a CFG that generates $w$\}.
+\item $E_{CFG} = \{\langle G \rangle : L(G)$ is empty\}.
+\end{itemize}
+\end{theorem}
+
+\begin{theorem}
+The following are undecidable:
+\begin{itemize}
+\item $ALL_{CFG} = \{\langle G \rangle : G$ is a CFG and $L(G) = \Sigma^*$\}.
+\item $EQ_{CFG} = \{\langle G_1, G_2 \rangle : G_1$ and $G_2$ are CFGs and $L(G_1) = L(G_2)$\}.
+\item $A_{TM} = \{\langle M, w \rangle : M$ is a TM that accepts $w$\}.
+\end{itemize}
+\end{theorem}
