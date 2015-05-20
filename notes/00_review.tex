@@ -39,7 +39,7 @@ The class of decidable languages is closed under complement.
 \end{theorem}
 
 \begin{definition}
-A language $B$ is \emph{Turing-recognizable} if there exists a TM that recognizes $B$. A language $C$ is co-Turing-recognizable (or co-recognizable) if it is the complement of some Turing-recognizable language. 
+A language $B$ is \emph{Turing-recognizable} (or recognizable) if there exists a TM that recognizes $B$. A language $C$ is co-Turing-recognizable (or co-recognizable) if it is the complement of some Turing-recognizable language. 
 \end{definition}
 
 \begin{theorem}
@@ -74,3 +74,41 @@ A TM's language has a \emph{property} $P$ (a subset of all TM descriptions) such
 \spnewtheorem{ricethm}[theorem]{(Rice's Theorem)}{\bfseries}{\itshape}
 \begin{ricethm}Deciding whether a TM has a nontrivial property $P$ of its language is undecidable.
 \end{ricethm}
+
+\begin{theorem}
+$EQ_{TM} = \{\langle M_1, M_2 \rangle : M_1, M_2$ are TMs and $L(M_1) = L(M_2)$\} is undecidable; also, it is neither recognizable nor co-recognizable.
+\end{theorem}
+
+\begin{definition}
+A \emph{configuration} of a TM on input $w = w_1\cdots w_n$ in state $q$ is $w_1\cdots w_{i-1}qw_i\cdots w_n$. A \emph{computation history} is a set of configurations delimited by an extra symbol \#: $\#C_1\#C_2\#\cdots\#C_{\ell}\#$, where $C_i$ logically yields $C_{i+1}$. An \emph{accepting computation history} is one such that $C_1$ is the start configuration, and $C_{\ell}$ is an accepting one.
+\end{definition}
+
+\begin{definition}
+A \emph{linear bounded automaton} (LBA) is a TM that does not allow to move the tape head past the right end of the input.
+\end{definition}
+
+\begin{theorem}
+$A_{LBA} = \{\langle M, w\rangle : M$ is an LBA that accepts $w$\} is decidable.
+\end{theorem}
+
+\begin{definition}
+The \emph{Post Correspondence Problem} (PCP) is a puzzle, with a given set of tiles with nonempty ``top strings" and nonempty ``bottom strings." The objective is to list the tiles, repetitions allowed, such that the concatenation of the top strings of all the chosen tiles equals the same of the bottom strings.
+\end{definition}
+
+\begin{theorem}
+PCP is undecidable.
+\end{theorem}
+
+\spnewtheorem{recursionthm}[theorem]{(Recursion Theorem)}{\bfseries}{\itshape}
+\begin{recursionthm}
+Let a TM $T$ compute a function $t: \Sigma^* \times \Sigma^* \rightarrow \Sigma^*$. Therefore, there exists a TM $R$ that computes a function $r: \Sigma^* \rightarrow \Sigma^*$, such that $r(w) = t(\langle R \rangle, w)$ for all $w$. In other words, every TM can obtain their own description.
+\end{recursionthm}
+
+\begin{definition}
+A TM $M$ is \emph{minimal} if there does not exist a TM $N$ that has fewer states and $L(M) = L(N)$.
+\end{definition}
+
+\begin{theorem}
+$MIN_{TM} = \{\langle M \rangle : M$ is a TM and is minimal\} is not recognizable.
+\end{theorem}
+
