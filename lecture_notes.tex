@@ -7,6 +7,16 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsfonts}
 
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\fancyhf{}
+\rhead{\fancyplain{}{Ryan Dougherty}}
+\lhead{\fancyplain{}{\rightmark }} 
+\cfoot{\fancyplain{}{\thepage}}
+
 \begin{document}
 \markboth{Independent Study -- Complexity Theory}{Independent Study -- Complexity Theory}
 \thispagestyle{empty}
