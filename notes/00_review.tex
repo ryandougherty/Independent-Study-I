@@ -313,3 +313,21 @@ $\classnotation{P} \ne \classnotation{EXPTIME}$
 \begin{corollary}
 For any $1 < c < d$, $TIME(n^c) \ne TIME(n^d)$.
 \end{corollary}
+
+\begin{definition}
+A language $B$ Is \emph{$\classnotation{EXPSPACE}$-complete} if $B \in \classnotation{EXPSPACE}$, and for every $A \in \classnotation{EXPSPACE}$, $A \le_p B$. If only the second condition is true, then $B$ is $\classnotation{EXPSPACE}$-hard.
+\end{definition}
+
+\begin{theorem}
+$EQ_{REX\uparrow}$ = \{regular expressions with exponentiation\} is $\classnotation{EXPSPACE}$-complete.
+\end{theorem}
+
+\subsection{Relativized Complexity}
+
+\begin{definition}
+$\classnotation{P}^A$ (resp. $\classnotation{NP}^A$) = $\{L : L$ is decided by an oracle TM with an oracle for $A$ in deterministic (nondeterministic) polynomial time\}.
+\end{definition}
+
+\begin{theorem}
+There exist oracles $A, B$ such that $\classnotation{P}^A = \classnotation{NP}^A$, and $\classnotation{P}^B \ne \classnotation{NP}^B$.
+\end{theorem}
