@@ -2,8 +2,9 @@
 % the LaTeX2e class from Springer-Verlag
 % for Lecture Notes in Computer Science, version 2.4
 \documentclass{llncs}
+\usepackage{cleveref}
 \usepackage{llncsdoc}
-%
+
 \begin{document}
 \markboth{Independent Study -- Complexity Theory}{Independent Study -- Complexity Theory}
 \thispagestyle{empty}
@@ -23,8 +24,11 @@ Independent Study \\ Complexity Theory\\[6pt]
 \newpage
 \tableofcontents
 
+\newcommand{\classnotation}[1]{\mathcal{#1}}
+
 \newcommand{\dir}{notes}
 
+\include{introduction_preface}
 \include{\dir/00_review}
 \include{\dir/01_polyheirarchy_alttms}
 \include{\dir/02_booleancircuits}
@@ -42,5 +46,8 @@ Independent Study \\ Complexity Theory\\[6pt]
 \include{\dir/14_expanders_extractors}
 \include{\dir/15_pcp_fourier}
 \include{\dir/16_parameterized}
+
+\bibliographystyle{alpha}
+\bibliography{lecture_notes}
 
 \end{document}
