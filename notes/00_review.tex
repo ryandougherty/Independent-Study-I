@@ -67,9 +67,9 @@ $HALT_{TM} = \{\langle M, w \rangle : M$ is a TM that halts on input $w$\} is un
 \begin{definition}
 A TM's language has a \emph{property} $P$ (a subset of all TM descriptions) such that whenever $M_1, M_2$ are TMs, and $L(M_1) = L(M_2)$, $\langle M_1 \rangle \in P$ if and only if $\langle M_2 \rangle \in P$. A property $P$ is \emph{nontrivial} if some TM has property $P$ and some other TM does not.
 \end{definition}
-\spnewtheorem{ricethm}[theorem]{(Rice's Theorem)}{\bfseries}{\itshape}
-\begin{ricethm}Deciding whether a TM has a nontrivial property $P$ of its language is undecidable.
-\end{ricethm}
+
+\begin{theorem}[Rice's Theorem]Deciding whether a TM has a nontrivial property $P$ of its language is undecidable.
+\end{theorem}
 
 \begin{theorem}
 $EQ_{TM} = \{\langle M_1, M_2 \rangle : M_1, M_2$ are TMs and $L(M_1) = L(M_2)$\} is undecidable; also, it is neither recognizable nor co-recognizable.
@@ -95,10 +95,9 @@ The \emph{Post Correspondence Problem} (PCP) is a puzzle, with a given set of ti
 PCP is undecidable.
 \end{theorem}
 
-\spnewtheorem{recursionthm}[theorem]{(Recursion Theorem)}{\bfseries}{\itshape}
-\begin{recursionthm}
+\begin{theorem}[Recursion Theorem]
 Let a TM $T$ compute a function $t: \Sigma^* \times \Sigma^* \rightarrow \Sigma^*$. Therefore, there exists a TM $R$ that computes a function $r: \Sigma^* \rightarrow \Sigma^*$, such that $r(w) = t(\langle R \rangle, w)$ for all $w$. In other words, every TM can obtain their own description.
-\end{recursionthm}
+\end{theorem}
 
 \begin{definition}
 A TM $M$ is \emph{minimal} if there does not exist a TM $N$ that has fewer states and $L(M) = L(N)$.
@@ -169,7 +168,15 @@ A string $x$ is \emph{incompressible} if $K(x) \ge |x|$.
 \end{definition}
 
 \begin{theorem}
+At least half of all strings of length $\le n$ are incompressible.
+\end{theorem}
+
+\begin{theorem}
 $K(x)$ is not computable.
+\end{theorem}
+
+\begin{theorem}
+No infinite subset of the set of incompressible strings is recognizable.
 \end{theorem}
 
 \subsection{Computational Complexity}
@@ -218,7 +225,7 @@ A language $B$ is \emph{$\classnotation{NP}$-complete} if $B \in \classnotation{
 \begin{theorem}
 The following are $\classnotation{NP}$-complete:
 \begin{itemize}
-\item 3SAT
+\item 3SAT (the Cook-Levin theorem)
 \item CLIQUE
 \item INDSET (same as CLIQUE but no edges between vertices)
 \item VERTEX COVER (whether there exists a subset of vertices of size $\le k$ such that every edge involves a vertex in the subset)
@@ -228,3 +235,81 @@ The following are $\classnotation{NP}$-complete:
 \end{theorem}
 
 \subsection{Space Complexity}
+
+\begin{definition}
+$\classnotation{PSPACE} = \bigcup_{k \ge 0} SPACE(n^k)$, $\classnotation{NPSPACE} = \bigcup_{k \ge 0} NSPACE(n^k)$.
+\end{definition}
+
+\begin{theorem}
+For $f(n) \ge n$, $TIME(f(n)) \subseteq SPACE(f(n))$.
+\end{theorem}
+
+\begin{theorem}[Savitch's Theorem]
+For $f(n) \ge n$, $NSPACE(f(n)) \subseteq SPACE(f^2(n))$.
+\end{theorem}
+
+\begin{corollary}
+$\classnotation{PSPACE} = \classnotation{NPSPACE}$.
+\end{corollary}
+
+\begin{definition}
+A language $B$ Is \emph{$\classnotation{PSPACE}$-complete} if $B \in \classnotation{PSPACE}$, and for every $A \in \classnotation{PSPACE}$, $A \le_p B$. If only the second condition is true, then $B$ is $\classnotation{PSPACE}$-hard.
+\end{definition}
+
+\begin{theorem}
+The following are $\classnotation{PSPACE}$-complete:
+\begin{itemize}
+\item TQBF = \{$\langle\psi\rangle : \psi$ is a true quantified boolean formula\} (i.e., of the form $\psi = Q_1x_1\cdots Q_nx_n\phi(x_1,\cdots,x_n)$ where the $Q_i \in \{\exists, \forall\}$).
+\item FORMULA-GAME (a 2-player version of TQBF, where players take turns choosing values for the variables in order)
+\item Generalized Geography (a directed graph where each vertex is a string, and each edge has the next string start with the same letter as the previous one)
+\item $A_{LBA}$
+\end{itemize}
+\end{theorem}
+
+\begin{definition}
+$\classnotation{L} = SPACE(\log(n))$, $\classnotation{NL} = NSPACE(\log(n))$.
+\end{definition}
+
+\begin{definition}
+A \emph{log-space transducer} is a deterministic TM with read-only input, write-only output, and a read-write work tape, and the space it uses is equal to the length of the non-blank portion of the work tape + log(size of input) + log(size of output). A language $A$ is \emph{log-space reducible} to a language $B$ if there is a log-space transducer that computes a function $f$ for which $w \in B$ if and only if $f(w) \in A$. A language $B$ Is \emph{$\classnotation{NL}$-complete} if $B \in \classnotation{NL}$, and for every $A \in \classnotation{NL}$, $A \le_L B$. If only the second condition is true, then $B$ is $\classnotation{NL}$-hard.
+\end{definition}
+
+\begin{theorem}
+PATH = \{$\langle G, s, t\rangle : G$ is a directed graph with a directed $s-t$ path\} is $\classnotation{NL}$-complete, and co$\classnotation{NL}$-complete.
+\end{theorem}
+
+\begin{corollary}
+$\classnotation{NL}$ = co$\classnotation{NL}$
+\end{corollary}
+
+\begin{definition}
+A function $f$ is \emph{space-constructible} if there is a TM that computes the function mapping $1^n$ (in unary) to $f(n)$ (in binary) in $O(f(n))$ space.
+\end{definition}
+
+\begin{theorem}[Space Hierarchy Theorem]
+If $f$ is a space-constructible function, then there exists a language that can be decided in $O(f(n))$ space, but not in $o(f(n))$ space.
+\end{theorem}
+
+\begin{corollary}
+$\classnotation{PSPACE} \ne \classnotation{EXPSPACE}$
+\end{corollary}
+
+\begin{corollary}
+$\classnotation{NL} \ne \classnotation{PSPACE}$
+\end{corollary}
+
+\begin{definition}
+A function $f$, which is $\Omega(n\log(n))$, is \emph{time-constructible} if there is a TM that computes the function mapping $1^n$ (in unary) to $f(n)$ (in binary) in $O(\frac{f(n)}{\log(n)})$ time.
+\end{definition}
+
+\begin{theorem}[Time Hierarchy Theorem]
+If $f$ is a time-constructible function, then there exists a language that can be decided in $O(f(n))$ time, but not in $o(\frac{f(n)}{\log(f(n)})$ time.
+\end{theorem}
+
+\begin{corollary}
+$\classnotation{P} \ne \classnotation{EXPTIME}$
+\end{corollary}
+
+\begin{corollary}
+For any $1 < c < d$, $TIME(n^c) \ne TIME(n^d)$.
+\end{corollary}
