@@ -61,7 +61,7 @@ A language $A$ is \emph{mapping-reducible} to language $B$, written $A \le_m B$,
 \end{definition}
 
 \begin{theorem}
-If $A \le_m B$ and $B$ is decidable, then $A$ is decidable; if $A$ is undecidable, then $B$ is undecidable.
+If $A \le_m B$ and $B$ is decidable, then $A$ is decidable; if $A$ is undecidable, then $B$ is undecidable; if $B$ is recognizable, then $A$ is recognizable; if $A$ is not recognizable, then $B$ is not recognizable.
 \end{theorem}
 
 \begin{corollary}
@@ -112,3 +112,123 @@ A TM $M$ is \emph{minimal} if there does not exist a TM $N$ that has fewer state
 $MIN_{TM} = \{\langle M \rangle : M$ is a TM and is minimal\} is not recognizable.
 \end{theorem}
 
+\subsection{Logical Theories}
+
+\begin{definition}
+A formula over some operations is \emph{atomic} if $R_i$ over variables $x_1,\cdots,x_{\ell}$ is a relation of arity $\ell$. A formula $\phi$ is \emph{well-formed} if it is atomic, a formula formed from other atomic formulas using the operations, or of the form $\exists x[\phi_1]$ or $\forall x[\phi_1]$ where $\phi_1$ is a well-formed formula. A variable is \emph{bounded} if it is within the scope of a quantifier, and free otherwise. A well-formed formula with no free variables is a \emph{sentence} or a \emph{statement}. The \emph{universe} is the set of possible values for each variable, and the \emph{model} specifies the universe and relations used. The \emph{theory} of a model $M$, called ${\sc Th}(M)$, is the set of true statements. A formula in \emph{prenex normal form} is one that has all quantifiers appear first. 
+\end{definition}
+
+\begin{theorem}
+$Th(\mathbb{N}, +)$ is decidable.
+\end{theorem}
+
+\begin{theorem}
+$Th(\mathbb{N}, +, \times)$ is undecidable.
+\end{theorem}
+
+\begin{definition}
+A \emph{formal proof} of a statement $\phi$ is a sequence of statements $S_1,\cdots,S_{\ell}$ where $S_{\ell} = \phi$, where each $S_i$ follows logically from preceding statements and \emph{axioms} (statements not requiring a proof). If all provable statements are true, then the system is \emph{sound}; if all true statements are provable, then the system is \emph{complete}.
+\end{definition}
+
+\begin{theorem}
+$Provable(\mathbb{N}, +, \times) = \{$set of statements in $(\mathbb{N}, +, \times)$ that have proofs\} is recognizable.
+\end{theorem}
+
+\begin{theorem}
+There exists a true, but unprovable statement in $Th(\mathbb{N}, +, \times)$.
+\end{theorem}
+
+\subsection{Oracle TMs}
+
+\begin{definition}
+An \emph{oracle TM} $M$ is a TM with an ``oracle tape" that, when the TM writes a string onto this tape, invokes the oracle (of a language $L$) and decides membership of the written string in $L$ in zero time, and returns a yes or no answer (written as $M^L$). A language $A$ is \emph{decidable relative to} a language $B$--$A \le_T B$--if there is a TM $M^B$ that decides $A$. $A$ is \emph{Turing-reducible} to $B$ if and only if $A \le_T B$.
+\end{definition}
+
+\begin{theorem}
+$E_{TM} \le_T A_{TM}$.
+\end{theorem}
+
+\begin{theorem}
+$A'_{TM} = \{\langle M, w\rangle : M$ is a TM with an oracle for $A_{TM}$ and $M$ accepts $w$\} is undecidable relative to $A_{TM}$.
+\end{theorem}
+
+\begin{definition}
+The \emph{minimal description} of a string $x$ ($d(x)$)is the shortest string $\langle M, w\rangle$ where TM $M$, on input $w$, halts with $x$ on the tape. The \emph{descriptive complexity} of $x$ ($K(x)$) is $|d(x)|$
+\end{definition}
+
+\begin{theorem}
+$K(x) \le |x| + c$ for a constant $c$.
+\end{theorem}
+
+\begin{theorem}
+$K(xx) \le |x| + d$ for a constant $d$. 
+\end{theorem}
+
+\begin{theorem}
+$K(xy) \le 2\log_2(K(x)) + K(x) + K(y) + e$ for a constant $e$.
+\end{theorem}
+
+\begin{definition}
+A string $x$ is \emph{incompressible} if $K(x) \ge |x|$.
+\end{definition}
+
+\begin{theorem}
+$K(x)$ is not computable.
+\end{theorem}
+
+\subsection{Computational Complexity}
+
+\begin{definition}
+$TIME(f(n))$ ($NTIME(f(n))$) is the set of languages decidable within $O(f(n))$ steps on a single-tape deterministic (nondeterministic) TM. $\classnotation{P} = \bigcup_{k \ge 0}TIME(n^k)$, $\classnotation{NP} = \bigcup_{k \ge 0}NTIME(n^k)$. Decision on a NTM has that every computation branch halts, time is the number of transitions on the longest computation path, and space is the maximum number of cells visited on any computation path.
+\end{definition}
+
+\begin{theorem}
+The following are members of $\classnotation{P}$:
+\begin{itemize}
+\item All regular languages
+\item All context-free languages
+\item $PATH = \{\langle G, s, t\rangle : G$ is an undirected graph having a path from $s$ to $t$\}
+\end{itemize}
+\end{theorem}
+
+\begin{definition}
+A \emph{verifier} is a TM that accepts a string $w$ and a \emph{certificate} $c$, and verifies whether $c$ is valid.
+\end{definition}
+
+\begin{theorem}
+$\classnotation{NP}$ can also be defined as the set of languages with a polynomial-time verifier.
+\end{theorem}
+
+\begin{definition}
+A language $A$ is \emph{polynomial-time reducible} to a language $B$--$A \le_p B$--if the reduction takes polynomial time.
+\end{definition}
+
+\begin{theorem}
+Suppose $A \le_p B$. If $B \in \classnotation{P}$, then $A \in \classnotation{P}$; if $A \notin \classnotation{P}$, then $B \notin \classnotation{P}$.
+\end{theorem}
+
+\begin{definition}
+A boolean formula $\phi$ in \emph{conjunctive normal form} is one that is a conjunction of clauses, and each clause is a disjunction of literals. A formula in \emph{3CNF} has $\le 3$ literals per clause. A formula is \emph{satisfiable} if there exists an assignment to the variables to make the formula true.
+\end{definition}
+
+\begin{theorem}
+3SAT = $\{\langle \phi \rangle : \phi$ is a 3CNF formula that is satisfiable\} $\in \classnotation{NP}$, and 3SAT $\le_p$ CLIQUE = $\{\langle G, k\rangle : G$ is a graph with a $k$-clique\}.
+\end{theorem}
+
+\begin{definition}
+A language $B$ is \emph{$\classnotation{NP}$-complete} if $B \in \classnotation{NP}$, and for every $A \in \classnotation{NP}$, $A \le_p B$. If only the second condition is true, then $B$ is \emph{$\classnotation{NP}$-hard}.
+\end{definition}
+
+\begin{theorem}
+The following are $\classnotation{NP}$-complete:
+\begin{itemize}
+\item 3SAT
+\item CLIQUE
+\item INDSET (same as CLIQUE but no edges between vertices)
+\item VERTEX COVER (whether there exists a subset of vertices of size $\le k$ such that every edge involves a vertex in the subset)
+\item HAMPATH (whether a directed graph contains a directed path through every vertex exactly once)
+\item UHAMPATH (undirected version of HAMPATH)
+\end{itemize}
+\end{theorem}
+
+\subsection{Space Complexity}
