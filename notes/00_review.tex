@@ -270,11 +270,11 @@ $\logspace = SPACE(\log(n))$, $\nlogspace = NSPACE(\log(n))$.
 A \emph{log-space transducer} is a deterministic TM with read-only input, write-only output, and a read-write work tape, and the space it uses is equal to the length of the non-blank portion of the work tape + log(size of input) + log(size of output). A language $A$ is \emph{log-space reducible} to a language $B$ if there is a log-space transducer that computes a function $f$ for which $w \in B$ if and only if $f(w) \in A$. A language $B$ Is \emph{$\nlogspace$-complete} if $B \in \nlogspace$, and for every $A \in \nlogspace$, $A \le_L B$. If only the second condition is true, then $B$ is $\nlogspace$-hard.
 \end{definition}
 
-\begin{theorem}
+\begin{theorem}[Immerman-Szelepcs\'{e}nyi Theorem]
 PATH = \{$\langle G, s, t\rangle : G$ is a directed graph with a directed $s-t$ path\} is $\nlogspace$-complete, and co$\nlogspace$-complete.
 \end{theorem}
 
-\begin{corollary}[Immerman-Szelepcs\'{e}nyi Theorem]
+\begin{corollary}
 $\nlogspace$ = co$\nlogspace$
 \end{corollary}
 
