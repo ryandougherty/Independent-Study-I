@@ -46,14 +46,10 @@ $A_{TM}$ is not co-recognizable.
 A language $B$ is decidable if and only if $B$ is recognizable and co-recognizable.
 \end{theorem}
 
-\begin{definition}
-A function $f: \Sigma^* \rightarrow \Sigma^*$ is a \emph{computable function} if there exists a TM that, on input $w$, halts with $f(w)$ on its tape.
-\end{definition}
-
 \subsection{Reducibility}
 
 \begin{definition}
-A language $A$ is \emph{mapping-reducible} to language $B$, written $A \le_m B$, if there exists a computable function $f$ such that $w \in A$ if and only if $f(w) \in B$.
+A function $f: \Sigma^* \rightarrow \Sigma^*$ is a \emph{computable function} if there exists a TM that, on input $w$, halts with $f(w)$ on its tape. A language $A$ is \emph{mapping-reducible} to language $B$, written $A \le_m B$, if there exists a computable function $f$ such that $w \in A$ if and only if $f(w) \in B$.
 \end{definition}
 
 \begin{theorem}
