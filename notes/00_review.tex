@@ -178,7 +178,7 @@ No infinite subset of the set of incompressible strings is recognizable.
 \subsection{Computational Complexity}
 
 \begin{definition}
-$TIME(f(n))$ ($NTIME(f(n))$) is the set of languages decidable within $O(f(n))$ steps on a single-tape deterministic (nondeterministic) TM. $\p = \bigcup_{k \ge 0}TIME(n^k)$, $\np = \bigcup_{k \ge 0}NTIME(n^k)$. Decision on a NTM has that every computation branch halts, time is the number of transitions on the longest computation path, and space is the maximum number of cells visited on any computation path.
+$TIME(f(n))$ ($NTIME(f(n))$) is the set of languages decidable within $O(f(n))$ steps on a single-tape deterministic (nondeterministic) TM. \P = $\bigcup_{k \ge 0}TIME(n^k)$, \NP = $\bigcup_{k \ge 0}NTIME(n^k)$. Decision on a NTM has that every computation branch halts, time is the number of transitions on the longest computation path, and space is the maximum number of cells visited on any computation path.
 \end{definition}
 
 \begin{theorem}
@@ -195,7 +195,7 @@ A \emph{verifier} is a TM that accepts a string $w$ and a \emph{certificate} $c$
 \end{definition}
 
 \begin{theorem}
-$\np$ can also be defined as the set of languages with a polynomial-time verifier.
+\NP can also be defined as the set of languages with a polynomial-time verifier.
 \end{theorem}
 
 \begin{definition}
@@ -203,7 +203,7 @@ A language $A$ is \emph{polynomial-time reducible} to a language $B$--$A \le_p B
 \end{definition}
 
 \begin{theorem}
-Suppose $A \le_p B$. If $B \in \p$, then $A \in \p$; if $A \notin \p$, then $B \notin \p$.
+Suppose $A \le_p B$. If $B \in$ \P, then $A \in$ \P; if $A \notin$ \P, then $B \notin$ \P.
 \end{theorem}
 
 \begin{definition}
@@ -211,15 +211,15 @@ A boolean formula $\phi$ in \emph{conjunctive normal form} is one that is a conj
 \end{definition}
 
 \begin{theorem}
-3SAT = $\{\langle \phi \rangle : \phi$ is a 3CNF formula that is satisfiable\} $\in \np$, and 3SAT $\le_p$ CLIQUE = $\{\langle G, k\rangle : G$ is a graph with a $k$-clique\}.
+3SAT = $\{\langle \phi \rangle : \phi$ is a 3CNF formula that is satisfiable\} $\in$ \NP, and 3SAT $\le_p$ CLIQUE = $\{\langle G, k\rangle : G$ is a graph with a $k$-clique\}.
 \end{theorem}
 
 \begin{definition}
-A language $B$ is \emph{$\np$-complete} if $B \in \np$, and for every $A \in \np$, $A \le_p B$. If only the second condition is true, then $B$ is \emph{$\np$-hard}.
+A language $B$ is \emph{\NP-complete} if $B \in$ \NP, and for every $A \in$ \NP, $A \le_p B$. If only the second condition is true, then $B$ is \emph{\NP-hard}.
 \end{definition}
 
 \begin{theorem}
-The following are $\np$-complete:
+The following are \NP-complete:
 \begin{itemize}
 \item 3SAT (the Cook-Levin theorem)
 \item CLIQUE
@@ -233,7 +233,7 @@ The following are $\np$-complete:
 \subsection{Space Complexity}
 
 \begin{definition}
-$\pspace = \bigcup_{k \ge 0} SPACE(n^k)$, $\npspace = \bigcup_{k \ge 0} NSPACE(n^k)$.
+\PSPACE = $\bigcup_{k \ge 0} SPACE(n^k)$, \NPSPACE = $\bigcup_{k \ge 0} NSPACE(n^k)$.
 \end{definition}
 
 \begin{theorem}
@@ -245,15 +245,15 @@ For $f(n) \ge n$, $NSPACE(f(n)) \subseteq SPACE(f^2(n))$.
 \end{theorem}
 
 \begin{corollary}
-$\pspace = \npspace$.
+\PSPACE = \NPSPACE.
 \end{corollary}
 
 \begin{definition}
-A language $B$ Is \emph{$\pspace$-complete} if $B \in \pspace$, and for every $A \in \pspace$, $A \le_p B$. If only the second condition is true, then $B$ is $\pspace$-hard.
+A language $B$ Is \emph{\PSPACE-complete} if $B \in$ \PSPACE, and for every $A \in$ \PSPACE, $A \le_p B$. If only the second condition is true, then $B$ is \PSPACE-hard.
 \end{definition}
 
 \begin{theorem}
-The following are $\pspace$-complete:
+The following are \PSPACE-complete:
 \begin{itemize}
 \item TQBF = \{$\langle\psi\rangle : \psi$ is a true quantified boolean formula\} (i.e., of the form $\psi = Q_1x_1\cdots Q_nx_n\phi(x_1,\cdots,x_n)$ where the $Q_i \in \{\exists, \forall\}$).
 \item FORMULA-GAME (a 2-player version of TQBF, where players take turns choosing values for the variables in order)
@@ -263,19 +263,19 @@ The following are $\pspace$-complete:
 \end{theorem}
 
 \begin{definition}
-$\logspace = SPACE(\log(n))$, $\nlogspace = NSPACE(\log(n))$.
+\L = $SPACE(\log(n))$, \NL = $NSPACE(\log(n))$.
 \end{definition}
 
 \begin{definition}
-A \emph{log-space transducer} is a deterministic TM with read-only input, write-only output, and a read-write work tape, and the space it uses is equal to the length of the non-blank portion of the work tape + log(size of input) + log(size of output). A language $A$ is \emph{log-space reducible} to a language $B$ if there is a log-space transducer that computes a function $f$ for which $w \in B$ if and only if $f(w) \in A$. A language $B$ Is \emph{$\nlogspace$-complete} if $B \in \nlogspace$, and for every $A \in \nlogspace$, $A \le_L B$. If only the second condition is true, then $B$ is $\nlogspace$-hard.
+A \emph{log-space transducer} is a deterministic TM with read-only input, write-only output, and a read-write work tape, and the space it uses is equal to the length of the non-blank portion of the work tape + log(size of input) + log(size of output). A language $A$ is \emph{log-space reducible} to a language $B$ if there is a log-space transducer that computes a function $f$ for which $w \in B$ if and only if $f(w) \in A$. A language $B$ Is \emph{\NL-complete} if $B \in$ \NL, and for every $A \in$ \NL, $A \le_L B$. If only the second condition is true, then $B$ is \NL-hard.
 \end{definition}
 
 \begin{theorem}[Immerman-Szelepcs\'{e}nyi Theorem]
-PATH = \{$\langle G, s, t\rangle : G$ is a directed graph with a directed $s-t$ path\} is $\nlogspace$-complete, and co$\nlogspace$-complete.
+PATH = \{$\langle G, s, t\rangle : G$ is a directed graph with a directed $s-t$ path\} is \NL-complete, and \coNL-complete.
 \end{theorem}
 
 \begin{corollary}
-$\nlogspace$ = co$\nlogspace$
+\NL = \coNL.
 \end{corollary}
 
 \begin{definition}
@@ -287,11 +287,11 @@ If $f$ is a space-constructible function, then there exists a language that can 
 \end{theorem}
 
 \begin{corollary}
-$\pspace \ne \expspace$
+\PSPACE $\ne$ \EXPSPACE.
 \end{corollary}
 
 \begin{corollary}
-$\nlogspace \ne \pspace$
+\NL $\ne$ \PSPACE.
 \end{corollary}
 
 \begin{definition}
@@ -303,7 +303,7 @@ If $f$ is a time-constructible function, then there exists a language that can b
 \end{theorem}
 
 \begin{corollary}
-$\p \ne \exptime$
+\P $\ne$ \EXP.
 \end{corollary}
 
 \begin{corollary}
@@ -311,19 +311,19 @@ For any $1 < c < d$, $TIME(n^c) \ne TIME(n^d)$.
 \end{corollary}
 
 \begin{definition}
-A language $B$ Is \emph{$\expspace$-complete} if $B \in \expspace$, and for every $A \in \expspace$, $A \le_p B$. If only the second condition is true, then $B$ is $\expspace$-hard.
+A language $B$ Is \emph{\EXPSPACE-complete} if $B \in$ \EXPSPACE, and for every $A \in$ \EXPSPACE, $A \le_p B$. If only the second condition is true, then $B$ is \EXPSPACE-hard.
 \end{definition}
 
 \begin{theorem}
-$EQ_{REX\uparrow}$ = \{regular expressions with exponentiation\} is $\expspace$-complete.
+$EQ_{REX\uparrow}$ = \{regular expressions with exponentiation\} is \EXPSPACE-complete.
 \end{theorem}
 
 \subsection{Relativized Complexity}
 
 \begin{definition}
-$\p^A$ (resp., $\np^A$) = $\{L : L$ is decided by an oracle TM with an oracle for $A$ in deterministic (nondeterministic) polynomial time\}.
+\P$^A$ (resp., \NP$^A$) = $\{L : L$ is decided by an oracle TM with an oracle for $A$ in deterministic (nondeterministic) polynomial time\}.
 \end{definition}
 
 \begin{theorem}
-There exist oracles $A, B$ such that $\p^A = \np^A$, and $\p^B \ne \np^B$.
+There exist oracles $A, B$ such that \P$^A$ = \NP$^A$, and \P$^B$ $\ne$ \NP$^B$.
 \end{theorem}
