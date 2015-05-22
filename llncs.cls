@@ -359,17 +359,17 @@
                   \string\subparagraph\space with this class}\vskip0.5cm
 You should not use \verb|\subparagraph| with this class.\vskip0.5cm}
 
-\DeclareMathSymbol{\Gamma}{\mathalpha}{letters}{"00}
-\DeclareMathSymbol{\Delta}{\mathalpha}{letters}{"01}
-\DeclareMathSymbol{\Theta}{\mathalpha}{letters}{"02}
-\DeclareMathSymbol{\Lambda}{\mathalpha}{letters}{"03}
-\DeclareMathSymbol{\Xi}{\mathalpha}{letters}{"04}
-\DeclareMathSymbol{\Pi}{\mathalpha}{letters}{"05}
-\DeclareMathSymbol{\Sigma}{\mathalpha}{letters}{"06}
-\DeclareMathSymbol{\Upsilon}{\mathalpha}{letters}{"07}
-\DeclareMathSymbol{\Phi}{\mathalpha}{letters}{"08}
-\DeclareMathSymbol{\Psi}{\mathalpha}{letters}{"09}
-\DeclareMathSymbol{\Omega}{\mathalpha}{letters}{"0A}
+%\DeclareMathSymbol{\Gamma}{\mathalpha}{letters}{"00}
+%\DeclareMathSymbol{\Delta}{\mathalpha}{letters}{"01}
+%\DeclareMathSymbol{\Theta}{\mathalpha}{letters}{"02}
+%\DeclareMathSymbol{\Lambda}{\mathalpha}{letters}{"03}
+%\DeclareMathSymbol{\Xi}{\mathalpha}{letters}{"04}
+%\DeclareMathSymbol{\Pi}{\mathalpha}{letters}{"05}
+%\DeclareMathSymbol{\Sigma}{\mathalpha}{letters}{"06}
+%\DeclareMathSymbol{\Upsilon}{\mathalpha}{letters}{"07}
+%\DeclareMathSymbol{\Phi}{\mathalpha}{letters}{"08}
+%\DeclareMathSymbol{\Psi}{\mathalpha}{letters}{"09}
+%\DeclareMathSymbol{\Omega}{\mathalpha}{letters}{"0A}
 
 \let\footnotesize\small
 
