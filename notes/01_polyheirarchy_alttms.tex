@@ -67,8 +67,10 @@ If there is a $\PH$-complete language, then $\PH$ only has a finite number of le
 \end{theorem}
 
 \begin{proof}
-Assume there exists a $\PH$-complete language, and let it be $L$. By definition, $\PH = \bigcup_{k = 1}^{\infty} \Sigma_k^{\text{\P}}$. Therefore, for some $j$, we have that $L \in \Sigma_j^\P$, and every language in \PH is polynomial-time reducible to $L$. However, any language $A$ that is polynomial-time reducible to some language $B \in \Sigma_j^\P$ has that $A \in \Sigma_j^\P$. Therefore, $\PH \subseteq \Sigma_j^\P$.
+Assume there exists a $\PH$-complete language, and let it be $L$. By definition, $\PH = \bigcup_{k = 1}^{\infty} \Sigma_k^{\text{\P}}$. Therefore, for some $j$, we have that $L \in \Sigma_j^\P$, and every language in $\PH$ is polynomial-time reducible to $L$. However, any language $A$ that is polynomial-time reducible to some language $B \in \Sigma_j^\P$ has that $A \in \Sigma_j^\P$. Therefore, $\PH \subseteq \Sigma_j^\P$.
 \end{proof}
+
+This is quite a negative result compared to the complexity classes that we have studied earlier. However, for each $i$, there are many complete languages for $\Sigma_i^\P$ and $\Pi_i^\P$ (see \cite{Schaefer_completenessin}).
 
 \subsection{Alternating TMs}
 \begin{definition}
