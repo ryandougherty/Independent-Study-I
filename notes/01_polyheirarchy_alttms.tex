@@ -1,5 +1,7 @@
 \section{Polynomial Hierarchy, Alternating TMs}
 
+\subsection{Polynomial Hierarchy}
+
 From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with the power of oracle machines. However, we don't have a generalization of a ``hierarchy" of such oracle machines (the theorem only concerns the ``first level"). Therefore, in \cite{originalpolyhierarchypaper}, the notion of a ``polynomial hierarchy" was created. The hierarchy is defined (equivalently) as follows:
 \begin{itemize}
 \item $\Delta_0^\P = \Sigma_0^\text{\P}$ = $\Pi_0^\text{\P} = \text{\P}$,
@@ -43,16 +45,32 @@ From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with 
 \begin{definition}
 The \emph{polynomial hierarchy}, called \PH, is defined to be:
 \[
-\text{\PH} = \bigcup_{k = 1}^{\infty} \Sigma_k^{\text{\P}}
+\PH = \bigcup_{k = 1}^{\infty} \Sigma_k^{\text{\P}}.
 \]
 \end{definition}
 
-For {\PH}, we often call the $i$-th level of {\PH} to be both $\Sigma_i^\text{\P}$ and $\Pi_i^\text{\P}$. A natural inclination, as has been done before with \NP, \PSPACE, \NL, and the like, is to find a complete problem for {\PH}. However, the following theorem shows that this is most likely not the case.
-
 \begin{theorem}
-If there is a \PH-complete language, then {\PH} only has a finite number of levels.
+$\PH$ can also be defined as:
+\[
+\PH = \bigcup_{k = 1}^{\infty} \Pi_k^{\text{\P}}.
+\]
 \end{theorem}
 
 \begin{proof}
-Assume there exists a \PH-complete language, and let it be $L$. By definition, $\text{\PH} = \bigcup_{k = 1}^{\infty} \Sigma_k^{\text{\P}}$. Therefore, for some $j$, we have that $L \in \Sigma_j^\P$, and every language in {\PH} is polynomial-time reducible to $L$. However, any language $A$ that is polynomial-time reducible to some language $B \in \Sigma_j^\P$ has that $A \in \Sigma_j^\P$. Therefore, $\PH \subseteq \Sigma_j^\P$.
+We have the simple inclusions: $\Sigma_i^\P \subseteq \Pi_{i+1}^\P \subseteq \Sigma_{i+2}^\P$.
 \end{proof}
+
+For $\PH$, we often call the $i$-th level of $\PH$ to be both $\Sigma_i^\text{\P}$ and $\Pi_i^\text{\P}$. A natural inclination, as has been done before with \NP, \PSPACE, \NL, and the like, is to find a complete problem for $\PH$. However, the following theorem shows that this is most likely not the case.
+
+\begin{theorem}
+If there is a $\PH$-complete language, then $\PH$ only has a finite number of levels.
+\end{theorem}
+
+\begin{proof}
+Assume there exists a $\PH$-complete language, and let it be $L$. By definition, $\PH = \bigcup_{k = 1}^{\infty} \Sigma_k^{\text{\P}}$. Therefore, for some $j$, we have that $L \in \Sigma_j^\P$, and every language in \PH is polynomial-time reducible to $L$. However, any language $A$ that is polynomial-time reducible to some language $B \in \Sigma_j^\P$ has that $A \in \Sigma_j^\P$. Therefore, $\PH \subseteq \Sigma_j^\P$.
+\end{proof}
+
+\subsection{Alternating TMs}
+\begin{definition}
+\emph{Alternating TM}s (ATMs) are generalizations of NTMs, in that they behave the same as NTMs, but have an extra ``feature," that for every non-halting state, the state has a label from $\{\exists, \forall\}$. When running on some input, If the state has the $\exists$ label, then the ATM accepts if \emph{some} transition path from that state accepts; if the state has the $\forall$ label, then the ATM accepts if \emph{all} transition paths from that state accept.
+\end{definition}
