@@ -52,12 +52,12 @@ The \emph{polynomial hierarchy}, called \PH, is defined to be:
 \begin{theorem}
 $\PH$ can also be defined as:
 \[
-\PH = \bigcup_{k = 1}^{\infty} \Pi_k^\P.
+\PH = \bigcup_{k = 1}^{\infty} \Pi_k^\P = \bigcup_{k = 1}^{\infty} \Delta_k^\P.
 \]
 \end{theorem}
 
 \begin{proof}
-We have the simple inclusions: $\Sigma_i^\P \subseteq \Pi_{i+1}^\P \subseteq \Sigma_{i+2}^\P$.
+We have the simple inclusions: $\Sigma_k^\P \subseteq \Delta_{k+1}^\P \subseteq \Pi_{k+1}^\P \subseteq \Delta_{k+2}^\P \subseteq \Sigma_{k+2}^\P$.
 \end{proof}
 
 For $\PH$, we often call the $i$-th level of $\PH$ to be both $\Sigma_i^\P$ and $\Pi_i^\P$. A natural inclination, as has been done before with \NP, \PSPACE, \NL, and the like, is to find a complete problem for $\PH$. However, the following theorem shows that this is most likely not the case.
