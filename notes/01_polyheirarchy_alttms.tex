@@ -12,7 +12,7 @@ From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with 
 \label{fig:polyhierarchy}
 \centering
 \begin{tikzpicture}[->, node distance=2cm, semithick]
- \node (P) {$\Delta_0^\text{\P} = \Sigma_0^\text{\P}$ = {\P} = $\Pi_0^\text{\P} = \Delta_1^\text{\P}$};
+ \node (P) {$\Delta_0^\P = \Sigma_0^\P$ = \P = $\Pi_0^\text{\P} = \Delta_1^\text{\P}$};
  \node (Sigma1) [above left of=P]       {{\NP} = $\Sigma_1^\text{\P}$ \hspace*{0.8cm}};
  \node (Pi1)    [above right of=P]      {\hspace*{1.2cm} $\Pi_1^\text{\P}$ = \coNP};
  \node (Delta2) [above left of=Pi1]     {$\text{\P}^\text{\NP} = \Delta_2^\text{\P}$ };
@@ -47,4 +47,12 @@ The \emph{polynomial hierarchy}, called \PH, is defined to be:
 \]
 \end{definition}
 
-For {\PH}, we often call the $i$-th level of {\PH} to be both $\Sigma_i^\text{\P}$ and $\Pi_i^\text{\P}$.
+For {\PH}, we often call the $i$-th level of {\PH} to be both $\Sigma_i^\text{\P}$ and $\Pi_i^\text{\P}$. A natural inclination, as has been done before with \NP, \PSPACE, \NL, and the like, is to find a complete problem for {\PH}. However, the following theorem shows that this is most likely not the case.
+
+\begin{theorem}
+If there is a \PH-complete language, then {\PH} only has a finite number of levels.
+\end{theorem}
+
+\begin{proof}
+Assume there exists a \PH-complete language, and let it be $L$. By definition, $\text{\PH} = \bigcup_{k = 1}^{\infty} \Sigma_k^{\text{\P}}$. Therefore, for some $j$, we have that $L \in \Sigma_j^\P$, and suppose that $L$ is \PH-complete. Therefore, every language in {\PH} is polynomial-time reducible to $L$. However, any language $A$ that is polynomial-time reducible to some language $B \in \Sigma_j^\P$ has that $A \in \Sigma_j^\P$. Therefore, $\PH \subseteq \Sigma_j^\P$.
+\end{proof}
