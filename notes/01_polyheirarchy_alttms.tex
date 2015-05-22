@@ -1,6 +1,22 @@
 \section{Polynomial Hierarchy, Alternating TMs}
 
+From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with the power of oracle machines. However, we don't have a generalization of a ``hierarchy" of such oracle machines (the theorem only concerns the ``first level"). Therefore, in \cite{originalpolyhierarchypaper}, the notion of a ``polynomial hierarchy" was created. The hierarchy is defined (equivalently) as follows:
+\begin{itemize}
+\item $\Delta_0^\text{\P} = \Sigma_0^\text{\P}$ = $\Pi_0^\text{\P} = \text{\P}$,
+\item $\Delta_i^\text{\P} = \text{\P}^{\Sigma_{i-1}^\text{\P}}$, 
+\item $\Sigma_i^\text{\P} = \text{\NP}^{\Sigma_{i-1}^\text{\P}}$, 
+\item $\Pi_i^\text{\P} = \text{\coNP}^{\Sigma_{i-1}^\text{\P}}$.
+\end{itemize}
+
+\begin{definition}
+The \emph{polynomial hierarchy}, called \PH, is defined to be:
+\[
+\text{\PH} = \bigcup_{k = 1}^{\infty} \Sigma_k^{\text{\P}}
+\]
+\end{definition}
+
 \begin{figure}
+\label{fig:polyhierarchy}
 \centering
 \begin{tikzpicture}[->, node distance=2cm, semithick]
  \node (P) {$\Delta_0^\text{\P} =\Sigma_0^\text{\P}$ = {\P} = $\Pi_0^\text{\P} = \Delta_1^\text{\P}$};
@@ -30,3 +46,4 @@
 \end{tikzpicture}
 \caption{Polynomial Hierarchy, taken from http://commons.wikimedia.org/wiki/File:Polynomial\_time\_hierarchy.svg. Each arrow represents inclusion: for example, $\Sigma_1^\text{\P} \subseteq \Delta_2^\text{\P} \subseteq \Sigma_2^\text{\P}$.}
 \end{figure}
+
