@@ -4,43 +4,68 @@
 
 From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with the power of oracle machines. However, we don't have a generalization of a ``hierarchy" of such oracle machines (the theorem only concerns the ``first level"). Therefore, in \cite{originalpolyhierarchypaper}, the notion of a ``polynomial hierarchy" was created. The hierarchy is defined (equivalently) as follows:
 \begin{itemize}
-\item $\Delta_0^\P = \Sigma_0^\P$ = $\Pi_0^\P = \P$,
-\item $\Delta_i^\P = \P^{\Sigma_{i-1}^\P}$, 
+\item $\Sigma_0^\P$ = $\Pi_0^\P = \P$,
 \item $\Sigma_i^\P = \NP^{\Sigma_{i-1}^\P}$, 
-\item $\Pi_i^\P = \coNP^{\Sigma_{i-1}^\P}$.
+\item $\Pi_i^\P = \coNP^{\Pi_{i-1}^\P}$.
 \end{itemize}
 
 \begin{figure}
 \label{fig:polyhierarchy}
-\caption{Polynomial Hierarchy, taken from http://commons.wikimedia.org/wiki/File:Polynomial\_time\_hierarchy.svg. Each arrow represents inclusion: for example, $\Sigma_1^\P \subseteq \Delta_2^\P \subseteq \Sigma_2^\P$.}
+\caption{Polynomial Hierarchy, taken from http://commons.wikimedia.org/wiki/File:Polynomial\_time\_hierarchy.svg. Each arrow represents inclusion: for example, $\Sigma_1^\P \subseteq \Sigma_2^\P$.}
 \centering
 \begin{tikzpicture}[->, node distance=2cm, semithick]
- \node (P) {$\Delta_0^\P = \Sigma_0^\P$ = \P = $\Pi_0^\P = \Delta_1^\P$};
- \node (Sigma1) [above left of=P]       {\NP = $\Sigma_1^\P$ \hspace*{0.8cm}};
+ \node (P) {$\Sigma_0^\P = \P = \Pi_0^\P$};
+ \node (Sigma1) [above left of=P]       {$\NP = \Sigma_1^\P$ \hspace*{0.8cm}};
  \node (Pi1)    [above right of=P]      {\hspace*{1.2cm} $\Pi_1^\P$ = \coNP};
- \node (Delta2) [above left of=Pi1]     {$\P^\NP = \Delta_2^\P$ };
- \node (Sigma2) [above left of=Delta2]  {$\NP^\NP$ = $\Sigma_2^\P$ \hspace*{1.0cm}};
- \node (Pi2)    [above right of=Delta2] {\hspace*{1.5cm} $\Pi_2^\P$ = $\coNP^\NP$};
- \node (Delta3) [above left of=Pi2]     {$\P^{\NP^\NP} = \Delta_3^\P$};
- \node (Sigma3) [above left of=Delta3]  {$\NP^{\NP^\NP}$ = $\Sigma_3^\P$ \hspace*{1.3cm}};
- \node (Pi3)    [above right of=Delta3] {\hspace*{1.8cm} $\Pi_3^\P$ = $\coNP^{\NP^\NP}$};
- \node (dots)   [above of=Delta3]       {\vdots};
+ \node (Sigma2) [above of=Sigma1]  {$\NP^\NP$ = $\Sigma_2^\P$ \hspace*{1.0cm}};
+ \node (Pi2)    [above of=Pi1] {\hspace*{1.5cm} $\Pi_2^\P$ = $\coNP^\NP$};
+ \node (Sigma3) [above of=Sigma2]  {$\NP^{\NP^\NP}$ = $\Sigma_3^\P$ \hspace*{1.3cm}};
+ \node (Pi3)    [above of=Pi2] {\hspace*{1.8cm} $\Pi_3^\P$ = $\coNP^{\NP^\NP}$};
+ \node (dots)   [above right of=Sigma3]       {\vdots};
  \draw (P)      -> (Sigma1);
  \draw (P)      -> (Pi1);
  \draw (Sigma1) -> (Sigma2);
- \draw (Sigma1) -> (Delta2);
+ \draw (Sigma1) -> (Pi2);
  \draw (Pi1)    -> (Pi2);
- \draw (Pi1)    -> (Delta2);
- \draw (Delta2) -> (Sigma2);
- \draw (Delta2) -> (Pi2);
+ \draw (Pi1)    -> (Sigma2);
  \draw (Sigma2) -> (Sigma3);
- \draw (Sigma2) -> (Delta3);
+ \draw (Sigma2) -> (Pi3);
  \draw (Pi2)    -> (Pi3);
- \draw (Pi2)    -> (Delta3);
- \draw (Delta3) -> (Sigma3);
- \draw (Delta3) -> (Pi3);
+ \draw (Pi2)    -> (Sigma3);
 \end{tikzpicture}
 \end{figure}
+
+%\begin{figure}
+%\label{fig:polyhierarchy}
+%\caption{Polynomial Hierarchy, taken from http://commons.wikimedia.org/wiki/File:Polynomial\_time\_hierarchy.svg. Each arrow represents inclusion: for example, $\Sigma_1^\P \subseteq \Delta_2^\P \subseteq \Sigma_2^\P$.}
+%\centering
+%\begin{tikzpicture}[->, node distance=2cm, semithick]
+% \node (P) {$\Delta_0^\P = \Sigma_0^\P = \P = \Pi_0^\P = \Delta_1^\P$};
+% \node (Sigma1) [above left of=P]       {$\NP = \Sigma_1^\P$ \hspace*{0.8cm}};
+% \node (Pi1)    [above right of=P]      {\hspace*{1.2cm} $\Pi_1^\P$ = \coNP};
+% \node (Delta2) [above left of=Pi1]     {$\P^\NP = \Delta_2^\P$ };
+% \node (Sigma2) [above left of=Delta2]  {$\NP^\NP$ = $\Sigma_2^\P$ \hspace*{1.0cm}};
+% \node (Pi2)    [above right of=Delta2] {\hspace*{1.5cm} $\Pi_2^\P$ = $\coNP^\NP$};
+% \node (Delta3) [above left of=Pi2]     {$\P^{\NP^\NP} = \Delta_3^\P$};
+% \node (Sigma3) [above left of=Delta3]  {$\NP^{\NP^\NP}$ = $\Sigma_3^\P$ \hspace*{1.3cm}};
+% \node (Pi3)    [above right of=Delta3] {\hspace*{1.8cm} $\Pi_3^\P$ = $\coNP^{\NP^\NP}$};
+% \node (dots)   [above of=Delta3]       {\vdots};
+% \draw (P)      -> (Sigma1);
+% \draw (P)      -> (Pi1);
+% \draw (Sigma1) -> (Sigma2);
+% \draw (Sigma1) -> (Delta2);
+% \draw (Pi1)    -> (Pi2);
+% \draw (Pi1)    -> (Delta2);
+% \draw (Delta2) -> (Sigma2);
+% \draw (Delta2) -> (Pi2);
+% \draw (Sigma2) -> (Sigma3);
+% \draw (Sigma2) -> (Delta3);
+% \draw (Pi2)    -> (Pi3);
+% \draw (Pi2)    -> (Delta3);
+% \draw (Delta3) -> (Sigma3);
+% \draw (Delta3) -> (Pi3);
+%\end{tikzpicture}
+%\end{figure}
 
 \begin{definition}
 The \emph{polynomial hierarchy}, called \PH, is defined to be:
@@ -52,12 +77,12 @@ The \emph{polynomial hierarchy}, called \PH, is defined to be:
 \begin{theorem}
 $\PH$ can also be defined as:
 \[
-\PH = \bigcup_{k = 1}^{\infty} \Pi_k^\P = \bigcup_{k = 1}^{\infty} \Delta_k^\P.
+\PH = \bigcup_{k = 1}^{\infty} \Pi_k^\P.
 \]
 \end{theorem}
 
 \begin{proof}
-We have the simple inclusions: $\Sigma_k^\P \subseteq \Delta_{k+1}^\P \subseteq \Pi_{k+1}^\P \subseteq \Delta_{k+2}^\P \subseteq \Sigma_{k+2}^\P$.
+We have the simple inclusions: $\Sigma_k^\P \subseteq \Pi_{k+1}^\P \subseteq \Sigma_{k+2}^\P$.
 \end{proof}
 
 For $\PH$, we often call the $i$-th level of $\PH$ to be both $\Sigma_i^\P$ and $\Pi_i^\P$. A natural inclination, as has been done before with \NP, \PSPACE, \NL, and the like, is to find a complete problem for $\PH$. However, the following theorem shows that this is most likely not the case.
@@ -70,7 +95,49 @@ If there is a $\PH$-complete language, then $\PH$ only has a finite number of le
 Assume there exists a $\PH$-complete language $L$. By definition, $\PH = \bigcup_{k = 1}^{\infty} \Sigma_k^\P$. Therefore, for some $j$, we have that $L \in \Sigma_j^\P$, and every language in $\PH$ is polynomial-time reducible to $L$. However, any language $A$ that is polynomial-time reducible to some language $B \in \Sigma_j^\P$ has that $A \in \Sigma_j^\P$. Therefore, $\PH \subseteq \Sigma_j^\P$.
 \end{proof}
 
-This is quite a negative result compared to the complexity classes that we have studied earlier. However, for each $i$, there are many complete languages for $\Sigma_i^\P$ and $\Pi_i^\P$ (see \cite{Schaefer_completenessin}).
+This is quite a negative result compared to the complexity classes that we have studied earlier. However, for each $i$, there are many complete languages for $\Sigma_i^\P$ and $\Pi_i^\P$ (see \cite{Schaefer_completenessin}), by looking at a different definition of the hierarchy:
+\begin{definition}
+We define the following 2 languages:
+\begin{itemize}
+\item $\Sigma_i^{\SAT} = \{\langle \psi \rangle : \psi$ is of the form $\exists x_1 \forall x_2 \cdots Q_ix_i [\phi]$ where $\phi$ contains the variables $x_1,\cdots,x_i$, and $\psi$ is true\},
+\item $\Pi_i^{\SAT} = \{\langle \psi \rangle : \psi$ is of the form $\forall x_1 \exists x_2 \cdots Q_ix_i [\phi]$ where $\phi$ contains the variables $x_1,\cdots,x_i$, and $\psi$ is true\}. 
+\end{itemize}
+\end{definition}
+
+\begin{theorem}
+$\Sigma_i^{\SAT}$ is $\Sigma_i^\P$-complete, and $\Pi_i^{\SAT}$ is $\Pi_i^\P$-complete.
+\end{theorem}
+
+\begin{proof}
+Proven in \cite{Wrathall197623}.
+\end{proof}
+
+%We now look at an alternate definition of the polynomial hierarchy:
+%\begin{definition}
+%We create the following languages for a class of languages $C$:
+%\begin{center}
+%$\exists^\P C = \{w : \exists x$ with $|x| \le p(|w|)$ with $p$ a polynomial, and $\langle w, x \rangle \in L$, and $L \in C$\},\\
+%$\forall^\P C = \{w : \forall x$ with $|x| \le p(|w|)$ with $p$ a polynomial, and $\langle w, x \rangle \in L$, and $L \in C$\}
+%\end{center}
+%We then define the polynomial hierarchy as follows:
+%\begin{itemize}
+%\item $\Sigma_0^\P$ = $\Pi_0^\P = \P$,
+%\item $\Sigma_i^\P = \exists^\P \Pi_{i-1}^\P$, 
+%\item $\Pi_i^\P = \forall^\P \Sigma_{i-1}^\P$.
+%\end{itemize}
+%\end{definition} 
+
+%However, there is some hope as to the usefulness of $\PH$:
+%\begin{theorem}
+%$\P = \NP$ if and only if $\P = \PH$.
+%\end{theorem}
+
+% Add the alternative discussion of what PH is (the TQBF-like one)
+%\begin{proof}
+%Assume that $\P = \NP$. Therefore, we need to show that $\Sigma_i^\P \subseteq \P$ (this implies $\Pi_i^\P \subseteq \P$ because $\P$ is closed under complement) for all $i$. For $i=1$, $\Sigma_1^\P = \NP \subseteq \P$, and we assumed that $\P = \NP$. Now suppose that $\Sigma_{i-1}^\P \subseteq \P$. 
+%\end{proof}
+
+
 
 \subsection{Alternating TMs}
 \begin{definition}
