@@ -1,1 +1,40 @@
 \section{Parameterized Complexity}
+
+We know of $\P$ and $\NP$, and that there are many problems in each (and complete ones in $\NP$). However, we don't have any granularity when it comes to separating the two classes. A relatively recent technique is parameterization, which we discuss here. The goal is to find parameters of an input that make a particular language (i.e., problem) hard. 
+
+\begin{definition}
+A \emph{parameterized problem} $P$ is a set of tuples $(w, k)$ where $w$ is the \emph{input} and $k$ is the \emph{parameter} (the alphabets to which $w$ and $k$ belong are disjoint). We now define the pair of a language and the parameter:
+\[
+(L, k) = \{(w, m) : w \in L, m = k(w)\}.
+\]
+\end{definition}
+
+We want to know whether $(w, k) \in P$ is true or not. The notion of a ``parameter" is basically a function that takes instances of a problem, and returns a non-negative integer. One possible parameter for vertex cover is: does there exist a vertex cover of size $\le k$?
+
+\begin{definition}
+We define the following classes (``solvable" means on a deterministic TM):
+\begin{center}
+$\XP = \{(L, k) : (L, k)$, for a given $w \in L$, is solvable in $|w|^{f(k)}$ time\}.\\
+$\FPT = \{(L, k) : (L, k)$, for a given $w \in L$, is solvable in $|w|^{O(1)} \times f(k)$\}.
+\end{center}
+\end{definition}
+
+Note that there is no bound on the growth of $f$; the only thing we must guarantee is that the running time of $M$ is polynomial in the length of $w$, if we assume a fixed parameter. This is why we usually do not study $\XP$, because the polynomial changes as $k$ changes (also, most languages are in $\XP$ anyway). Therefore, we study $\FPT$ by looking at the following problem:
+
+\begin{theorem}
+Define k-Vertex Cover $(KVC, k)$= $\{(G, k) : G = (V, E)$ is a graph and contains a vertex cover of size $k$\}. We have that $(KVC, k) \in \XP$, and $(KVC, k) \in \FPT$.
+\end{theorem}
+
+\begin{proof}
+\par The parameter here is $k \le |V|$. We have that it is trivially in $\XP$, because we can check all possible $|V|^k$ subsets of the vertices, and each requires linear time in the number of vertices. Therefore, we have an $O(|V|^{k+1})$ algorithm (which has $f(k) = k+1$ here).
+
+\par For showing it is in $\FPT$, we work as follows:
+\begin{enumerate}
+\item Choose an edge, and include one of the end vertices of the edge in the vertex cover. 
+\item Delete all edges incident to the chosen vertex.
+\item Repeat $k$ times.
+\item Each repetition, check if there is a vertex cover; if not, repeat again. 
+\end{enumerate}
+
+In this algorithm, we end up checking $2^k$ possible different choices of vertices. Each step takes $O(|V|)$ time, so we have an $O(|V| \cdot 2^k)$ algorithm (having $f(k) = 2^k$), which shows that it is in $\FPT$.
+\end{proof}
