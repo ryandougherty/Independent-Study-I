@@ -19,6 +19,14 @@ $\FPT = \{(L, k) : (L, k)$, for a given $w \in L$, is solvable in $|w|^{O(1)} \t
 \end{center}
 \end{definition}
 
+\begin{theorem}
+$\P \subseteq \FPT \subseteq \XP$.
+\end{theorem}
+
+\begin{proof}
+The $\P$ problem is the same as a $\FPT$ problem that ignores its parameter. The second inclusion is obvious via the definition.
+\end{proof}
+
 Note that there is no bound on the growth of $f$; the only thing we must guarantee is that the running time of $M$ is polynomial in the length of $w$, if we assume a fixed parameter. This is why we usually do not study $\XP$, because the polynomial changes as $k$ changes (also, most languages are in $\XP$ anyway). Therefore, we study $\FPT$ by looking at the following problem:
 
 \begin{theorem}
@@ -38,3 +46,63 @@ Define k-Vertex Cover $(KVC, k)$= $\{(G, k) : G = (V, E)$ is a graph and contain
 
 In this algorithm, we end up checking $2^k$ possible different choices of vertices. Each step takes $O(|V|)$ time, so we have an $O(|V| \cdot 2^k)$ algorithm (having $f(k) = 2^k$), which shows that it is in $\FPT$.
 \end{proof}
+
+We can see that $\FPT$ is the parameterized analog of the decision class $\P$. However, how does one relate the two classes? We now define the \emph{slice} of a parameterized problem:
+\begin{definition}
+The \emph{$\ell$th slice} (for $\ell \in \mathbb{N}$) of a parameterized problem $(L, k)$ is:
+\begin{center}
+$(L, k)_{\ell} = \{x \in L : k(x) = \ell\}$.
+\end{center}
+\end{definition}
+
+\newcommand{\paraCOLORABILITY}{\lang{paraColorability}}
+The entire idea of slices is to separate a problem into many separate equivalence classes. For instance, one can define a problem $\paraCOLORABILITY$ as follows: given a graph $G$ and parameter $k \in \mathbb{N}$, decide whether $G$ is $k$-colorable. Obviously, the 3rd slice of the problem is the classical NP-complete problem $\lang{3COLORABILITY}$. By this reasoning, $\paraCOLORABILITY \notin \FPT$ unless $\P = \NP$.
+
+\begin{theorem}
+If $(L, k) \in \FPT$, then $(L, k)_{\ell} \in \P$.
+\end{theorem}
+
+\begin{proof}
+Since $(L, k) \in \FPT$, $k$ is computable in polynomial time. Therefore, given $x \in Q$, we can determine if $k(x) = \ell$ in polynomial time (and equality check can be done in logarithmic time). Therefore, $(L, k)_{\ell} \in \P$.
+\end{proof}
+
+\subsection{Parameterized Reductions}
+
+As we have done with complexity classes, we have a notion of parameterized reductions:
+
+\begin{definition}
+A \emph{parameterized reduction} (also called a $\FPT$ reduction) is a computable function $f$ that takes instances $(A, k_1)$ and maps them to $(B, k_2)$, where $A, B$ are decision languages, such that the following hold:
+\begin{itemize}
+\item $f$ is polynomial-time computable in terms of $k_1$,
+\item $x \in (A, k_1) \Leftrightarrow y \in (B, k_2)$,
+\item $k_2(y) \le g(k_1(x))$, where $g: \mathbb{N} \rightarrow \mathbb{N}$ is a computable function.
+\end{itemize}
+\end{definition}
+
+In particular, we have that if $B$ (in the definition) is in $\FPT$, then $A$ is as well. Therefore, as we have done before, we will define hardness of $\FPT$.
+
+\begin{theorem}
+There exists a parameterized reduction from INDSET to CLIQUE, via $(G, k) \rightarrow (\overline{G}, k)$ ($\overline{G}$ is the complement graph of $G$).
+\end{theorem}
+
+\begin{proof}
+Obvious via the definition.
+\end{proof}
+
+\begin{theorem}
+$\FPT$ is closed under $\FPT$-reductions.
+\end{theorem}
+
+\begin{proof}
+Let $M$ be an $\FPT$ reduction between the parameterized problems $(L_1, k_1)$ and $(L_2, k_2)$, and is computable in time $h(k_1(x)) \times p(|x|)$, and $k_2(y) \le g(k_1(x))$ for $y \in (L_2, k_2)$. 
+
+\par Let $T$ be a TM that decides $L_2$ in time $f'(k_2(x)) \times p'(|x|)$, and assume $f'$ is non-decreasing. Then we can decide $L_1$ by computing $y$ and then decide if $y \in L_2$ via $T$, which can be done in time $h(k_1(x)) \times p(|x|) + f'(k_2(y)) \times p'(|y|) \le h(k_1(x)) \times q(|x|) + f'(g(k_1(x))) \times p'(h(k_1(x)) \times q(|x|))$. This show
+\end{proof}
+
+\newcommand{\paraNP}{\lang{paraNP}}
+\subsection{$\paraNP$}
+The class $\FPT$ is the parameterized analog of the decision class $\P$. But what about $\NP$? The equivalent class is $\paraNP$:
+\begin{definition}
+A parameterized problem $(L, k)$ is in $\paraNP$ if there is a computable function $f: \mathbb{N} \rightarrow \mathbb{N}$, a polynomial $p$, and a nondeterministic TM that, when given $x$, decides if $x \in L$ within $f(k(x)) \times p(|x|)$ steps.
+\end{definition}
+
