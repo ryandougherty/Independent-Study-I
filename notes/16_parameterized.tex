@@ -106,3 +106,32 @@ The class $\FPT$ is the parameterized analog of the decision class $\P$. But wha
 A parameterized problem $(L, k)$ is in $\paraNP$ if there is a computable function $f: \mathbb{N} \rightarrow \mathbb{N}$, a polynomial $p$, and a nondeterministic TM that, when given $x$, decides if $x \in L$ within $f(k(x)) \times p(|x|)$ steps.
 \end{definition}
 
+\Comment{Add more proofs}
+
+\subsection{$\W$ Hierarchy}
+As we have done with the polynomial hierarchy, we had a series of inclusions of classes. But what about parameterized complexity? There are quite a few hierarchies in parameterized complexity, but we give an introduction to one - the $\W$ hierarchy, as proposed by \cite{Downey1995109}. As a preliminary, we give some definitions:
+
+\begin{definition}
+A boolean circuit is called \emph{mixed-type} if it contains circuits that themselves have the following types of gates:
+\begin{itemize}
+\item \emph{Small gates} - $\neg, \vee, \wedge$ gates with bounded fan-in,
+\item \emph{Large gates} - $\vee, \wedge$ gates with unbounded fan-in.
+\end{itemize}
+The \emph{depth} of a circuit is the longest path (using any type of gate) from an input to an output. We call the \emph{weft} of the circuit to be the maximum number of large gates from an input to an output. Also, a family of circuits has \emph{bounded depth} if every circuit in the family has depth at most a constant (and similarly for \emph{bounded weft}). A circuit family is \emph{monotone} if each circuit in the family does not have $\neg$-gates. A circuit is a \emph{decision circuit} if it has a single output.
+\end{definition}
+
+\begin{definition}
+For a family of decision circuits $F$, we create the parameterized problem:
+\[
+L_F = \{(C, k) : C \in F, C \text{outputs 1 (``accept") some input of length} k\}.
+\]
+\end{definition}
+
+\begin{definition}[$\W$ Hierarchy]
+A parameterized problem $L$ is in $\W[t]$ if $L$ reduces to $L_F$ for a circuit family $F_{h, t}$, containing circuits of depth $h$ and weft at most $t$.
+\end{definition}
+
+Therefore, we have the following containments (none is known to be proper):
+\[
+\FPT \subseteq \W[1] \subseteq \W[2] \subseteq \cdots
+\]
