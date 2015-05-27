@@ -129,9 +129,11 @@ L_F = \{(C, k) : C \in F, C \text{outputs 1 (``accept") some input of length} k\
 
 \begin{definition}[$\W$ Hierarchy]
 A parameterized problem $L$ is in $\W[t]$ if $L$ reduces to $L_F$ for a circuit family $F_{h, t}$, containing circuits of depth $h$ and weft at most $t$.
+
+\par An equivalent definition is that a parameterized problem $L$ is in $\W[t]$ if there is a constant $c$ (may possibly be a function of $k$) and there is a parameterized reduction from $L$ to the following problem (called ``Weighted Circuit SAT"): given a boolean circuit and integer $k$, with weft at most $t$ and depth at most $c$, accept if there is an assignment of weight $k$ (number of ``true" inputs) and the output is 1.
 \end{definition}
 
 Therefore, we have the following containments (none is known to be proper):
 \[
-\FPT \subseteq \W[1] \subseteq \W[2] \subseteq \cdots
+\FPT \subseteq \W[1] \subseteq \W[2] \subseteq \cdots \subseteq \XP
 \]

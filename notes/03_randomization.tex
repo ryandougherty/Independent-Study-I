@@ -1,1 +1,17 @@
 \section{Randomization}
+
+In the previous sections, we have only dealt with (non)-deterministic TMs. However, there are many important classes that relate a TM when using a probability, as we define below:
+
+\begin{definition}
+A \emph{probabilistic TM} (PTM) has two transition functions, and at each step we choose, independently with probability $\frac{1}{2}$, to apply one of the two functions. We say that a PTM $M$ halts in $T(n)$ time if $M$ halts on all inputs $x$ within $T(|x|)$ steps, regardless of the choices made during execution.
+\end{definition}
+
+We can now define the probabilistic analog of $\P$, which is $\BPP$:
+\begin{definition}
+A language $L$ is in $\BPTIME(T(n))$ if there exists a PTM $M$ that decides $L$ in time $T(n)$, $M$ halts within $T(|x|)$ steps regardless of choices, and Pr[$M(x) = L(x)] \ge \frac{2}{3}$. We define:
+\[
+\BPP = \bigcup_{c \ge 0}\BPTIME(n^c)
+\]
+\end{definition}
+
+\subsection{$\RP, \coRP, \ZPP$}
