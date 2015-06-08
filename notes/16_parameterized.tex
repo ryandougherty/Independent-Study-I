@@ -20,6 +20,19 @@ $\FPT = \{(L, k) : (L, k)$, for a given $w \in L$, is solvable in $|w|^{O(1)} \t
 \end{definition}
 
 \begin{theorem}
+$\FPT$ can be redefined as $|w|^{O(1)} + f(k)$.
+\end{theorem}
+
+\begin{proof}
+Going from addition to multiplication is trivially true. For the other direction:
+\begin{itemize}
+\item If $|w| \le f(k)$, then for a constant $c$, $f(k) \times |w|^c \le f(k)^{c+1}$.
+\item If $|w| \ge f(k)$, then by a similar argument, $f(k) \times |w|^c \le |w|^{c+1}$.
+\end{itemize}
+Therefore, $f(k) \times |w|^c \le \max\{f(k)^{c+1}, |w|^{c+1}\} \le f(k)^{c+1} + |w|^{c+1}$. We can define this to be $f'(k) + n^{c'}$.
+\end{proof}
+
+\begin{theorem}
 $\P \subseteq \FPT \subseteq \XP$.
 \end{theorem}
 
