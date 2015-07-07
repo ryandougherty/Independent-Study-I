@@ -1,1 +1,46 @@
 \section{Boolean Circuits}
+
+We have looked a little at boolean formulas, which take input variables that have values ``true" or ``false" and, through some operations, give a result of either ``true" or ``false" as ``output." Here, we look at circuits, which are a generalization of formulas.
+
+\begin{definition}
+A \emph{boolean circuit} is a DAG (directed acyclic graph) with a number of ``source" vertices (those with no incoming edges), also called ``gates," and a ``sink" vertex (with no outgoing edges), also called the ``output." Vertices are labelled with $\wedge, \vee, \neg$ - those with $\wedge, \vee$ have fan-in 2 and fan-out 1, and those with $\neg$ have fan-in and fan-out 1. The \emph{size} of a circuit is the number of vertices it has. The output of a particular input $x \in \{0, 1\}^n$ is applying each of the vertex ``rules" recursively until the output is reached. 
+\end{definition}
+
+\begin{theorem}
+Any circuit with its $\wedge, \vee$ vertices having bounded fan-in (i.e., $\ge 3$) can be converted to an equivalent circuit with these vertices having only fan-in 2. 
+\end{theorem}
+
+\begin{definition}
+A \emph{$T(n)$-size circuit family} is a sequence of circuits (i.e., $\{C_n\}_{n \in \mathbb{N}}$), where, for a given function $T \colon \mathbb{N} \rightarrow \mathbb{N}$, has that all of the circuits have size $\le T(n)$ for all $n$. We say that $L \in \SIZE(T(n))$ if there exists a $T(n)$-size circuit family such that for all $x \in \{0, 1\}^n$, $x \in L$ if and only if $C_n(x) = 1$ (i.e., ``accepts" $x$). 
+\end{definition}
+
+We start with an example: $L_1 = \{1^n \colon n \in \mathbb{Z}\}$.
+\begin{theorem}
+\label{thm:unary_linear_circuit_family}
+$L_1$ can be decided by a linear-sized circuit family. 
+\end{theorem}
+
+\begin{proof}
+The circuit is simply a tree of $\wedge$ gates that computes that of all inputs. 
+\end{proof}
+
+\begin{definition}
+We define $\Ppoly$ to be $\bigcup_{c} \SIZE(n^c)$; in other words, $\Ppoly$ is the set of languages with poly-size circuit families.
+\end{definition}
+
+\begin{theorem}
+$\P \subseteq \Ppoly$, and the inclusion is strict.
+\end{theorem}
+
+\Comment{Add proof}
+
+\begin{theorem}
+All unary languages are in $\Ppoly$.
+\end{theorem}
+
+\begin{proof}
+Implied by \Cref{thm:unary_linear_circuit_family}.
+\end{proof}
+
+\subsection{\lang{CKT-SAT}}
+As we proved the Cook-Levin Theorem from before, now we prove the circuit analog of $\SAT$. 
