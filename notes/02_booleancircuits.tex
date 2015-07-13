@@ -29,12 +29,7 @@ We define $\Ppoly$ to be $\bigcup_{c} \SIZE(n^c)$; in other words, $\Ppoly$ is t
 \end{definition}
 
 \begin{theorem}
-$\P \subseteq \Ppoly$, and the inclusion is strict.
-\end{theorem}
-
-\Comment{Add proof}
-
-\begin{theorem}
+\label{thm:all_unary_ppoly}
 All unary languages are in $\Ppoly$.
 \end{theorem}
 
@@ -42,5 +37,55 @@ All unary languages are in $\Ppoly$.
 Implied by \Cref{thm:unary_linear_circuit_family}.
 \end{proof}
 
-\subsection{\lang{CKT-SAT}}
-As we proved the Cook-Levin Theorem from before, now we prove the circuit analog of $\SAT$. 
+\begin{theorem}
+\label{thm:p_subset_ppoly}
+$\P \subseteq \Ppoly$, and the inclusion is strict.
+\end{theorem}
+
+\begin{proof}
+Let $M$ be an ``oblivious" TM, which is one that has its head movement independent of the input. We need to show that for any $T(n)$-time oblivious TM, we can construct an equivalent $O(T(n))$-size circuit family. 
+
+\par Let $x$ be an input for $M$, and look at the set of $M$'s configurations: $C_1, \cdots, C_{T(n)}$. Encode each configuration by a constant-size binary string. We can compute $C_i$ based on the following:
+\begin{itemize}
+\item $x$ itself,
+\item $C_{i-1}$,
+\item $C_{i_1}, \cdots, C_{i_k}$, where $C_{i_j}$ is the last step that $M$'s $j$th head was in the same position as it is in the $i$th step.
+\end{itemize}
+Because we assumed $M$ is oblivious, then $i_1, \cdots, i_k$ does not depend on $x$ - they only depend on $i$. Therefore, since we only have a constant number of strings of constant size, we can compute $C_i$ with a constant-size circuit.
+
+\par We compose these circuits together so that, on input $x$, we compute $C_{T(n)}$ on $M$'s last step in its execution on $x$. We also have a constant size circuit that outputs 1 if and only if $C_{T(n)}$ is an accepting configuration. Since we have $O(T(n))$ circuits of constant size, we have constructed an equivalent $O(T(n))$-size circuit to $M$.
+
+\par For showing strict containment, by \Cref{thm:all_unary_ppoly}, all undecidable unary languages are in $\Ppoly$, which are by definition not in $\P$.
+\end{proof}
+
+
+
+\newcommand{\CKTSAT}{\lang{CKT-SAT}}
+\subsection{\CKTSAT}
+As we proved the Cook-Levin Theorem from before, now we prove the circuit analog of $\SAT$. $\CKTSAT$ is the set of all circuits that have a ``satisfying assignment" to the $n$ input variables. In other words, there exists a $w \in \{0, 1\}^n$ if and only if $C(w)=1$ if $C \in \CKTSAT$.
+
+\begin{theorem}
+$\CKTSAT$ is $\NP$-complete.
+\end{theorem}
+
+\begin{proof}
+$\CKTSAT$ is clearly in $\NP$. For hardness, if $L \in \NP$, then there is a verifier $V$ such that, on input $x$, verifies if $x \in L$ in polynomial time. By \Cref{thm:p_subset_ppoly}, we can convert $V$ into an equivalent circuit $C$ in polynomial time. Therefore, $x \in L$ if and only if $C \in \CKTSAT$.
+\end{proof}
+
+\subsection{Advice!}
+We defined $\Ppoly$ in one way - now we will see another. This will make the fact that all undecidable unary languages are in $\Ppoly$ to be more clear. 
+
+\begin{definition}
+The set of languages \emph{decidable by $T(n)$-time TMs with $A(n)$ bits of advice} is called $\DTIME(T(n))/A(n)$. By this, we mean that for every $L \in \DTIME(T(n))/A(n)$, there is a sequence of strings, $\{a_n\}$, each of length $A(n)$, and a $T(n)$-time verifier $M$, such that it accepts $\langle x, a_n \rangle$ if and only if $x \in L$.
+\end{definition}
+
+In other words, we are given a sequence of strings of length $A(n)$ that are certificates, in a sense. Now we will look at the alternative definition of $\Ppoly$:
+\begin{theorem}
+$\Ppoly$ can be re-defined to be $\bigcup_{c, d \ge 0} \DTIME(n^c)/n^d$.
+\end{theorem}
+
+\begin{proof}
+By the first definition of $\Ppoly$, if $L \in \Ppoly$, then $L$ is computable by a poly-size circuit family $\{C_n\}$. We can just use the descriptions of each of the $C_n$ as an advice string, and the TM is poly-time that, on input $\langle x, C \rangle$, where $C$ is an $n$-input circuit, outputs $C(x)$. 
+
+\par If $L$ is decided by a poly-time TM $M$ with access to the sequence of advice strings $\{a_n\}$, each of poly-length, then we can use the construction of \Cref{thm:p_subset_ppoly} to obtain an equivalent poly-size circuit $B_n$ for all $n$ (i.e., outputs the same as $M$ does). Let $C_n$ be the same as $B_n$ but with $a_n$ hard-coded as the second input (i.e., fix the inputs). Therefore, $\{C_n\}$ is the desired circuit-family.
+\end{proof}

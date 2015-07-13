@@ -1,9 +1,9 @@
 % This is LLNCS.DOC the documentation file of
 % the LaTeX2e class from Springer-Verlag
 % for Lecture Notes in Computer Science, version 2.4
-\documentclass{llncs}
+\documentclass{article}
 \usepackage{cleveref}
-\usepackage{llncsdoc}
+%\usepackage{llncsdoc}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsfonts}
 \usepackage{complexity}
@@ -11,6 +11,13 @@
 \usepackage{fancyhdr}
 \usepackage{amsmath}
 \usetikzlibrary{arrows}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{lemma}{Lemma}
 
 \pagestyle{fancy}
 \renewcommand{\sectionmark}[1]{\markright{#1}}
