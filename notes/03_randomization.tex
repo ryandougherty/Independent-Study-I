@@ -3,15 +3,52 @@
 In the previous sections, we have only dealt with (non)-deterministic TMs. However, there are many important classes that relate a TM when using a probability, as we define below:
 
 \begin{definition}
-A \emph{probabilistic TM} (PTM) has two transition functions, and at each step we choose, independently with probability $\frac{1}{2}$, to apply one of the two functions. We say that a PTM $M$ halts in $T(n)$ time if $M$ halts on all inputs $x$ within $T(|x|)$ steps, regardless of the choices made during execution.
+A \emph{probabilistic TM} (PTM) has two transition functions, and at each step we choose, independently with probability $\frac{1}{2}$, to apply one of the two functions, like a coin flip. We say that a PTM $M$ halts in $T(n)$ time if $M$ halts on all inputs $x$ within $T(|x|)$ steps, regardless of the choices made during execution.
 \end{definition}
 
 We can now define the probabilistic analog of $\P$, which is $\BPP$:
 \begin{definition}
-A language $L$ is in $\BPTIME(T(n))$ if there exists a PTM $M$ that decides $L$ in time $T(n)$, $M$ halts within $T(|x|)$ steps regardless of choices, and Pr[$M(x) = L(x)] \ge \frac{2}{3}$. We define:
+A language $L$ is in $\BPTIME(T(n))$ if there exists a PTM $M$ that decides $L$ in time $T(n)$, $M$ halts within $T(|x|)$ steps regardless of choices, and $\Pr[M(x) = L(x)] \ge \frac{2}{3}$. We define:
 \[
 \BPP = \bigcup_{c \ge 0}\BPTIME(n^c)
 \]
 \end{definition}
+
+We also give an alternate definition for $\BPP$:
+\begin{definition}
+$L \in \BPP$ if there exists a poly-time TM verifier $M$ and a polynomial $p$ such that for all $x \in \{0, 1\}^*$, $\Pr[L(M) = L] \ge \frac{2}{3}$ where $M$ has certificates of size $p(|x|)$.
+\end{definition}
+
+\begin{theorem}
+$\BPP \subseteq \Ppoly$.
+\end{theorem}
+
+This proof will use what is called as ``success amplification" - the essential idea is that, given we have polynomial time, we can make successive coin flips to reduce the error bound for $\BPP$ to even less error. We do this as follows:
+\begin{itemize}
+\item For a PTM $M$ that computes a language $L$ with error $\frac{1}{2} - \frac{1}{n^c}$, run $M$ for $k$ independent trials, and accept only if at least half of the trials accept. 
+\item Define $X_i = 1$ if the $i$-th trial accepts, and 0 otherwise, and $X = \Sigma_1^k X_i$. 
+\item Therefore, $\Pr[X_i = 1] \ge \frac{1}{2} + \frac{1}{n^c}$. Call this result $p$.
+\item $\E[X] \ge pk$ for the same reasoning.
+\item Call $\delta = 1-\frac{1}{2p}$.
+\end{itemize}
+Therefore, now we want to find the probability that the trials done above are incorrect, by using Chernoff bounds:
+\begin{center}
+$\Pr[X < (1-\delta)pk] \le \exp(\frac{-{(1-\frac{1}{2p})^2}pk}{2}) \le \exp(-\frac{k}{2n^{2c}})$
+\end{center}
+So, for $k$ a polynomial (i.e., $2n^{2c+d}$), we can have an exponentially small error bound. Now, onto the proof.
+
+\begin{proof}
+Let $L \in \BPP$. By success amplification, there is a TM $M$ such that $L(M) = L$ with error smaller than $\frac{1}{2^n}$. Choose an $x \in \{0, 1\}^n$. Therefore, $\Pr[\text{$M$ computes incorrectly on $x$}] < \frac{1}{2^n}$. We can observe that:
+\[
+\Pr[\text{$M$ computes incorrectly on some $y \in \{0, 1\}^n$}] \le \Sigma_{x \in \{0, 1\}^n} \Pr[\text{$M$ computes incorrectly on $x$}] = 1
+\]
+Therefore, there are some coin flips where $M$ does not make any error on any $x \in \{0, 1\}^n$. All we need to do is convert $M$ into a circuit and hardwire these coin flips, which completes the proof. 
+\end{proof}
+
+\begin{theorem}
+$\BPP \subseteq \Sigma_2^\P \cap \Pi_2^\P$.
+\end{theorem}
+
+\Comment{Add proof}
 
 \subsection{$\RP, \coRP, \ZPP$}
