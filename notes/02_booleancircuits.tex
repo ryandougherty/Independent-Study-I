@@ -89,3 +89,25 @@ By the first definition of $\Ppoly$, if $L \in \Ppoly$, then $L$ is computable b
 
 \par If $L$ is decided by a poly-time TM $M$ with access to the sequence of advice strings $\{a_n\}$, each of poly-length, then we can use the construction of \Cref{thm:p_subset_ppoly} to obtain an equivalent poly-size circuit $B_n$ for all $n$ (i.e., outputs the same as $M$ does). Let $C_n$ be the same as $B_n$ but with $a_n$ hard-coded as the second input (i.e., fix the inputs). Therefore, $\{C_n\}$ is the desired circuit-family.
 \end{proof}
+
+We can actually get a ``nondeterministic" parallel to \Cref{thm:p_subset_ppoly}:
+
+\begin{theorem}
+$\NP \subseteq \bigcup_{c, d \ge 0} \NTIME(n^c)/n^d$, and the inclusion is strict (note $\NTIME$ instead of $\DTIME$).
+\end{theorem}
+
+\begin{proof}
+It's easy to see inclusion: set $d = 0$, and have an $\NP$ machine accept a one-bit advice string for every $n$, and have the machine ignore the advice. 
+
+\par For strict inclusion, we know that all unary languages are in $\DTIME(n)/1 \subseteq \NTIME(n)/1$, because we only need one bit of advice for each $n$ in advising the machine to check if $1^n$ is in the language. However, the following undecidable language is also in there, and therefore is not in $\NP$:
+\begin{center}
+$UHALT = \{1^n \colon n$'s binary expansion encodes $\langle M, w \rangle$ where $M$ halts on $w$\}.
+\end{center}
+\end{proof}
+
+\subsection*{Exercises}
+
+\begin{enumerate}
+\item A language $L \subseteq \{0, 1\}^*$ is sparse if there is a polynomial $p$ such that $|L \cap \{0, 1\}^n| \le p(n)$ for every $n \in \mathbb{N}$. Show that every sparse language is in $\Ppoly$.
+\item Going off the previous question, show that if a sparse language is $\NP$-complete, then $\P = \NP$.
+\end{enumerate}

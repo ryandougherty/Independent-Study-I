@@ -9,7 +9,7 @@ From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with 
 \item $\Pi_i^\P = \coNP^{\Pi_{i-1}^\P}$.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{figure}
 \label{fig:polyhierarchy}
 \caption{Polynomial Hierarchy, taken from http://commons.wikimedia.org/wiki/File:Polynomial\_time\_hierarchy.svg. Each arrow represents inclusion: for example, $\Sigma_1^\P \subseteq \Sigma_2^\P$.}
 \centering
@@ -143,3 +143,11 @@ Proven in \cite{Wrathall197623}.
 \begin{definition}
 \emph{Alternating TM}s (ATMs) are generalizations of NTMs, in that they behave the same as NTMs, but have an extra ``feature," that for every non-halting state, the state has a label from $\{\exists, \forall\}$. When running on some input, if the state has the $\exists$ label, then the ATM accepts if \emph{some} transition path from that state accepts; if the state has the $\forall$ label, then the ATM accepts if \emph{all} transition paths from that state accept.
 \end{definition}
+
+\subsection{Exercises}
+\begin{enumerate}
+
+\item Show that if $\NP = \coNP$, then $\PH = \NP$. Generalize this and show that if $\Sigma_k^\P = \Pi_k^\P$, then $\PH = \Sigma_k^\P$.
+
+\item We defined the polynomial hierarchy in terms of $\P$ - what about $\PSPACE$? Look at $\Sigma_k^\PSPACE, \Pi_k^\PSPACE$ and determine that $\PSPACE = \bigcup_{k \ge 1} \Sigma_k^\PSPACE = \bigcup_{k \ge 1} \Pi_k^\PSPACE$.
+\end{enumerate}

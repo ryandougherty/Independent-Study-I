@@ -38,7 +38,7 @@ $\Pr[X < (1-\delta)pk] \le \exp(\frac{-{(1-\frac{1}{2p})^2}pk}{2}) \le \exp(-\fr
 So, for $k$ a polynomial (i.e., $2n^{2c+d}$), we can have an exponentially small error bound. Now, onto the proof.
 
 \begin{proof}
-Let $L \in \BPP$. By success amplification, there is a TM $M$ such that $L(M) = L$ with error smaller than $\frac{1}{2^n}$. Choose an $x \in \{0, 1\}^n$. Therefore, $\Pr[\text{$M$ computes incorrectly on $x$}] < \frac{1}{2^n}$. We can observe that:
+Let $L \in \BPP$. By success amplification, there is a poly-time TM $M$ such that $L(M) = L$ with error smaller than $2^{-n}$. Choose an $x \in \{0, 1\}^n$. Therefore, $\Pr[\text{$M$ computes incorrectly on $x$}] < \frac{1}{2^n}$. We can observe that:
 \[
 \Pr[\text{$M$ computes incorrectly on some $y \in \{0, 1\}^n$}] \le \Sigma_{x \in \{0, 1\}^n} \Pr[\text{$M$ computes incorrectly on $x$}] = 1
 \]
@@ -49,6 +49,12 @@ Therefore, there are some coin flips where $M$ does not make any error on any $x
 $\BPP \subseteq \Sigma_2^\P \cap \Pi_2^\P$.
 \end{theorem}
 
-\Comment{Add proof}
+\begin{proof}
+As before, assume that for an $L \in \BPP$ there is a poly-time TM $M$ such that $L(M) = L$ with error smaller than $2^{-n}$. Since $\BPP$ is closed under complement, we only need to show $\BPP \subseteq \Sigma_2^\P$.
+
+\par For $x \in \{0, 1\}^n$, let $S_x$ be the set of certificates for which $M$ accepts $x$, and let $p$ be the polynomial that is the number of random bits $M$ uses. Therefore, $|S_x| \ge (1-2^{-n})2^{p(n)}$, or $|S_x| \le 2^{m-n}$. 
+
+\Comment{complete this}
+\end{proof}
 
 \subsection{$\RP, \coRP, \ZPP$}
