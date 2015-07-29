@@ -9,7 +9,7 @@ From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with 
 \item $\Pi_i^\P = \coNP^{\Pi_{i-1}^\P}$.
 \end{itemize}
 
-\begin{figure}
+\begin{figure}[!htb]
 \label{fig:polyhierarchy}
 \caption{Polynomial Hierarchy, taken from http://commons.wikimedia.org/wiki/File:Polynomial\_time\_hierarchy.svg. Each arrow represents inclusion: for example, $\Sigma_1^\P \subseteq \Sigma_2^\P$.}
 \centering
@@ -112,37 +112,86 @@ $\Sigma_i^{\SAT}$ is $\Sigma_i^\P$-complete, and $\Pi_i^{\SAT}$ is $\Pi_i^\P$-co
 Proven in \cite{Wrathall197623}.
 \end{proof}
 
-%We now look at an alternate definition of the polynomial hierarchy:
-%\begin{definition}
-%We create the following languages for a class of languages $C$:
-%\begin{center}
-%$\exists^\P C = \{w : \exists x$ with $|x| \le p(|w|)$ with $p$ a polynomial, and $\langle w, x \rangle \in L$, and $L \in C$\},\\
-%$\forall^\P C = \{w : \forall x$ with $|x| \le p(|w|)$ with $p$ a polynomial, and $\langle w, x \rangle \in L$, and $L \in C$\}
-%\end{center}
-%We then define the polynomial hierarchy as follows:
-%\begin{itemize}
-%\item $\Sigma_0^\P$ = $\Pi_0^\P = \P$,
-%\item $\Sigma_i^\P = \exists^\P \Pi_{i-1}^\P$, 
-%\item $\Pi_i^\P = \forall^\P \Sigma_{i-1}^\P$.
-%\end{itemize}
-%\end{definition} 
+However, there is an alternate definition of the polynomial hierarchy that we will now use:
+\begin{definition}
+A language $L \in \Sigma_i^\P$ if there is a poly-time TM $M$ and a polynomial $p$ such that $x \in L$ if and only if:
+\begin{center}
+$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \cdots Q_iu_i \in \{0, 1\}^{p(|x|)} M(x, u_1, \cdots, u_i)$ accepts.
+\end{center}
+where $Q_i$ is either $\exists$ or $\forall$ depending on whether $i$ is odd or not. Also, define $\PH$ as before.
+\end{definition}
 
-%However, there is some hope as to the usefulness of $\PH$:
-%\begin{theorem}
-%$\P = \NP$ if and only if $\P = \PH$.
-%\end{theorem}
+We prove that the definitions are equivalent. It is sufficient to show the following:
 
-% Add the alternative discussion of what PH is (the TQBF-like one)
-%\begin{proof}
-%Assume that $\P = \NP$. Therefore, we need to show that $\Sigma_i^\P \subseteq \P$ (this implies $\Pi_i^\P \subseteq \P$ because $\P$ is closed under complement) for all $i$. For $i=1$, $\Sigma_1^\P = \NP \subseteq \P$, and we assumed that $\P = \NP$. Now suppose that $\Sigma_{i-1}^\P \subseteq \P$. 
-%\end{proof}
+\begin{theorem}
+For all $i \ge 2$, $\Sigma_i^\P = \NP^{\Sigma_{i-1}\SAT}$.
+\end{theorem}
 
+\begin{proof}
+We can prove the $i=2$ case as higher $i$ values work the same way. So, we need to prove $\Sigma_2^\P$ (defined the new way) is equal to $\NP^{\SAT}$. If $L \in \Sigma_2^\P$, then there exists a poly-time TM $M$ and a polynomial $p$ such that $x \in L$ if and only if (by definition):
+\begin{center}
+$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2)$ accepts.
+\end{center}
+The part ``$\forall u_2 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2)$ accepts" is exactly the negation of $\neg (\forall u_2 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2)$ accepts$)$, which is in $\NP$. We can use the $\SAT$ oracle for this. Therefore, there exists a NDTM $N$ that, given oracle access to $\SAT$, decides $L$ (by nondeterministically guessing $u_1$). This shows $\Sigma_2^\P \subseteq \NP^{\SAT}$.
+
+\par Now we show $\NP^{\SAT} \subseteq \Sigma_2^\P$. Let $L \in \NP^{\SAT}$ - there exists a poly-time NDTM $N$ that decides $L$. Therefore, $x \in L$ if and only if there is a sequence of nondeterministic choices (and oracle answers) that has $N$ accept $x$. Let the choices be $c_1, \cdots, c_m \in \{0, 1\}$, and the answers be $a_1, \cdots, a_k \in \{0, 1\}$.
+
+\par So, if $N$ uses these choices and receives $a_i$ from the oracle as the answer to the $i$th query made, then:
+\begin{enumerate}
+\item $M$ goes to $q_{accept}$
+\item All answers are correct.
+\end{enumerate}
+Let $\phi_i$ be the $i$th query. Then, the second condition is equivalent to: if $a_i = 1$, then there is an assignment $u_i$ such that $\phi_i(u_i)$ is true, and for $a_i = 0$, then for all assignments $v_i$, $\phi_i(v_i)$ is false. Therefore, $x \in L$ if and only if: $\exists c_1, \cdots, c_m, a_1, \cdots, a_k, u_1, \cdots u_k \forall v_1, \cdots v_k$ such that:
+\begin{enumerate}
+\item $N$ accepts $x$ using $c_1, \cdots, c_m$ and $a_1, \cdots, a_k$, and:
+\item If $a_i = 1$ then $\phi_i(u_i)$ is true for all $i$, and:
+\item If $a_i = 0$ then $\phi_i(v_i)$ is false for all $i$.
+\end{enumerate}
+We can wrap the last two statements in another TM, so this implies $L \in \Sigma_2^\P$.
+\end{proof}
 
 
 \subsection{Alternating TMs}
 \begin{definition}
 \emph{Alternating TM}s (ATMs) are generalizations of NTMs, in that they behave the same as NTMs, but have an extra ``feature," that for every non-halting state, the state has a label from $\{\exists, \forall\}$. When running on some input, if the state has the $\exists$ label, then the ATM accepts if \emph{some} transition path from that state accepts; if the state has the $\forall$ label, then the ATM accepts if \emph{all} transition paths from that state accept.
 \end{definition}
+
+We need to make a distinction between ATMs that can alternate a limited and an unlimited number of times:
+
+\begin{definition}
+For all $i \in \mathbb{N}$, we say $L \in \Sigma_i\TIME(T(n))$ if there exists a $T(n)$-time ATM $M$ with initial state $\exists$ that recognizes $L$. Also, on every input possible and path from the starting configuration, $M$ alternates at most $i-1$ times (i.e., the state identifier changes, such as $\exists \rightarrow \forall$ or $\forall \rightarrow \exists$). We say $L \in \Pi_i\TIME(T(n))$ with the same definition as above, but the initial state is $\forall$ instead of $\exists$.
+\end{definition}
+
+Now we turn our attention to ATMs that can alternate unlimited number of times:
+
+\newcommand{\ATIME}{\lang{ATIME}}
+\newcommand{\TQBF}{\lang{TQBF}}
+\begin{definition}
+We say $L \in \ATIME(T(n))$ if there is an $O(T(n))$-time ATM $M$ that accepts $x$ if and only if $x \in L$. We set $\AP = \bigcup_{c \ge 0}\ATIME(n^c)$.
+\end{definition}
+
+We need to refine our definition of ``accepting" an input is, because of the quantifiers in the vertices. We define $G_{M, x}$ to be the DAG (directed acyclic graph), called the ``configuration graph," of $M$'s computation on $x$, where for any configuration $C$, there is an edge in $G_{M, x}$ from $C$ to configuration $C'$ if and only if $C'$ can be obtained from $C$ by 1 step of $M$'s execution. Therefore, accepting an input is defined as follows:
+\begin{enumerate}
+\item Configuration $C_{accept}$, if $M$ is in state $q_{accept}$, is labelled with a special name ``Accept."
+\item If the machine is in an $\exists$ state, and there is an edge from $C$ to $C'$, and $C'$ is labelled ``Accept," then we label $C$ ``Accept."
+\item Similarly for $C$ and any reachable configuration $C'$ from $C$, we label $C$ ``Accept."
+\item We say $M$ accepts $x$ if, at the end of recursively applying rules, $C_{start}$ is labelled ``Accept."
+\end{enumerate}
+
+So how powerful is $\AP$? It seems that it can be very powerful! However, we show that it can only have polynomial space:
+\begin{theorem}
+$\AP = \PSPACE$.
+\end{theorem}
+
+\begin{proof}
+For the $\TQBF$ problem, we can guess values for each $\exists$ variable using an $\exists$ state, and for each $\forall$ variable using a $\forall$ state. The poly-time computation is done at the very end. Therefore, $\TQBF \in \AP$, and since $\TQBF$ is $\PSPACE$-complete, we have $\PSPACE \subseteq \AP$.
+
+\par For the other direction, we do a similar proof to $\NP \subseteq \PSPACE$. Let $L \in \AP$. Then, a ``game" (by making a game tree) is to see whether $x \in L$ has poly depth in the game tree. If the current node is a leaf (i.e., halting configuration), output the current value. Otherwise, recursively observe sub-game trees corresponding to the current node. 
+
+\par We define two players $P_2$ and $P_2$. If the state is $\exists$, output that $P_1$ is the winner if and only if $P_1$ wins at least one of the sub-game trees. Otherwise, if the state is $\forall$, output that $P_2$ is the winner if and only if $P_2$ wins at least one of the sub-game trees. 
+
+\par The algorithm is correct - it also runs in poly space because it only has poly depth, and each recursion we only need to store the current node's name, which is poly in length. Therefore, $L \in \PSPACE$.
+\end{proof}
 
 \subsection{Exercises}
 \begin{enumerate}
