@@ -105,6 +105,49 @@ $UHALT = \{1^n \colon n$'s binary expansion encodes $\langle M, w \rangle$ where
 \end{center}
 \end{proof}
 
+We have proved both of these, but how does $\NP$ relate to $\Ppoly$ (instead of the $\NTIME$ version)? We actually don't know for sure, as the polynomial hierarchy would collapse:
+
+\begin{theorem}[Karp-Lipton]
+If $\NP \subseteq \Ppoly$, then $\PH = \Sigma_2^\P$.
+\end{theorem}
+
+\begin{proof}
+It is sufficient to show that $\NP \subseteq \Ppoly$ implies $\Sigma_3^\P \subseteq \Sigma_2^\P$. So fix a language $L \in \Sigma_3^\P$. By definition, there exists a poly-time TM $M$ and a polynomial $p$ such that if $x \in L$, then:
+\begin{center}
+$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \exists u_3 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2, u_3)$ accepts.
+\end{center}
+We re-arrange this as follows with a new language $L'$: $\langle x, u_1, u_2 \rangle \in L'$ if and only if:
+\begin{center}
+$\exists u_3 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2, u_3)$ accepts.
+\end{center}
+Therefore, $L' \in \NP$ and therefore $L' \le_P \ThreeSAT$. Therefore, $\langle x, u_1, u_2 \rangle \in L'$ if and only if there exists a $\ThreeSAT$ formula $\phi$ over $x, u_1, u_2$ (reduction done in poly time). Also a NDTM $M'$ decides $L'$.
+
+\par Now just plug in $M'$: $x \in L$ if and only if:
+\begin{center}
+$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} M'(x, u_1, u_2)$ accepts.
+\end{center}
+This is equivalent to:
+\begin{center}
+$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \phi(x, u_1, u_2) \in \ThreeSAT$.
+\end{center}
+Now here is the central part of the proof. We assume that $\NP \subseteq \Ppoly$. Therefore, there exists a poly-size circuit $C$ for $\ThreeSAT$. We can just use $C$ to decide the expression above. So how do we find the circuit in the first place?
+
+\par We prove the following. There exists a poly-time TM $M_C$ that, on input 3CNF formula $\phi$ with $|\phi| = n$ and a circuit $C$ with $n$ inputs such that: 
+\begin{enumerate}
+\item If $C$ recognizes $\ThreeSAT$ for inputs of length $n$ and $\phi \in \ThreeSAT$, then $M_C$ accepts.
+\item If $\phi \notin \ThreeSAT$, then $M_C$ rejects.
+\end{enumerate}
+The idea is the following: repeatedly use the circuit $C$ to extract a satisfying assignment for $\phi$. Let the variables of $\phi$ be $x_1, ..., x_k$. If $C$ on input $\phi$ outputs 0, then $M_C$ rejects. Otherwise, fix $x_1$ to be false, and check if $C$ outputs 1 on the new circuit. If so, permanently fix $x_1$ to be false, and also have an array of $k$ values, and store $x_1$ to be the first element. Repeat for the other $k-1$ variables. Now we check: if $\phi$ with the assignments given have $\phi$ be true, then accept; otherwise, reject.
+
+\par So now we go back to the original proof: we modify the statement above to be:
+\begin{center}
+$\exists C$ of poly-size $\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \M_C(C, \langle x, u_1, u_2\rangle)$ accepts.
+\end{center}
+Therefore, $L \in \Sigma_2^\P$.
+\end{proof}
+
+\subsection{Circuit Lower Bounds}
+
 \subsection*{Exercises}
 
 \begin{enumerate}
