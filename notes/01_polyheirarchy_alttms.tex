@@ -18,9 +18,9 @@ From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with 
  \node (Sigma1) [above left of=P]       {$\NP = \Sigma_1^\P$ \hspace*{0.8cm}};
  \node (Pi1)    [above right of=P]      {\hspace*{1.2cm} $\Pi_1^\P$ = \coNP};
  \node (Sigma2) [above of=Sigma1]  {$\NP^\NP$ = $\Sigma_2^\P$ \hspace*{1.0cm}};
- \node (Pi2)    [above of=Pi1] {\hspace*{1.5cm} $\Pi_2^\P$ = $\coNP^\NP$};
+ \node (Pi2)    [above of=Pi1] {\hspace*{1.5cm} $\Pi_2^\P$ = $\coNP^\coNP$};
  \node (Sigma3) [above of=Sigma2]  {$\NP^{\NP^\NP}$ = $\Sigma_3^\P$ \hspace*{1.3cm}};
- \node (Pi3)    [above of=Pi2] {\hspace*{1.8cm} $\Pi_3^\P$ = $\coNP^{\NP^\NP}$};
+ \node (Pi3)    [above of=Pi2] {\hspace*{1.8cm} $\Pi_3^\P$ = $\coNP^{\coNP^\coNP}$};
  \node (dots)   [above right of=Sigma3]       {\vdots};
  \draw (P)      -> (Sigma1);
  \draw (P)      -> (Pi1);
