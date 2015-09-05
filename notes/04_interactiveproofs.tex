@@ -1,1 +1,42 @@
 \section{Interactive Proofs}
+
+We have talked before about $\NP$ and how we needed to provide a ``certificate" to prove that it truly is in the language (or is not, given a bad certificate). But what if we have a verifier and a prover that interact with each other? We can actually have more power for some canonical problems. This is called an ``interactive proof."
+
+\begin{example}
+Let's observe an interactive proof for $\phi \in \ThreeSAT$. For each clause in $\phi$, one at a time, have the prover give the values of the literals in the clause to the verifier, and have the verifier keep the answers until the end. At any point, if the prover gives conflicting values for the literals, reject. Otherwise, have the verifier check with the given values if all clauses are satisfied.
+\end{example}
+
+Now the last example works over each clause, so there are $n$ ``rounds" of interaction between the prover and verifier. Now we make this explicit:
+
+\newcommand{\out}[2]{\texttt{out}$_{#1}\langle {#1}, {#2} \rangle(x)$}
+\begin{definition}
+A \emph{k-round} interaction of two functions $f, g$, with $k$ a non-negative integer (not necessarily independent of $f$ and $g$) is a sequence of strings $\{a_i\}_{i \ge 1}$:
+\begin{itemize}
+\item $a_1 = f(x)$
+\item $a_2 = g(x, a_1)$
+\item $\cdots$
+\item $a_{2m+1} = f(x, a_1, \cdots, a_{2m})$, if $2m < k$
+\item $a_{2m+2} = g(x, a_1, \cdots, a_{2m+1})$, if $2m+1 < k$.
+\end{itemize}
+We define the \emph{output} of $f$ (or $g$) to be $f(x, a_1, \cdots, a_k)$ at the end of the interaction (a common notation of this is \out{f}{g}). 
+\end{definition}
+
+Now we know what an interaction is, we need to know what a ``proof system" is:
+
+\newcommand{\dIP}{\lang{dIP}}
+\begin{definition}
+$L$ is a \emph{k-round deterministic interactive proof system} if there is a $\poly(|x|)$-time TM $V$ that on input $x, a_1, \cdots, a_i$, has a $k$-round interaction with a function $f$ such that:
+\begin{itemize}
+\item If $x \in L$, then there is a function $f$ such that \out{V}{f} accepts.
+\item If $x \notin L$, then for all functions $f$ \out{V}{f} rejects.
+\end{itemize} 
+Define $\dIP$ to be the set of languages with a $\poly(n)$-round deterministic interactive proof system. 
+\end{definition}
+
+\begin{theorem}
+$\dIP = \NP$.
+\end{theorem}
+
+\begin{proof}
+$\NP \subseteq \dIP$ because every $\NP$ language has a 1-round DPS. Suppose $L \in \dIP$, and $V$ is the verifier. Then, a certificate that $x \in L$ is a set of strings $\{a_i\}_{1 \le i \le k}$ that has $V$ accept. For verification, the verifier needs to check if $V(x) = a_1, V(x, a_1, a_2) = a_3$, and so on and that $V(x, a_1, \cdots, a_k)$ accepts. However, if the set of strings exists, then we can use a prover function $P$ such that $P(x, a_1) = a_2, P(x, a_1, a_2, a_3) = a_4$, and so on. This shows that \out{V}{P} accepts, meaning that $x \in L$. 
+\end{proof}
