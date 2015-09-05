@@ -45,16 +45,27 @@ Let $L \in \BPP$. By success amplification, there is a poly-time TM $M$ such tha
 Therefore, there are some coin flips where $M$ does not make any error on any $x \in \{0, 1\}^n$. All we need to do is convert $M$ into a circuit and hardwire these coin flips, which completes the proof. 
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}[Sipser-G\'{a}cs]
 $\BPP \subseteq \Sigma_2^\P \cap \Pi_2^\P$.
 \end{theorem}
 
 \begin{proof}
 As before, assume that for an $L \in \BPP$ there is a poly-time TM $M$ such that $L(M) = L$ with error smaller than $2^{-n}$. Since $\BPP$ is closed under complement, we only need to show $\BPP \subseteq \Sigma_2^\P$.
 
-\par For $x \in \{0, 1\}^n$, let $S_x$ be the set of certificates for which $M$ accepts $x$, and let $p$ be the polynomial that is the number of random bits $M$ uses. Therefore, $|S_x| \ge (1-2^{-n})2^{p(n)}$, or $|S_x| \le 2^{m-n}$. 
+\par For $x \in \{0, 1\}^n$, let $S_x$ be the set of certificates for which $M$ accepts $x$, and let $p$ be the polynomial that is the number of random bits $M$ uses. Therefore, either $|S_x| \ge (1-2^{-n})2^{p(n)}$, or $|S_x| \le 2^{p(n)-n}$, whether $x \in L$ or not. What we will show is that we can differentiate between these using only 2 quantifiers.
 
-\Comment{complete this}
+\par For $A \subseteq \{0, 1\}^{p(n)}$ and $b \in \{0, 1\}^{p(n)}$, define $A+b = \{a+b \colon a \in A\}$, where the operation is done $(\mod 2)$. Let $k = \lceil {p(n)/n} \rceil +1$. We will show the following:
+
+\begin{enumerate}
+\item For all $S \subseteq \{0, 1\}^{p(n)}$ and $|S| \le 2^{p(n)-n}$ and any $k$ vectors $\{u_i\}_{1 \le i \le k}$ with $u_i \in \{0, 1\}^{p(n)}$, we have that $\bigcup_{i=1}^{k} (S+u_i) \ne \{0, 1\}^{p(n)}$.
+
+\item For all $S \subseteq \{0, 1\}^{p(n)}$ and $|S| \ge (1-2^{-n})2^{p(n)}$, there exist $k$ vectors $\{u_i\}_{1 \le i \le k}$ with $\bigcup_{i=1}^{k}(S+u_i) = \{0, 1\}^{p(n)}$.
+\end{enumerate}
+In other words, we can establish that $x \in L$ with only 2 quantifiers. Proving these implies that $\BPP \subseteq \Sigma_2^\P \cap \Pi_2^\P$. For the first proof, we have that $|S + u_i| = |S|$, so the union is at most $k|S| < 2^{p(n)}$ for large enough $n$.
+
+\par For the second proof, if the $u_i$ are chosen independently randomly, then $\Pr[\bigcup_{i=1}^{k}(S+u_i) = \{0, 1\}] > 0$ will imply the proof. Let $B_r$ be the event that $r \notin \bigcup_{i=1}^{k}(S+u_i)$. This implies that we need to prove that $\Pr[\exists B_r] < 1$ for some $r \in \{0, 1\}^{p(n)}$. Equivalently, we can show that $\Pr[B_r] < 2^{-p(n)}$ for all $r$. 
+
+\par Define $B_r^i$ the event that $r \notin S + u_i$ (equivalently, $r + u_i \notin S$). We can see that $B_r = \bigcap_{1 \le i \le k}B_{r}^i$. However, $r+u_i$ is uniformly chosen from $\{0, 1\}^{p(n)}$, so $r+u_i \in S$ with probability $\ge 1-2^{-n}$. Also, since the $B_r^i$ are independent for all $i$, we have $\Pr[B_r] = (\Pr[B_r^i])^k \le 2^{-nk} < 2^{-p(n)}$. 
 \end{proof}
 
 \subsection{$\RP, \coRP, \ZPP$}
