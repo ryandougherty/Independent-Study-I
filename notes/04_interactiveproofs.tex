@@ -40,3 +40,30 @@ $\dIP = \NP$.
 \begin{proof}
 $\NP \subseteq \dIP$ because every $\NP$ language has a 1-round DPS. Suppose $L \in \dIP$, and $V$ is the verifier. Then, a certificate that $x \in L$ is a set of strings $\{a_i\}_{1 \le i \le k}$ that has $V$ accept. For verification, the verifier needs to check if $V(x) = a_1, V(x, a_1, a_2) = a_3$, and so on and that $V(x, a_1, \cdots, a_k)$ accepts. However, if the set of strings exists, then we can use a prover function $P$ such that $P(x, a_1) = a_2, P(x, a_1, a_2, a_3) = a_4$, and so on. This shows that \out{V}{P} accepts, meaning that $x \in L$. 
 \end{proof}
+
+\subsection{\IP}
+So far we have talked about deterministic verifiers - what about probabilistic ones? We will introduce a class called $\IP$ which is very similar to $\BPP$:
+
+\begin{definition}
+We have $L \in \IP[k]$ for an integer $k \ge 1$ if there is a probabilistic poly-time TM $T$ with a $k$-round interaction such that:
+\begin{itemize}
+\item If $x \in L$, there exists a function $f$ such that $\Pr[$\out{T}{f} accepts$] \ge \frac{2}{3}$.
+\item If $x \notin L$, for all functions $f$, $\Pr[$\out{T}{f} accepts$] \le \frac{1}{3}$
+\end{itemize}
+Define $\IP = \bigcup_{c \ge 1}\IP[n^c]$.
+\end{definition}
+As we have done with $\BPP$, we can success amplify to change the $\frac{2}{3}$ parameter to be exponentially close to 1, as well as $\frac{1}{3}$ to be exponentially close to 0. 
+
+\par Let's work on an example: graph non-isomorphism. 
+\begin{example}
+We are given 2 graphs $G_1, G_2$. The verifier randomly and uniformly picks either of the graphs (say it is $G_i$), and permutes that graph's vertices. The permuted graph is sent to the prover. The prover identifies which of $G_1, G_2$ was sent. The number that the prover chooses is sent back to the verifier (say $j$). The verifier then accepts if $i = j$, and rejects if not.
+
+\par If the graphs are not isomorphic, then there is a prover that has $\Pr[\text{verifier accepts}] = 1$ - the reason is that if a prover was all-powerful, it can tell which one of the graphs is isomorphic to the one sent. If the graphs are isomorphic, then the prover can only guess because any permutation of one graph is the same as that of the other graph. Therefore, $\Pr[\text{verifier accepts}] \le \frac{1}{2}$.
+\end{example}
+
+\subsection*{$\AM, \MA$}
+Now we go to a motivating example for cryptography - how do we share items over the public internet without an attacker knowing? We use a similar example in complexity theory, called Arthur-Merlin protocols:
+
+\begin{definition}
+Define $\AM[k] \subseteq \IP[k]$ to be the class where we restrict the verifier's messages to be random bits, and the verifier must use these random bits (i.e., not part of the message). We have $\AM = \AM[2]$, which has the verifier send the first message (random string), the prover responds, and the verifier decides by applying a poly-time function to the entire transcript. Have $\MA$ be the same as $\AM$, but the prover sends the first message, the verifier computes a decision based off random coins and the transcript given by the prover.
+\end{definition}
