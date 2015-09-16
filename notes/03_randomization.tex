@@ -8,7 +8,7 @@ A \emph{probabilistic TM} (PTM) has two transition functions, and at each step w
 
 We can now define the probabilistic analog of $\P$, which is $\BPP$:
 \begin{definition}
-A language $L$ is in $\BPTIME(T(n))$ if there exists a PTM $M$ that decides $L$ in time $T(n)$, $M$ halts within $T(|x|)$ steps regardless of choices, and $\Pr[M(x) = L(x)] \ge \frac{2}{3}$. We define:
+A language $L$ is in $\BPTIME(T(n))$ if there exists a PTM $M$ that decides $L$ in time $T(n)$, $M$ halts within $T(|x|)$ steps regardless of choices, and $\Pr[M(x) = L(x)] \ge \frac{2}{3}$, where $L(x) = 1$ if $x \in L$, and $L(x) = 0$ if $x \notin L$. We define:
 \[
 \BPP = \bigcup_{c \ge 0}\BPTIME(n^c)
 \]
@@ -69,6 +69,48 @@ In other words, we can establish that $x \in L$ with only 2 quantifiers. Proving
 \end{proof}
 
 \subsection{$\RP, \coRP, \ZPP$}
+Now we look at ``one-sided" error classes, where before we had $\BPP$ which was a randomized class with two sides of error (the probability of outputting ``accept" given that $x \in L$ was strictly less than 1, and that of ``reject" given $x \notin L$ was strictly greater than 0). 
+
+\newcommand{\RTIME}{\lang{RTIME}}
+\newcommand{\ZTIME}{\lang{ZTIME}}
+\begin{definition}
+We have $L \in \RTIME(T(n))$ if there is a $T(n)$-time PTM $M$ such that if $x \in L$, then $\Pr[M(x) = 1] \ge \frac{2}{3}$, and if $x \notin L$, then $\Pr[M(x) = 0] = 0$. Define $\RP = \bigcup_{c \ge 0}\RTIME(n^c)$. 
+\end{definition}
+
+We can also see that $\coRP$ has the ``other side" error. In order to define a complexity class with no error for a PTM (i.e., $\ZPP$), we need to define ``expected running time":
+
+\begin{definition}
+Let $M$ be a PTM with input $x$. Let $T_{M,x}$ be the running time of $M$ on $x$. Therefore, $\Pr[T_{M, x} = T] = p$ has that $M$ halts on $x$ within $T$ steps with probability $p$. We define $M$ to have \emph{expected running time T(n)} if $\mathbb{E}[T_{M, x}] \le T(|x|)$ for all $x$. 
+\end{definition}
+
+\begin{definition}
+We have $L \in \ZTIME(T(n))$ when there is a PTM $M$ that runs in expected time $O(T(n))$ where for all $x$, $M(x) = L(x)$ (i.e., no error). Define $\ZPP = \bigcup_{c \ge 0}\ZTIME(n^c)$. 
+\end{definition}
+
+So how do these 3 randomized classes relate to each other? In fact, we will prove the following:
+\begin{theorem}
+$\ZPP = \RP \cap \coRP$. 
+\end{theorem}
+
+We can observe that if $x \in L$, then $M$ on $x$ outputs 1 or \texttt{?} (i.e., it does not know); also, if $x \notin L$, then $M$ on $x$ outputs 0 or \texttt{?}. If $M$ does not output \texttt{?}, it did not give an incorrect answer (and if it is \texttt{?}, it has a $\frac{1}{2}$ chance of getting the answer correct by choosing randomly). This is important for the proof. 
+
+\begin{proof}
+We need to prove that $\ZPP \subseteq \RP$ and $\ZPP \subseteq \coRP$; we prove the latter since the former is very similar. So suppose $L \in \ZPP$; by definition, there exists a PTM $M$ that correctly decides that $x \in L$ or outputs \texttt{?}. Let $M'$ be a TM that on $x$, outputs ``accept" if $M$ on $x$ outputs \texttt{?}; otherwise, it outputs $M$'s output.
+
+\par If $x \in L$, we have $M'$ on $x$ outputs 1. If $x \notin L$, then either $M$ outputs 0 (correctly) or \texttt{?} where $M'$'s output is incorrect with probability $\le \frac{1}{2}$. Therefore, by definition, $L \in \coRP$, which has that $\ZPP \subseteq \coRP$.
+
+\par For showing $\RP \cap \coRP \subseteq \ZPP$, let $L \in \RP \cap \coRP$. Therefore (for both classes), there exist two TMs $A, B$ such that if $x \in L$, then $A(x) = 1$, and is incorrect for $x \notin L$ with probability $\le \frac{1}{2}$, and if $x \notin L$, then $B(x) = 0$, and is incorrect for $x \in L$ with probability $\le \frac{1}{2}$. 
+
+\par We construct a PTM $M$ that does the following:
+\begin{enumerate}
+\item Run $A$ on $x$, and if $A(x) = 0$, return the result of $x \notin L$.
+\item Run $B$ on $x$, and if $B(x) = 1$, return the result of $x \in L$. 
+\item Otherwise, return \texttt{?}.
+\end{enumerate}
+We see that if $M(x)$ does not return \texttt{?}, the result is correct. Also, we have $M(x)$ returning \texttt{?} with probability $\le \frac{1}{2}$ by the following argument: assume $x \in L$ (the $x \notin L$ case is similar). Therefore, we don't return 1 if and only if $B(x) = 0$; we also have that $B(x) = 0$ for $x \in L$ with probability $\le \frac{1}{2}$. Therefore, $L \in \ZPP$, which shows that $\RP \cap \coRP \subseteq \ZPP$.
+
+\par Therefore, we have $\ZPP = \RP \cap \coRP$.  
+\end{proof}
 
 \subsection*{Exercises}
 \newcommand{\BPPpoly}{\BPP/\poly}
