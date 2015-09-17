@@ -126,6 +126,21 @@ Note that this is quite different than $\NP$. There is even a large difference b
 If $\ThreeSAT \in \BP\cdot \NP$, then $\PH = \Sigma_3^\P$. 
 \end{theorem}  
 
+\newcommand{\UPATH}{\lang{UPATH}}
+\subsection{$\BPL, \RL$}
+We develop an analog of $\BPP, \RP$ in the same way but for log-space:
+\begin{definition}
+We have $L \in \BPL$ if there is an $O(\log(n))$-space PTM $M$ such that $\Pr[M(x) = L(x)] \ge \frac{2}{3}$ for all $x$. Also, $L \in \RL$ if there is an $O(\log(n))$-space PTM $N$ such that if $x \in L$, then $\Pr[N(x) = 1] \ge \frac{2}{3}$ and if $x \notin L$, then $\Pr[N(x) = 1] = 0$. 
+\end{definition}
+Basically, all that we have changed is that we use $\log(n)$-space instead of poly-time. In fact, the very famous problem $\UPATH$ (undirected paths in graphs between two vertices) is in $\NL$ and $\RP$:
+\begin{theorem}
+$\UPATH \in \RL$.
+\end{theorem}
+A recent paper actually improves this to $\L$, but is too detailed to present here.
+\begin{proof}
+We are given a start vertex $s$ and a target $t$. We have a variable vertex $v$, initialized to be $s$. For each step, choose a random neighbor of $v$, $u$, and set $v$ to be $u$. We use log space to store a counter of how many steps we have taken, as well as the index of the current vertex, and what neighbor to choose next. We accept if and only if we reach $t$ within $\ell$ steps (specified later). If $s$ is connected to $t$, then the expected number of steps is at most $10n^4$ (Exercise 7.11 in the book); therefore, our algorithm accepts with probability $\ge \frac{3}{4}$. 
+\end{proof}
+
 \subsection*{Exercises}
 \newcommand{\BPPpoly}{\BPP/\poly}
 \begin{enumerate}
