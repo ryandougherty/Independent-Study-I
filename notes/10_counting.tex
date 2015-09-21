@@ -21,3 +21,42 @@ $\PP = \P$ if and only if $\SharpP = \FP$.
 \begin{proof}
 It is easy to see that $\SharpP = \FP$ implies $\PP = \P$. 
 \end{proof}
+\Comment{Complete this proof}
+
+\subsection{$\SharpP$-completeness}
+\begin{definition}
+Define $\FP^{f}$ for a function $f$ to be the set of functions computable by poly-time TMs with oracle access to $f$ (same notation as for problems). We have $f$ to be $\SharpP$-complete if:
+\begin{itemize}
+\item $f \in \SharpP$
+\item For all $g \in \SharpP$, $g \in \FP^{f}$.
+\end{itemize}
+\end{definition}
+
+\newcommand{\SharpSAT}{\lang{\#\SAT}}
+\begin{theorem}
+$\SharpSAT$ is $\SharpP$-complete.
+\end{theorem}
+
+\begin{proof}
+The reasoning is that the reduction for $\SAT$ is \emph{parsimonious} (i.e., is bijective and preserves counts). 
+\end{proof}
+
+\subsection{Toda's Theorem}
+How powerful is $\SharpP$? It has been hard to determine until 1989, with one amazing result by Toda:
+\begin{theorem}
+$\PH \subseteq \P^{\#\SAT}$. 
+\end{theorem}
+This means that with any $\SharpP$-complete problem, we can solve any problem in $\PH$ (i.e., a subexponential algorithm). We build the necessary ingredients for the proof:
+
+\newcommand{\Parity}{\oplus}
+\newcommand{\ParityP}{\lang{\Parity\P}}
+\begin{definition}
+We have $\L \in \ParityP$ (``parity-$\P$") if there is a poly-time \emph{nondeterministic} TM $M$ such that $x \in L$ if and only if there are an odd number of accepting paths of $M$ on $x$. 
+\end{definition}
+\newcommand{\ParitySAT}{\Parity\SAT}
+Also, we need to know about the $\Parity$ quantifier as well as $\ParitySAT$:
+\begin{definition}
+For a boolean formula $\phi$, define $\Parity\phi(x)$ to be true if the number of $x$'s that make $\phi$ true is odd. Define $\ParitySAT$ to be the language of $\Parity\phi(x)$ where $\phi$ is an unquantified boolean formula in any form.
+\end{definition}
+We can reason that $\ParityP$ corresponds to the least significant bit of problems in $\SharpP$, so it doesn't seem very powerful. However, in the first part of the proof, Toda shows a randomized reduction from $\PH$ to $\ParitySAT$. 
+\Comment{Add other parts of proof}
