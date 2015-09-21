@@ -1,3 +1,23 @@
 \section{Counting Complexity}
 
 We have defined the $\P$ class as the set of languages that are solvable on a deterministic TM in polynomial time. However, we did not actually describe the solution(s) - for example, we only described whether a given 3SAT formula is satisfiable, and not how many satisfying solutions it has. Note that describing solutions is not a decision problem. However, we will make the necessary modifications:
+
+\newcommand{\SharpP}{\lang{\#P}}
+\begin{definition}
+A function $f \in \SharpP$ if there is a polynomial $p$ and a poly-time TM $M$ such that for all $x$, $f(x) = |\left \{y \in \{0, 1\}^{p(|x|)} \colon M(x, y) = 1\right \}|$.
+\end{definition}
+
+We can see that instead of determining membership, $f$ counts the number of solutions such that the TM accepts. Clearly, the problems in $\SharpP$ are ``harder" than those in $\P$. But what if we want to have a decision version on $\SharpP$? We can do so with $\PP$:
+
+\begin{definition}
+We have $L \in \PP$ if there is a poly-time TM $M$ and a polynomial $p$ such that for all $x$, $x \in L$ if and only if $|\left\{u \in \{0, 1\}^{p(|x|)} \colon M(x, u) = 1\right\} | \ge 2^{p(|x|)-1}$.
+\end{definition}
+We can see that $\PP$ is basically a ``majority selector," in that $x \in L$ if more than half of all certificates have the TM accept. For the next theorem, we define $\FP$ as the set of functions computable by a deterministic poly-time TM.
+
+\begin{theorem}
+$\PP = \P$ if and only if $\SharpP = \FP$. 
+\end{theorem}
+
+\begin{proof}
+It is easy to see that $\SharpP = \FP$ implies $\PP = \P$. 
+\end{proof}
