@@ -1,1 +1,38 @@
 \section{Quantum Computation}
+
+All of what we have studied is the ``classical" model of computation; basically, when we store and retrieve values, we know that we will exactly get what is there. In this lecture, we will diverge to a different model of computation: quantum computing.
+
+\par In a sense, quantum computing allows us to perform many calculations at the same time without actually performing them. It is open whether or not, in actuality, quantum computing is faster than classical computing. 
+
+\par One can think of classical TMs - as before, we have represented the entire state of the machine as a ``snapshot" or a ``configuration." We can also call this the current ``state" of the TM. We can abstract even further: take all possible states of the TM, and write that as a vector. The current state has value 1 and all others are 0. However, this is a very inefficient way of viewing its computation.
+
+\par We will study a complexity class $\BQP$, standing for ``Bounded error, Quantum, Polynomial Time." Basically, $\BQP$ contains all problems that are efficiently computable with high probability on a quantum computer. 
+
+\newcommand{\ket}[1]{\ensuremath{\vert #1 \rangle}}
+
+\par In a quantum computer, we also have states, but they are more probabilistic in nature. We consider the state of a quantum computer to be: $\sum_{i=1}^{N}\alpha_i \ket{i}$, where the $\ket{i}$ are basis vectors, $\alpha_i \in \mathbb{C}$, and $\sum_{i} |\alpha_i|^2 = 1$. We also call the $\alpha_i$ ``qubits" (stands for ``quantum bits").
+
+\par We usually work over a ``Hilbert space" when doing quantum computing. To do so, we need to define it first:
+\begin{definition}
+A Hilbert space is a vector space over $\mathbb{C}$, with vectors denoted $\ket{\psi}$, such that:
+\begin{itemize}
+\item It has an inner product $\langle a \vert b \rangle$ (maps vectors to $\mathbb{C}$ with the properties that:
+\begin{itemize}
+\item $\langle \psi \vert \psi \rangle$ is positive if $\ket{\psi}$ is not the 0-vector (positivity).
+\item $\langle \psi \vert (a \vert \psi_1 \rangle + b \vert \psi_2 \rangle) \rangle = a\langle \psi \vert \psi_1 \rangle + b \langle \psi \vert \psi_2 \rangle$ (linearity in the field).
+\item $\langle a \vert b \rangle = \langle b \vert a \rangle^*$, where $^*$ means complex conjugation (skew-symmetric).
+\end{itemize}
+\item $||\psi|| = \langle \psi \vert \psi \rangle^{\frac{1}{2}}$ (``complete").
+\end{itemize}
+\end{definition}
+
+We call a ``quantum register" a set of $m$ qubits, which is just a linear equation over all $2^m$ possible states. Say that the vector of the $\alpha_i$ here is $v \in \mathbb{C}^{2^m}$: we have $\sum_{x}|v_x|^2 = 1$. 
+
+\par Now that we know what qubits and registers are, how do we work with them? We use a ``quantum operation" to do so:
+\begin{definition}
+A quantum operation is a function $f \colon \mathbb{C}^{2^m} \rightarrow \mathbb{C}^{2^m}$ that maps the previous state to the new state, is linear, and preserves norms (i.e., unit vectors to unit vectors).
+\end{definition}
+
+\begin{example}
+A common operation in classical computing is ``flipping" an $m$-bit register - swap the 0's and 1's. How do we do this in a quantum computer? For $b \in \{0, 1\}, x \in \{0, 1\}^{m-1}$, we map $\ket{b, x}$ to $\ket{1-b, x}$. 
+\end{example}

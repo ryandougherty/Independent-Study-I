@@ -140,6 +140,26 @@ A recent paper actually improves this to $\L$, but is too detailed to present he
 \begin{proof}
 We are given a start vertex $s$ and a target $t$. We have a variable vertex $v$, initialized to be $s$. For each step, choose a random neighbor of $v$, $u$, and set $v$ to be $u$. We use log space to store a counter of how many steps we have taken, as well as the index of the current vertex, and what neighbor to choose next. We accept if and only if we reach $t$ within $\ell$ steps (specified later). If $s$ is connected to $t$, then the expected number of steps is at most $10n^4$ (Exercise 7.11 in the book); therefore, our algorithm accepts with probability $\ge \frac{3}{4}$. 
 \end{proof}
+So how do $\BPL$ and $\RL$ relate? Although it seems intuitive, we will prove that:
+\begin{theorem}
+$\RL \subseteq \BPL$.
+\end{theorem}
+\begin{proof}
+Run 2 independent trials so that the error probability is reduced from $\frac{1}{2}$ to $\frac{1}{3}$. 
+\end{proof}
+From this, we should prove where $\RL$ and $\BPL$ are compared to other complexity classes. We prove that:
+\begin{theorem}
+$\BPL \subseteq \P$.
+\end{theorem}
+\begin{proof}
+Let $L \in \BPL$ and $M$ be the corresponding TM. On input $x$, let $c_{M, x}$ be the number of configurations when $M$ is run on $x$. Create a $c_{M, x} \times c_{M, x}$ matrix $P$ (indexed by $P_{i,j}$) such that:
+\begin{itemize}
+\item $P_{a, b} = \frac{1}{2}$ if $b$ is reachable from $a$ in 1 step,
+\item $P_{a, b} = 0$ otherwise. 
+\end{itemize}
+Let $P^t$ be the matrix of $P$ repeated with itself $t$ times. Therefore, $P^t_{a, b}$ is the probability of reaching $b$ from $a$ in $t$ steps. 
+\par We now compute all of $P^t$ for $1 \le i \le c_{M, x}$, and get from that the accepting probability of $x \in L$. We can do this in poly-time because each probability is of the form $\frac{k}{2^{p(n)}}$ for $k \in \mathbb{Z}$, and therefore is represented with polynomially many digits. 
+\end{proof}
 
 \subsection*{Exercises}
 \newcommand{\BPPpoly}{\BPP/\poly}
