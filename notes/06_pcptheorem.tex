@@ -1,1 +1,37 @@
 \section{PCP Theorem}
+
+One of the reasons we study $\NP$ and $\NP$-completeness is that we can verify membership in a language by a poly-size ``witness" or ``certificate" or ``advice" (in the case of $\Ppoly$). In the case of $\SAT$, the certificate would be the set of assignments to the $x_i$ variables. However, if we are given a very large instance, then poly-size can be ``too large," in a sense. It would be very great if we can still verify membership in $\NP$ (or other classes) without having to give the entire certificate.
+
+\par The $\PCP$ theorem will help us do this. It allows any mathematical proof (including the special case of certificates) to be transformed in a way to make them ``checkable" while only querying a few of the bits, and accepts the result with high probability in many cases. We show using the $\PCP$ theorem that for any $\NP$-complete optimization problem, even approximating the optimal solution is just as difficult as computing the exact one (unless $\P = \NP$, of course).
+
+\begin{definition}
+Define a \emph{nonadaptive verifier} to be one that selects queries only based on its input and random tape (i.e., does not rely on past queries). Let $q, r$ be functions from $\mathbb{N} \rightarrow \mathbb{N}$. We have that a language $L$ has an $(r(n), q(n))-\PCP$ verifier if there is a poly-time PTM $M$ (equivalently, a probabilistic algorithm) with the following properties:
+\begin{itemize}
+\item On input $x$ with $n = |x|$, and given access to a random string $u$ with $|u| \le q(n)^{r(n)}$ (the ``proof"), $M$ uses at most $r(n)$ random flips of a coin and at most $q(n)$ nonadaptive queries to locations in $u$ (with accept/reject in the usual sense). Let $M^u(x)$ be $M$'s output on $x$ with random access to $u$. 
+\item If $x \in L$, there is a proof $u$ (the ``correct proof") such that $\Pr[M^u(x) = 1] = 1$.
+\item If $x \notin L$, then for all proofs $u$, $\Pr[M^u(x) = 1] \le \frac{1}{2}$. 
+\end{itemize}
+We have that $L \in \PCP(r(n), q(n))$ if $L$ has a $(O(r(n)), O(q(n)))-\PCP$ verifier (we sometimes use the constants in the $O()$ notation). 
+\end{definition}
+
+\begin{theorem}[$\PCP$ theorem]
+$\NP = \PCP(\log n, 1)$.
+\end{theorem}
+
+Another ``scaled-up" version of the $\PCP$ theorem is:
+\begin{theorem}
+$\PCP(p(n), 1) = \NEXP$ for a polynomial $p$.
+\end{theorem}
+
+\subsection{Hardness of Approximation}
+\newcommand{\MAXThreeSAT}{\lang{MAX-3SAT}}
+We won't cover the ingredients for proving the $\PCP$ theorem in this lecture. However, we will see some applications of the theorem as well as equivalent formulations. We define $\MAXThreeSAT$ as an optimization version of the $\ThreeSAT$ problem:
+
+\begin{definition}
+Define $\texttt{val}(\phi)$ as the maximum possible fraction of clauses that can be satisfied (i.e., satisfiable if and only if $\texttt{val}(\phi) = 1$).
+\end{definition}
+
+Therefore we have the equivalent definition of the $\PCP$ theorem:
+\begin{theorem}
+There exists a constant $\rho < 1$ such that for all $L \in \NP$ there is a poly-time function $f$ such that if $x \in L$, then $\texttt{val}(f(x)) = 1$, and if $x \notin L$, then $\texttt{val}f(x)) < \rho$.
+\end{theorem}
