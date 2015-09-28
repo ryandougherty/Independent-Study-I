@@ -1,1 +1,36 @@
 \section{Decision Trees}
+
+Since most questions about TMs turn out to be undecidable, we should shift our attention to a more limited model of computation. We now look at decision trees, which involve boolean functions. 
+
+\begin{definition}
+Let $f$ be a boolean function. A \emph{decision tree} of $f$ is a tree for which each non-input, non-output (``leaf") vertex has a label $v_i$, and two outgoing edges with labels 0, 1.
+\end{definition}
+
+Suppose we are given input $x_1x_2\cdots x_n$. If $x_1 = 1$, we proceed down the `1' path of $v_1$, and then recursively call the next vertex on input $x_2\cdots x_n$ until either we run out of input or we reach a leaf node (and may possibly have some input left). 
+
+\begin{definition}
+The \emph{cost} of a decision tree $T$ on input $x$ is the number of bits examined by $x$ by $T$, denoted by $cost(T, x)$. The \emph{decision tree complexity} (or just ``complexity") of a function $f$, $D(f)$ is $\min_{T \in T_f} \max_{x} cost(T, x)$, where $T_f$ is the set of all decision trees that compute $f$. 
+\end{definition}
+
+We note that $D(f) \le n$ for all $f$ because we can just make a full binary tree with $2^n$ vertices. We want to know when this bound is the only one known, or if there is a smaller upper bound.
+
+\begin{example}
+The ``or" function with $f(x_1, \cdots, x_n) = \bigvee_{i=1}^{n}x_i$ has no better bound than $n$ due to an adversarial argument. 
+\end{example}
+
+Like for other models of computation, we often introduced a ``nondeterministic" version of that model. Here we do so with certificate complexity:
+\begin{definition}
+Let $f$ be a function and $x$ an input. A \emph{0-certificate} of $x$ is a subset of indices $S$ such that $f(x') = 0$ for all $x'$ such that $x'_{S} = x_{S}$, where $x_{S}$ is the substring of $x$ with indices in $S$. We define \emph{1-certificate} similarly. The \emph{certificate complexity} of $f$, $C(f)$, is the minimum $k$ such that every $x$ has a $f(x)$-certificate of size at most $k$. 
+\end{definition}
+
+We have that $C(f) \le D(f)$, but sometimes the inequality is strict. But how much less can $C(f)$ get? It turns out that it cannot get too small:
+
+\begin{theorem}
+$D(f) \le C(f)^2$ for all $f$.
+\end{theorem}
+
+\begin{proof}
+Let $k = C(f)$, and for all $x$, let $S_x$ be the $k$-sized subset of $\{1, \cdots, n\}$ which is the $f(x)$-certificate for $x$. Set $X = \{0, 1\}^n$. If there is a $b \in \{0, 1\}$ such that $f(x) = b$ for all $x \in X$, then output $b$. Otherwise, choose any $y \in X$ such that $f(y) = 0$ and query everything in $S_y$ not previously queried. Remove from X every $z \in \{0, 1\}$ not consistent with the answers. Repeat until $f$ has the same value on all remaining strings in $X$. 
+
+\par Since all $x$ have some certificate that proves $f(x)$ correctly, this algorithm terminates. Each time it queries bits in a 0-certificate, all 1-certificates decrease by at least 1 because each 1-certificate intersects each 0-certificate; if this were not true, then there is a single input that contains both certificates, which cannot happen. Therefore, in $k$ iterations, all 1-certificates decrease to 0, which means everything in $X$ only has 0-certificates, and the algorithm answers 0. Since each iteration only queries $k$ bits, the algorithm finishes after $k^2$ queries.
+\end{proof}
