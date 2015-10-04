@@ -146,7 +146,20 @@ $\exists C$ of poly-size $\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0,
 Therefore, $L \in \Sigma_2^\P$.
 \end{proof}
 
-\subsection{Circuit Lower Bounds}
+\subsection{$\AC, \NC$}
+We have dealt with circuits of polynomial size, but what about the other direction? We define a similar analogue of $\L, \NL$ in space complexity but for circuits.
+
+\begin{definition}
+For $d \in \mathbb{N}$, we say $L \in \NC^d$ if L is decided by a family of poly-size, $O(\log^d n)$-depth circuits $\{C_n\}$, and $L \in \AC^d$ the same way but the gates have unbounded fan-in. We also define $\NC = \bigcup_{d \ge 0}\NC^d$ and $\AC = \bigcup_{d \ge 0}\AC^d$.
+\end{definition}
+So how much power does unbounded fan-in give? It only gives enough power to add a log-factor:
+
+\begin{theorem}
+$\NC^d \subseteq \AC^d \subseteq \NC^{d+1}$.
+\end{theorem}
+\begin{proof}
+Unbounded fan-in can be simulated by a $O(\log n)$-depth tree of OR/AND gates.
+\end{proof}
 
 \subsection*{Exercises}
 
