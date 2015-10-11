@@ -163,13 +163,20 @@ Unbounded fan-in can be simulated by a $O(\log n)$-depth tree of OR/AND gates.
 
 We also show that it is unlikely that any finite level of the $\NC^d$ hierarchy collapses (just like the $\PH$ hierarchy):
 \begin{theorem}
-$\NC^d = \NC^{d+1} \Rightarrow \NC = \NC^i$.
+$\NC^d = \NC^{d+1} \Rightarrow \NC = \NC^d$.
 \end{theorem}
 
 \begin{proof}
 We show that $\NC^d = \NC^{d+1}$ implies $\NC^{d+1} = \NC^{d+2}$, from which the result follows. For a circuit $C$ of depth $O(\log^{d+2} n)$, partition it into $O(\log n)$ layers of size $O(\log^{d+1} n)$ each. Each partition $j$'s output is the input of $j+1$, and each contains polynomially many bits. Each bit at partition $j+1$ is computed from $j$ by a $\NC^{d+1}$ circuit. Since $\NC^d = \NC^{d+1}$, replace it by a $\NC^d$ circuit (may not be the same size, but can only be polynomially larger). This replacement has a circuit of poly-size, depth $O(\log^{d+1} n)$, and fan-in 2. Therefore, $\NC^{d+2} = \NC^{d+1} = \NC^d$. 
 \end{proof}
-Therefore, it is most likely that each inclusion of $\NC^d \subseteq \AC^d \subseteq \NC^{d+1}$ is strict (the only one proved, however, is $d = 0$). 
+Therefore, it is most likely that each inclusion of $\NC^d \subseteq \AC^d \subseteq \NC^{d+1}$ is strict (the only one proved, however, is $d = 0$).  So where does $\NC$ live in relation to other classes? We can show the following:
+\begin{theorem}
+$\NC^1 \subseteq \L$.
+\end{theorem}
+
+\begin{proof}
+Given $x \in L$ with $|x| = n$, we construct the $n$th circuit of the circuit family, and then just evaluate the circuit from the output gate. Since we only need to record the path to the current gate, and any results along the path, and the fact that the circuit has log-depth, we only need log space to do this.
+\end{proof}
 
 \subsection*{Exercises}
 
