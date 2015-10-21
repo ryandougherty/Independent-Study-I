@@ -178,6 +178,30 @@ $\NC^1 \subseteq \L$.
 Given $x \in L$ with $|x| = n$, we construct the $n$th circuit of the circuit family, and then just evaluate the circuit from the output gate. Since we only need to record the path to the current gate, and any results along the path, and the fact that the circuit has log-depth, we only need log space to do this.
 \end{proof}
 
+\subsection{Parity \& Switching Lemma}
+Our goal here is to separate $\AC^0$ and $\NC^1$.
+\newcommand{\ParityF}{\oplus}
+\begin{definition}
+Let $\ParityF(x_1, \cdots, x_n)$ be the function that computes the sum of the $x_i$ $(\mod 2)$.
+\end{definition}
+The goal here (using the Switching Lemma) is to prove:
+\begin{theorem}
+\label{thm:parity_not_in_ac0}
+$\ParityF \notin \AC^0$.
+\end{theorem}
+H$\mathring{a}$stad proved the following (called the HSL):
+\begin{theorem}
+Let $f$ be a $k$-DNF formula (conjunction of disjunctions where each disjunction $\le k$ variables). Let $\rho$ be a random restriction by assigning random values to $t$ randomly selected input bits. Then for all $s \ge 2$, $\Pr_{\rho}[\text{$f$ restricted to $\rho$ is not expressible in CNF}] \le (\frac{(n-t)k^{10}}{n})^{s/2}$.
+\end{theorem}
+\begin{lemma}
+HSL implies \Cref{thm:parity_not_in_ac0}.
+\end{lemma}
+\begin{proof}
+Let $C$ be an $\AC^0$ circuit with a simplification: every vertex has out-degree 1, all $\neg$ gates are right after the input gates, the $\wedge, \vee$ gates alternate, and the bottom level has $\wedge$ gates with in-degree also 1. It is clear that we can construct this equivalent circuit with a polynomial number of gates.
+
+\par Let the upper bound on the number of gates be $n^c$.
+\end{proof}
+
 \subsection*{Exercises}
 
 \begin{enumerate}

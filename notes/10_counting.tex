@@ -41,6 +41,28 @@ $\SharpSAT$ is $\SharpP$-complete.
 The reasoning is that the reduction for $\SAT$ is \emph{parsimonious} (i.e., is bijective and preserves counts). 
 \end{proof}
 
+\newcommand{\SharpPSPACE}{\lang{\#\PSPACE}}
+\subsection{$\SharpPSPACE$}
+We have talked about $\SharpP$ - what about $\SharpPSPACE$? We define it below:
+\begin{definition}
+A function $f \in \SharpPSPACE$ if there is a poly-time TM $M$ such that $f(x)$ outputs the number of possible $Q_1x_1 \cdots Q_kx_k$ such that $Q_1x_1 \cdots Q_kx_k [M(x_1, \cdots, x_k) = 1]$. 
+\end{definition}
+\newcommand{\SharpQBF}{\lang{\#QBF}}
+We also define $\SharpPSPACE$-completeness the same way we have $\SharpP$-completeness. We can easily see that $\SharpQBF \in \SharpPSPACE$, where $\SharpQBF$ is the same as the $\lang{QBF}$ problem but we count the number of solutions. We will show that $\SharpQBF = \SharpSAT$, thereby giving the result that:
+\begin{theorem}
+$\SharpP = \SharpPSPACE$.
+\end{theorem}
+
+\begin{proof}
+We introduce the ``circuit value problem" (CVP), which is: given a boolean formula $\phi$ and an assignment $x$ to its variables, is $\phi$ true with this assignment? It is much easier than solving $\SAT$, and is in $\P$. 
+
+\par We show that $\SharpQBF \in \SharpPSPACE$: let $M$ be a TM that decides CVP, and $Q_1x_1 \cdots Q_kx_k [\phi]$ be an arbitrary QBF. Therefore, the number of settings to the $Q_ix_i$ such that $M(\phi, x)$ accepts is precisely the number of $Q_ix_i$ settings that make $\phi$ true. Therefore, $\SharpQBF \in \SharpPSPACE$.
+
+\par Let $f \in \SharpPSPACE$. Therefore, there is a poly-time TM $M$ such that $f(x)$ is the number of $Q_ix_i$ settings that $M(x) = 1$. Let $L$ be the set of $x$ such that $M(x) = 1$. We can see that $L \in \P$ (just run $M$ on the input). Let $g$ be the poly-time reduction from $L$ to CVP (i.e., $M(x) = 1$ if and only if $g(x)$ is a formula with a satisfying truth assignment). 
+
+\par Therefore, $f(x)$ is the number of $Q_ig(x_i)$ settings that has the 
+\end{proof}
+
 \subsection{Toda's Theorem}
 How powerful is $\SharpP$? It has been hard to determine until 1989, with one amazing result by Toda:
 \begin{theorem}
