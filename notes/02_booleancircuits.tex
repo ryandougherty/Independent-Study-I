@@ -199,8 +199,18 @@ HSL implies \Cref{thm:parity_not_in_ac0}.
 \begin{proof}
 Let $C$ be an $\AC^0$ circuit with a simplification: every vertex has out-degree 1, all $\neg$ gates are right after the input gates, the $\wedge, \vee$ gates alternate, and the bottom level has $\wedge$ gates with in-degree also 1. It is clear that we can construct this equivalent circuit with a polynomial number of gates.
 
-\par Let the upper bound on the number of gates be $n^c$.
+\par Let the upper bound on the number of gates be $n^c$. We restrict more variables at each step of the computation: if there are $n_i$ unrestricted variables at step $i$, then we restrict $\sqrt{n_i}$ of them for the next step. Therefore, $n_i = \sqrt[2^i]{n}$. Let $c_i = 10c \times 2^i$. With high probability, we prove that at step $i$, we have a $(d-i)$-depth circuit, with $c_i$ fan-in at the lowest level. 
+
+\par Suppose that the last level has $\wedge$ gates and the penultimate one has $\vee$ gates; it is easy to see that each $\vee$ gate computes a $c_i$-DNF. By HSL, with probability
+\[
+1-\sqrt{\left(\frac{c_i^{10}}{\sqrt[2^i+1]{n}}\right)^{c_{i+1}}} \ge 1 - \frac{1}{10n^c}
+\]
 \end{proof}
+for large-enough $n$, the function after the $(i+1)$-th iteration is expressible as a $c_{i+1}$-CNF. Since, for any CNF formula, the top gate is $\wedge$, we merge the $\wedge$ gates with the one above, which reduces the depth by 1. By the same reasoning, we can use HSL to transform the bottom-level $\vee$ gates, which has the level above it computes a $c_i$-CNF, into a $c_{i+1}$-DNF. We apply HSL at most once for each of the $n^c$ gates. Since by the union bound:
+\[
+\Pr[\bigcup_{i=1}^n A_i] \le \sum_{i=1}^n \Pr[A_i]
+\]
+we can achieve, with probability $\frac{9}{10}$, a depth-2 circuit with fan-in $c_{d-2}$ at the lowest level if we apply HSL $d-2$ times. The result is a $k$-CNF or DNF formula; we can make this constant by fixing $\le k$ variables (i.e., ensure the first clause in the DNF is true). Since $\ParityF$ is not constant under any restriction of $\le n$ variables, we have \Cref{thm:parity_not_in_ac0}.
 
 \subsection*{Exercises}
 
