@@ -217,4 +217,9 @@ we can achieve, with probability $\frac{9}{10}$, a depth-2 circuit with fan-in $
 \begin{enumerate}
 \item A language $L \subseteq \{0, 1\}^*$ is sparse if there is a polynomial $p$ such that $|L \cap \{0, 1\}^n| \le p(n)$ for every $n \in \mathbb{N}$. Show that every sparse language is in $\Ppoly$.
 \item Going off the previous question, show that if a sparse language is $\NP$-complete, then $\P = \NP$.
+\item Let $\L^i$ be the languages decided by $O(\log^i n)$-space TMs, and $\NL^i$ the same way for NTMs.
+\begin{enumerate}
+\item Show that $\NC^i \subseteq \L^i$ for all $i$.
+\item Show that if $\NL^i \subseteq \NC^{2i}$ for all $i$, then we solve a major open problem. Note that this is true for $i=1$. 
+\end{enumerate}
 \end{enumerate}
