@@ -54,13 +54,34 @@ $\SharpP = \SharpPSPACE$.
 \end{theorem}
 
 \begin{proof}
-We introduce the ``circuit value problem" (CVP), which is: given a boolean formula $\phi$ and an assignment $x$ to its variables, is $\phi$ true with this assignment? It is much easier than solving $\SAT$, and is in $\P$. 
+The way we will prove this is showing $\SharpQBF$ is $\SharpPSPACE$-complete, and $\SharpQBF = \SharpSAT$.
 
-\par We show that $\SharpQBF \in \SharpPSPACE$: let $M$ be a TM that decides CVP, and $Q_1x_1 \cdots Q_kx_k [\phi]$ be an arbitrary QBF. Therefore, the number of settings to the $x_i$ such that $M(\phi, x)$ accepts is precisely the number of $x_i$ settings that make $\phi$ true. Therefore, $\SharpQBF \in \SharpPSPACE$.
+We clearly have $\SharpQBF \in \SharpPSPACE$ (there is a poly-space TM $M$ that for any boolean formula $F$, and quantification of variables, $M$ accepts on the quantification if and only if the quantification for the formula is true).
 
-\par Let $f \in \SharpPSPACE$. Therefore, there is a poly-time TM $M$ such that $f(x)$ is the number of $Q_ix_i$ settings that $M(x) = 1$. Let $L$ be the set of $x$ such that $M(x) = 1$. We can see that $L \in \P$ (just run $M$ on the input). Let $g$ be the poly-time reduction from $L$ to CVP (i.e., $M(x) = 1$ if and only if $g(x)$ is a formula with a satisfying truth assignment). 
+\par Let $f \in \SharpPSPACE$. There is a poly-space TM $M$ and polynomial $p$ such that $f(x)$ is the number of $x_1, \cdots x_k$ has $Q_1x_1\cdots Q_{p(|x|)}x_{p(|x|)} M(x, x_1, \cdots, x_{p(|x|)})$ accepts.
 
-\par Therefore, $f(x)$ is the number of $Q_ig(x_i)$ settings that has the 
+\par Let $F_x(x_1, \cdots x_{p(|x|)})$ be the equivalent formula of $M$ (this is of poly-size). Therefore, $f(x)$ is the number of quantifications such that $F_x$ is true, which is equal to counting the solutions of the formula (i.e., $\SharpQBF(F_x)$). Therefore, $f \le_{\SharpP} \SharpQBF$. 
+
+\par Now we show $\SharpQBF = \SharpSAT$. Let $F$ be a boolean formula on $n$ variables. We prove by induction on $n$. For $n=0$, the two formulas with no variables are the true formula $t$ and the false one $f$. $\SharpSAT(t) = \SharpQBF(t) = 1$ (there are no quantifications), and $\SharpSAT(f) = \SharpQBF(f) = 0$. 
+
+\par We assume that $\SharpSAT(m) = \SharpQBF(m)$ for all formulas $m$ with $n-1$ variables. Let $F'$ be a formula on $n$ variables, and let $F'_t, F'_f$ be the same formula but with the last variable made true and false, respectively. We note the following:
+\begin{itemize}
+\item $\SharpSAT(F'_t \vee F'_f) = \SharpSAT(F'_t) + \SharpSAT(F'_f) - \SharpSAT(F'_t \wedge F'_f)$.
+\item Let $Q^kx = Q_1x_1 \cdots Q_kx_k$ be the first $k$ quantified variables of $F'$. Then $Q^{n-1}x\forall x_n F'$ is true if and only if $Q^{n-1}x(F'_t \wedge F'_f)$ is true, and $Q^{n-1}x\exists x_n F'$ is true if and only if $Q^{n-1}x(F'_t \vee F'_f)$ is true. 
+\end{itemize}
+We also see that $\SharpQBF(F')$ is the number of quantifications of $F'$ that make it true with the $n$th variable as $\exists$ + the same but the $n$th variable is $\forall$. Therefore, $\SharpQBF(F') = \SharpQBF(F'_t \wedge F'_f) + \SharpQBF(F'_t \vee F'_f)$.
+
+\par We assume by the induction hypothesis that this is equivalent to $\SharpSAT(F'_t \wedge F'_f) + \SharpSAT(F'_t \vee F'_f)$. Also, by the first observation, this is equivalent to $\SharpSAT(F'_t) + \SharpSAT(F'_f)$, which is equal to $\SharpSAT(F')$. 
+
+\par We have $\SharpP = \SharpPSPACE$ because of our definition of $\SharpP$-completeness. 
+
+%We introduce the ``circuit value problem" (CVP), which is: given a boolean formula $\phi$ and an assignment $x$ to its variables, is $\phi$ true with this assignment? It is much easier than solving $\SAT$, and is in $\P$. 
+%
+%\par We show that $\SharpQBF \in \SharpPSPACE$: let $M$ be a TM that decides CVP, and $Q_1x_1 \cdots Q_kx_k [\phi]$ be an arbitrary QBF. Therefore, the number of settings to the $x_i$ such that $M(\phi, x)$ accepts is precisely the number of $x_i$ settings that make $\phi$ true. Therefore, $\SharpQBF \in \SharpPSPACE$.
+%
+%\par Let $f \in \SharpPSPACE$. Therefore, there is a poly-time TM $M$ such that $f(x)$ is the number of $Q_ix_i$ settings that $M(x) = 1$. Let $L$ be the set of $x$ such that $M(x) = 1$. We can see that $L \in \P$ (just run $M$ on the input). Let $g$ be the poly-time reduction from $L$ to CVP (i.e., $M(x) = 1$ if and only if $g(x)$ is a formula with a satisfying truth assignment). 
+%
+%\par Therefore, $f(x)$ is the number of $Q_ig(x_i)$ settings that has the 
 \end{proof}
 
 \subsection{Toda's Theorem}

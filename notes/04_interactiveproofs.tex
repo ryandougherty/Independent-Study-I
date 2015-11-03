@@ -66,6 +66,7 @@ Now we go to a motivating example for cryptography - how do we share items over 
 
 \begin{definition}
 Define $\AM[k] \subseteq \IP[k]$ to be the class where we restrict the verifier's messages to be random bits, and the verifier must use these random bits (i.e., not part of the message). We have $\AM = \AM[2]$, which has the verifier send the first message (random string), the prover responds, and the verifier decides by applying a poly-time function to the entire transcript. Have $\MA$ be the same as $\AM$, but the prover sends the first message, the verifier computes a decision based off random coins and the transcript given by the prover.
+\end{definition}
 
 \subsection{$\IP = \PSPACE$}
 This is a nontrivial result that was not expected. We knew the $\IP \subseteq \PSPACE$ direction before, and many people did not expect the other direction. 
@@ -79,4 +80,27 @@ Let $L \in \IP$, and let $V$ be the verifier, $P$ is the prover. We want to comp
 \par Suppose $V$ runs in $p(|w|)$ time, and chooses $p(|w|)$ random numbers. Just recursively simulate $V$ by branching on each random number, and each possible response by $P$. The recursion is polynomial, therefore this can be done in $\PSPACE$. We also keep track of the count of accepting branches given by $P$, and the total number of branches. Their length is polynomial in $|w|$. Therefore, the ratio is exactly $z$, which also can be done in $\PSPACE$.
 \end{proof}
 
+Now we will work in the other direction. We introduce a new language:
+\newcommand{\CountSAT}{\lang{\#CountSAT}}
+\begin{definition}
+$\CountSAT = \{\langle \phi, k \rangle \colon \phi\;\text{is a 3-CNF formula with exactly $k$ satisfying assignments}\}$.
 \end{definition}
+We won't prove this here, but $\CountSAT$ is complete for a very powerful class, $\lang{\#P}$. We will use a technique commonly used for boolean formulas called \emph{arithmetization}. This technique turns a formula into polynomials. Given a 3-CNF formula $\phi$ with $m$ clauses and $n$ variables, create ``field variables" $X_1, \cdots, X_n$. For any clause $x_i \vee x_j \vee x_k$, we replace it with $Y_iY_jY_k$, where $Y_m$ is $X_m$ if $x_m$ is not complemented, and is $(1-X_m)$ otherwise. As an example, $x_1 \vee \overline{x_2} \vee x_3$ turns into $X_1(1-X_2)X_3$. 
+
+\par Let the arithmetized version of the $j$th clause be $p_j(X_1, \cdots, X_n)$. We have $p_j(X_1, \cdots, X_n) = 1$ if an assignment to the $X_i$ makes the clause satisfiable, and 0 otherwise. 
+
+\par Let $P_{\phi}(X_1, \cdots, X_n)$ be the product of the $p_i$ polynomials. This means $P_{\phi}$ is 1 if all the clauses are satisfied, and 0 otherwise. It has degree at most $3m$, and therefore has representation of size $O(m)$. 
+
+\begin{theorem}
+$\CountSAT \in \IP$.
+\end{theorem}
+
+\begin{proof}
+Given $\phi$ and $k$, we construct $P_{\phi}$ as before. We see that the number of satisfying assignments to $\phi$ is:
+\[
+\sum_{b_1 \in \{0, 1\}, \cdots, b_n \in \{0, 1\}} P_{\phi}(b_1, \cdots, b_n)
+\]
+The prover $P$ wants to claim that the sum is exactly $k$. First, $P$ sends $V$ (the verifier) a prime $p$ between $2^n+1$ and $2^{2n}$. $V$ checks that $p$ is prime (using any prime-checking algorithm). All computations are done in $\mathbb{F}_p$ (integers $\mod p$). Since the sum above is between 0 and $2^n$, it has the same result over this field. We now use a general protocol called ``Sumcheck" to verify this equation.
+
+\par 
+\end{proof}
