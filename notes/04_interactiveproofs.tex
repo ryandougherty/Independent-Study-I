@@ -61,9 +61,22 @@ We are given 2 graphs $G_1, G_2$. The verifier randomly and uniformly picks eith
 \par If the graphs are not isomorphic, then there is a prover that has $\Pr[\text{verifier accepts}] = 1$ - the reason is that if a prover was all-powerful, it can tell which one of the graphs is isomorphic to the one sent. If the graphs are isomorphic, then the prover can only guess because any permutation of one graph is the same as that of the other graph. Therefore, $\Pr[\text{verifier accepts}] \le \frac{1}{2}$.
 \end{example}
 
-\subsection*{$\AM, \MA$}
+\subsection{$\AM, \MA$}
 Now we go to a motivating example for cryptography - how do we share items over the public internet without an attacker knowing? We use a similar example in complexity theory, called Arthur-Merlin protocols:
 
 \begin{definition}
 Define $\AM[k] \subseteq \IP[k]$ to be the class where we restrict the verifier's messages to be random bits, and the verifier must use these random bits (i.e., not part of the message). We have $\AM = \AM[2]$, which has the verifier send the first message (random string), the prover responds, and the verifier decides by applying a poly-time function to the entire transcript. Have $\MA$ be the same as $\AM$, but the prover sends the first message, the verifier computes a decision based off random coins and the transcript given by the prover.
+
+\subsection{$\IP = \PSPACE$}
+This is a nontrivial result that was not expected. We knew the $\IP \subseteq \PSPACE$ direction before, and many people did not expect the other direction. 
+\begin{theorem}
+$\IP \subseteq \PSPACE$
+\end{theorem}
+
+\begin{proof}
+Let $L \in \IP$, and let $V$ be the verifier, $P$ is the prover. We want to compute $\max_{P}\Pr[V \text{accepts} \leftrightarrow P \text{accepts $w$}$. Let this quantity be $x$. If $x \ge \frac{2}{3}$, then $w \in L$; if $x \le \frac{1}{3}$, then $w \notin L$ (by definition). The other values of $x$ cannot occur because $V$ is a verifier (all-powerful). All we need to do is to show how $x$ is computable in $\PSPACE$.
+
+\par Suppose $V$ runs in $p(|w|)$ time, and chooses $p(|w|)$ random numbers. Just recursively simulate $V$ by branching on each random number, and each possible response by $P$. The recursion is polynomial, therefore this can be done in $\PSPACE$. We also keep track of the count of accepting branches given by $P$, and the total number of branches. Their length is polynomial in $|w|$. Therefore, the ratio is exactly $z$, which also can be done in $\PSPACE$.
+\end{proof}
+
 \end{definition}

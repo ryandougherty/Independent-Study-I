@@ -199,7 +199,7 @@ HSL implies \Cref{thm:parity_not_in_ac0}.
 \begin{proof}
 Let $C$ be an $\AC^0$ circuit with a simplification: every vertex has out-degree 1, all $\neg$ gates are right after the input gates, the $\wedge, \vee$ gates alternate, and the bottom level has $\wedge$ gates with in-degree also 1. It is clear that we can construct this equivalent circuit with a polynomial number of gates.
 
-\par Let the upper bound on the number of gates be $n^c$. We restrict more variables at each step of the computation: if there are $n_i$ unrestricted variables at step $i$, then we restrict $\sqrt{n_i}$ of them for the next step. Therefore, $n_i = \sqrt[2^i]{n}$. Let $c_i = 10c \times 2^i$. With high probability, we prove that at step $i$, we have a $(d-i)$-depth circuit, with $c_i$ fan-in at the lowest level. 
+\par Let the upper bound on the number of gates be $n^c$. We restrict more variables at each step of the computation: if there are $n_i$ unrestricted variables at step $i$, then we restrict $n-\sqrt{n_i}$ of them for the next step. Therefore, $n_i = \sqrt[2^i]{n}$. Let $c_i = 10c \times 2^i$. With high probability, we prove that at step $i$, we have a $(d-i)$-depth circuit, with $c_i$ fan-in at the lowest level. 
 
 \par Suppose that the last level has $\wedge$ gates and the penultimate one has $\vee$ gates; it is easy to see that each $\vee$ gate computes a $c_i$-DNF. By HSL, with probability
 \[
@@ -240,6 +240,20 @@ We continue until we assign at least $s$ variables, which happens when we get $m
 \par Since each term has $\le k$ variables, we only need $O(s_1 \log k)$ bits to store this. After this is done, we change the restriction from $\rho\sigma_1\cdots\sigma_p$ to $\rho m_1 \sigma_2\cdots\sigma_p$, and then repeat the process for $s_2$. We, in this process, figure out what $m_1, \cdots, m_p$ are. 
 
 \par We can now ``undo" them to reconstruct $\rho$, which shows the mapping is 1-1, and the total storage is $O(s \log k)$. 
+\end{proof}
+
+\subsection{$\ACC$ Circuits}
+Sometimes we want even more power out of our circuits. This is precisely what the $\ACC$ hierarchy is for.
+\begin{definition}
+Let $MOD_m$ be the gate that has $m$ boolean inputs, and outputs 0 if the sum of the inputs is $0 (\mod m)$, and 1 otherwise. We have $L \in \ACC^0(m_1, \cdots, m_k)$ if there is a circuit family $\{C_n\}$ with $O(1)$ depth and poly-size, unbounded fan-in, and each has $\wedge, \vee, \neg$, and $MOD_{m_1}, \cdots, MOD_{m_k}$ gates that accepts $L$. We have $\ACC^0$ to be all of $\ACC^0(m_1, \cdots, m_k)$ for $k \ge 0$ and each $m_i > 0$. 
+\end{definition}
+
+\begin{theorem}
+$\AC^0 \subseteq \ACC^0$, with strict inclusion.
+\end{theorem}
+
+\begin{proof}
+Inclusion is obvious. We have strictness because $\ParityF \notin \AC^0$ above, and we have $\ParityF \in \ACC^0$ because we can just use 1 $MOD_2$ gate on all inputs.
 \end{proof}
 
 \subsection*{Exercises}
