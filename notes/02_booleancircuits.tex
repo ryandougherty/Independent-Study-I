@@ -205,12 +205,42 @@ Let $C$ be an $\AC^0$ circuit with a simplification: every vertex has out-degree
 \[
 1-\sqrt{\left(\frac{c_i^{10}}{\sqrt[2^i+1]{n}}\right)^{c_{i+1}}} \ge 1 - \frac{1}{10n^c}
 \]
-\end{proof}
 for large-enough $n$, the function after the $(i+1)$-th iteration is expressible as a $c_{i+1}$-CNF. Since, for any CNF formula, the top gate is $\wedge$, we merge the $\wedge$ gates with the one above, which reduces the depth by 1. By the same reasoning, we can use HSL to transform the bottom-level $\vee$ gates, which has the level above it computes a $c_i$-CNF, into a $c_{i+1}$-DNF. We apply HSL at most once for each of the $n^c$ gates. Since by the union bound:
 \[
 \Pr[\bigcup_{i=1}^n A_i] \le \sum_{i=1}^n \Pr[A_i]
 \]
 we can achieve, with probability $\frac{9}{10}$, a depth-2 circuit with fan-in $c_{d-2}$ at the lowest level if we apply HSL $d-2$ times. The result is a $k$-CNF or DNF formula; we can make this constant by fixing $\le k$ variables (i.e., ensure the first clause in the DNF is true). Since $\ParityF$ is not constant under any restriction of $\le n$ variables, we have \Cref{thm:parity_not_in_ac0}.
+\end{proof}
+Now we prove the Switching Lemma:
+\begin{proof}
+Let a \emph{min-term} $m$ of function $f$ be a partial assignment that makes $f$ output 1 no matter what the assignment to the other variables are (i.e., the other variables are ``useless"); similarly, a \emph{max-term} does the same for $f$ but outputs 0 instead. We can see that every term in a $k$-CNF gives a $k$-size min-term, and every clause gives a $k$-size min-term. We can assume w.l.o.g. that the max and min-terms are minimal in size (i.e., no smaller max/min-terms possible). Therefore, a function not expressible in $s$-CNF must have at least 1 max-term of length $s+1$. 
+
+\par For restrictions on disjoint sets of variables $A, B$, let $AB$ be the union of the restrictions.Let $R_t$ be the set of all restrictions on $t$ variables for $2t \ge n$ ($|R_t| = 2^t{n \choose t}$). Let $B$ be the restrictions $\rho \in R_t$ such that $f\vert_\rho$ is not expressible in $s$-CNF. We want to show $B$ is ``small." We show this by giving a 1-1 mapping between $B$ and $S = R_{t+s} \times \{0, 1\}^\ell$ for $\ell \in O(s \log k)$. We have $|S| = {n \choose t+s}2^{t+s}2^{O(s \log k)}$. Therefore,
+\[
+\frac{|B|}{|R_t|} = \frac{{n \choose t+s}k^{O(s)}}{{n \choose t}}
+\]
+
+\par This is an upper bound on the probability of choosing a ``bad" restriction. We can see from the presentation of HSL that $s, k$ are ``constants" in a sense. Therefore, this function is bounded by $n^{-\Omega(s)}$. 
+
+\par We just need the 1-1 mapping now. Suppose $\rho$ is a ``bad" restriction on $f$ that is $k$-DNF. No terms of $f$ becomes 1 under $\rho$ (it becomes the constant function otherwise). Same reasoning goes for 0. Therefore, some terms become 0, but not all of them. Since we have $f\vert_\rho$ is not expressible in $s$-CNF, there exists a max-term $m$ with $|m| \ge s$. We can see that $f\vert_{\rho m}$ is the constant function 0, and $f\vert_{\rho m'}$ is nonzero for all sub-restrictions $m'$ of $m$. We want to show that this 1-1 mapping will have $\rho \rightarrow \rho\sigma$ for $\sigma$ an assignment to variables in $m$. Therefore, $\rho\sigma$ restricts $\ge t+s$ variables, as we want.
+
+\par Give an order to $f$'s terms, and within those, order them in any order. We have $\rho m$ sets $f$ to be the 0-function. Split $m$ into $p \le s$ sub-restrictions: $m_1, \cdots m_p$, where each is defined as:
+\begin{itemize}
+\item Assume that we have an $i$ such that $m_1\cdots m_{i-1} \ne m$.
+\item Let $t_{\ell_i}$ be the first term in our ordering that is not set to 0 under $\rho m_1\cdots m_{i-1}$ ($t_{\ell_i}$ exists since $m$ is a max-term, and $m_1\cdots m_{i-1}$ is not, since it is a proper subset).
+\item Let $Y_i$ be the variables of $t_{\ell_i}$ set by $m$ but not by $\rho m_1\cdots m_{i-1}$. Since $m$ sets $t_{\ell_i}$ to 0, $Y_i$ is not empty. 
+\item Let $a_i$ be the restriction of variables that agrees with $m$ on $Y_i$. Also, define $\sigma_i$ to be any restriction of $Y_i$ such that $t_{\ell_i}$ is not 0.
+\end{itemize}
+We continue until we assign at least $s$ variables, which happens when we get $m_1\cdots m_p$ (also, $\sigma_1 \cdots \sigma_p$). If we have assigned more than $s$ variables, change $m_p$ (i.e., fewer variables) so that we have exactly $s$ variables.
+
+\par The mapping is $\rho \rightarrow (\rho\sigma_1\cdots\sigma_p, c)$, with $|c| \in O(s \log k)$ (defined later). Suppose we are given assignment $\rho\sigma_1\cdots\sigma_p$. We make this assignment to $f$, and observe which term is $t_{\ell_1}$ (the first term not fixed to 0 by $\rho$ - since we split $m$, this property holds for $\sigma_1$ and $\sigma_2, \cdots, \sigma_p$ do not assign values to terms in $t_{\ell_1}$). 
+
+\par Let $s_1$ be the number of variables in $m_1$. $c$ contains $s_1$, indices in $t_{\ell_1}$ of the variables in $m_1$, and the values that $m_1$ assigns to those variables (we can see this is sufficient to know). 
+
+\par Since each term has $\le k$ variables, we only need $O(s_1 \log k)$ bits to store this. After this is done, we change the restriction from $\rho\sigma_1\cdots\sigma_p$ to $\rho m_1 \sigma_2\cdots\sigma_p$, and then repeat the process for $s_2$. We, in this process, figure out what $m_1, \cdots, m_p$ are. 
+
+\par We can now ``undo" them to reconstruct $\rho$, which shows the mapping is 1-1, and the total storage is $O(s \log k)$. 
+\end{proof}
 
 \subsection*{Exercises}
 
