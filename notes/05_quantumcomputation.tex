@@ -36,3 +36,16 @@ A quantum operation is a function $f \colon \mathbb{C}^{2^m} \rightarrow \mathbb
 \begin{example}
 A common operation in classical computing is ``flipping" an $m$-bit register - swap the 0's and 1's. How do we do this in a quantum computer? For $b \in \{0, 1\}, x \in \{0, 1\}^{m-1}$, we map $\ket{b, x}$ to $\ket{1-b, x}$. 
 \end{example}
+
+\subsection{$\BQP$}
+Now we are ready to define $\BQP$.
+\begin{definition}
+We call a quantum operation a \emph{quantum gate} if it acts upon $n \le 3$ qubits of the register. We say that a function $f$ is \emph{computable in $T(n)$-time} if there is a poly-time classical TM $M$ that, on input $\langle 1^n, 1^{T(n)}\rangle$ outputs the descriptions of quantum gates $G_1, \cdots G_T$ such that for all $x$, we can compute $f(x)$ (with the process below) with probability $\ge \frac{2}{3}$:
+\begin{itemize}
+\item Initialize an $m$-qubit register to state $\vert x0^{n-m}\rangle$, with $m \le T(n)$.
+\item Apply each of the $G_1, \cdots, G_T$ operations in turn to the register.
+\item Measure the register's value $Y$ (i.e., the obtained value), and output it.
+\end{itemize}
+Finally, we have $f \in \BQP$ if there is a polynomial $p$ such that $f$ is computable in quantum $p(n)$-time.
+\end{definition}
+

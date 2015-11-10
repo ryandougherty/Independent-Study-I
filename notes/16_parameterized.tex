@@ -156,5 +156,10 @@ Therefore, we have the following containments (none is known to be proper):
 Let's give some examples of problems that are $\W[1]$-complete. 
 
 \begin{example}
-$\lang{INDSET}$ is $\W[1]$-complete. The process is a reduction from $\lang{k-Step-NTM}$. We create a graph $G = (V, E)$ which has $k^2$ cliques (i.e., $k \times k$ in a ``grid"). The cliques $(x, y)$ correspond to the state of the NTM in cell $x$ at time $y$. Therefore, the size of $(x, y)$ is $O(n^2)$. Since we created $k^2$ cliques, there is 1 vertex 
+$\lang{INDSET}$ is $\W[1]$-complete. Given $\langle G, k\rangle$, we construct a TM $M$ and $k' \in O(k^2)$ such that $M$ halts within $k'$ steps if and only if $G$ has an independent set of size $k$. Set the alphabet of the TM to be $G$'s vertices. For the first $k$ steps, $M$ guesses $k$ vertices for the first $k$ cells. For $1 \le i \le k$, $M$ moves to the $i$th cell, stores the corresponding vertex, and scans the tape to check if the other $k-1$ vertices are not adjacent to the $i$th one. Since $M$ does $k$ checks and each can be done in $O(k)$ time, we have $k' \in O(n^2)$. This shows $\lang{INDSET} \in \W[1]$.
+
+\par For the other direction, given $\langle M, k\rangle$, we construct a graph $G$ that has an independent set of size $k^2$ if and only if $M$ halts within $k$ steps. We construct $G$ to have $k^2$ cliques: $K_1, \cdots K_{k^2}$. Select one vertex from each clique, $K_{i, j}$ (clique $i$, vertex $j$), which is the behavior of $M$ at step $i$ in cell $j$ in the computation (i.e., the configuration). Add edges between cliques to handle any non-determinism. Therefore, $\lang{INDSET}$ is $\W[1]$-hard. 
+%The process is a reduction from $\lang{k-Step-NTM}$. We create a graph $G = (V, E)$ which has $k^2$ cliques (i.e., $k \times k$ in a ``grid"). The cliques $(x, y)$ correspond to the state of the NTM in cell $x$ at time $y$. Therefore, the size of $(x, y)$ is $O(n^2)$. Create an edge between two vertices if and only if these vertices correspond to two distinct configurations of the TM, including time in the computation. This shows that $\lang{INDSET}$ is $\W[1]$-hard.
+%
+%\par For the other direction, we guess $k$ vertices. For each pair, check if there is no edge between them. These $k$ vertices are written on $k$ cells of the TM tape. We then store the graph in a ``lookup table"
 \end{example}

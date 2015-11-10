@@ -178,6 +178,12 @@ $\NC^1 \subseteq \L$.
 Given $x \in L$ with $|x| = n$, we construct the $n$th circuit of the circuit family, and then just evaluate the circuit from the output gate. Since we only need to record the path to the current gate, and any results along the path, and the fact that the circuit has log-depth, we only need log space to do this.
 \end{proof}
 
+\begin{example}
+We will show how to add 2 $n$-bit numbers in $\AC^0$ (the result is an $n+1$-bit number). Let the two numbers be $x = x_1\cdots x_n, y = y_1\cdots y_n$. Let $q_i = x_i \wedge y_i, p_i = x_i \vee y_i$ for all $i$. Initialize $c_1 = 0$, and have $c_i = \bigvee_{j=1}^{i-1} (q_j \wedge \bigwedge_{k=j+1}^{i-1}p_k)$ for $i \ge 2$. Have $z_i = x_i \oplus y_i \oplus c_i$ for all $i$, and $z_{n+1} = c_{n+1}$. The output is $z_1\cdots z_{n+1}$. 
+
+\par We can compute $q_i, p_i$ at the same time (we only need 1 level). $c_i$ can be computed in 2 levels, and $z_i$ also in 2 levels. Therefore, we only need 5 levels, which is constant. Therefore, addition is in $\AC^0$. 
+\end{example}
+
 \subsection{Parity \& Switching Lemma}
 Our goal here is to separate $\AC^0$ and $\NC^1$.
 \newcommand{\ParityF}{\oplus}
@@ -256,6 +262,36 @@ $\AC^0 \subseteq \ACC^0$, with strict inclusion.
 Inclusion is obvious. We have strictness because $\ParityF \notin \AC^0$ above, and we have $\ParityF \in \ACC^0$ because we can just use 1 $MOD_2$ gate on all inputs.
 \end{proof}
 
+\subsection{$\TC$ Hierarchy}
+Another hierarchy is the $\TC$ hierarchy, which instead of $MOD$ gates, has majority gates:
+\begin{definition}
+A \emph{majority gate} is one that on input $x_1, \cdots, x_n$, outputs 1 if the sum of the $x_i$ is $\ge \frac{n}{2}$, and 0 otherwise (i.e., a majority of the $x_i$ are 1). We have $\TC^i$ to be the class of poly-size, $O(\log^i(n))$-depth, unbounded fan-in circuits with majority gates. Also, we have $\TC$ to be the union of the $\TC^i$.
+\end{definition}
+
+\begin{theorem}
+$\AC^0 \subseteq \TC^0$.
+\end{theorem}
+\begin{proof}
+Let an $\wedge$ gate be called $AND$, $\vee$ for $OR$, and majority for $MAJ$. The value of $AND(x_1, \cdots, x_n)$ is exactly $MAJ(x_1, \cdots, x_n, 0, \cdots, 0)$, where we have $n$ zeroes. For $OR(x_1, \cdots, x_n)$ it is $MAJ(x_1, \cdots, x_n, 1, \cdots, 1)$, where there are $n$ ones. We can just hardwire the respective constants in, which does not change the depth or size. 
+\end{proof}
+
+We can actually define $\TC^0$ in terms of ``threshold" gates, which is called $T_k(x_1, \cdots, x_n)$, which outputs 1 if the sum of the $x_i$ is at least $k$, and 0 otherwise. Note that this is a generalization of majority gates. We can actually simulate any threshold gate with majority gates:
+\begin{itemize}
+\item $T_k(x_1, \cdots, x_n)$ is precisely $MAJ(x_1, \cdots, x_n, 0, \cdots, 0)$ if $k \ge \frac{n}{2}$, and there are $2k-n$ zeroes,
+\item $T_k(x_1, \cdots, x_n)$ is precisely $MAJ(x_1, \cdots, x_n, 1, \cdots, 1)$ otherwise, and there are $n-2k$ ones.
+\end{itemize}
+
+\begin{theorem}
+$\TC^0 \subseteq \NC^1$. 
+\end{theorem}
+\begin{proof}
+Each of the threshold gates can be substituted for a $\NC^1$ circuit ($O(\log n)$-depth). Since $\TC^0$ circuits have constant depth, the resulting circuit has $O(\log n)$ depth and bounded fan-in.
+\end{proof}
+
+\begin{corollary}
+$\NC = \AC = \TC$.
+\end{corollary}
+
 \subsection*{Exercises}
 
 \begin{enumerate}
@@ -263,7 +299,7 @@ Inclusion is obvious. We have strictness because $\ParityF \notin \AC^0$ above, 
 \item Going off the previous question, show that if a sparse language is $\NP$-complete, then $\P = \NP$.
 \item Let $\L^i$ be the languages decided by $O(\log^i n)$-space TMs, and $\NL^i$ the same way for NTMs.
 \begin{enumerate}
-\item Show that $\NC^i \subseteq \L^i$ for all $i$.
-\item Show that if $\NL^i \subseteq \NC^{2i}$ for all $i$, then we solve a major open problem. Note that this is true for $i=1$. 
+\item Show that $\NC^i \subseteq \L^i$ for all $i$. % final/final-soln.pdf
+\item Show that if $\NL^i \subseteq \NC^{2i}$ for all $i$, then we solve a major open problem. Note that this is true for $i=1$. % final/final-soln.pdf
 \end{enumerate}
 \end{enumerate}
