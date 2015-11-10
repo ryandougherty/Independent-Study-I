@@ -19,9 +19,14 @@ $\PP = \P$ if and only if $\SharpP = \FP$.
 \end{theorem}
 
 \begin{proof}
-It is easy to see that $\SharpP = \FP$ implies $\PP = \P$: given input $x$, just count the number of $u$ such that $M(x, u) = 1$, and compare. For the other direction
+It is easy to see that $\SharpP = \FP$ implies $\PP = \P$: the assumption says that we can count the number of solutions in polynomial time. Then we can just check if the number of solutions to the $\PP$ problem and compare if it is the majority. Another way to see this is that $\PP$ corresponds to the most significant bit of $\SharpP$ problems.
+
+\par For the other direction, let $f \in \SharpP$. Then there is a poly-time TM $M$ that for all $x$, $f(x)$ is the number of strings $u$ of $\poly(|x|)$ with $M(x, u) = 1$. Denote this number $\#_M(x)$. 
+
+\par Suppose $M_1, M_2$ are 2 TMs that take $\poly(|x|)$ certificates. Let $M_1 + M_2$ be the TM $M'$ with $n+1$-bit certificates with $M'(x, bu) = M_b(x, u)$. We have $\#_{M_1 + M_2}(x) = \#_{M_1}(x) + \#_{M_2}(x)$. For any $0 \le N \le 2^{\poly(|x|)}$, denote $M_N$ the TM that on input $\langle x, u \rangle$ outputs 1 if and only if $u \le N$ ($u$ as a number, of course). We have $\#_{M_N}(x) = N$. 
+
+\par If $\PP = \P$, then we can determine in poly-time if $\#_{M_N + M}(x) = N + \#_{M}(x) \ge 2^{\poly(|x|)}$. To compute $\#_M(x)$, we can use binary search to find the smallest $N$ that $N = 2^{\poly(|x|)} - \#_M(x)$. 
 \end{proof}
-\Comment{Complete this proof}
 
 \subsection{$\SharpP$-completeness}
 \begin{definition}
