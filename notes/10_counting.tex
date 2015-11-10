@@ -102,4 +102,117 @@ Also, we need to know about the $\Parity$ quantifier as well as $\ParitySAT$:
 For a boolean formula $\phi$, define $\Parity\phi(x)$ to be true if the number of $x$'s that make $\phi$ true is odd. Define $\ParitySAT$ to be the language of $\Parity\phi(x)$ where $\phi$ is an unquantified boolean formula in any form.
 \end{definition}
 We can reason that $\ParityP$ corresponds to the least significant bit of problems in $\SharpP$, so it doesn't seem very powerful. However, in the first part of the proof, Toda shows a randomized reduction from $\PH$ to $\ParitySAT$. 
-\Comment{Add other parts of proof}
+
+\begin{theorem}
+\label{thm:parity_sat_randomized_reduction}
+Let $c \in \mathbb{N}$. There is a probabilistic poly-time algorithm $A$ with parameter $m$ any quantified boolean formula $\phi$ with $|\phi| = n$ with $c$ alternations and runs in poly-time such that:
+\begin{itemize}
+\item $\phi$ is true implies $\Pr[A(\phi) \in \ParitySAT] \ge 1-2^{-m}$
+\item $\phi$ is false implies $\Pr[A(\phi) \in \ParitySAT] \le 2^{-m}$.
+\end{itemize}
+\end{theorem}
+We prove this theorem later, but the basic idea is to use this in the randomized reduction. But first, we need to be able to reduce $\NP$ to $\ParitySAT$. We rely on earlier work by Valiant and Vazirani:
+\newcommand{\USAT}{\lang{USAT}}
+\begin{theorem}
+\label{thm:valiant_vazirani}
+Let $\USAT$ be the set of boolean formulas that has a single satisfying assignment. There is a probabilistic poly-time algorithm $f$ such that for any $n$-variable boolean formula $\phi$:
+\begin{itemize}
+\item $\phi \in \SAT$ implies $\Pr[f(\phi) \in \USAT] \ge \frac{1}{8n}$,
+\item $\phi \notin \SAT$ implies $\Pr[f(\phi) \in \SAT] = 0$.
+\end{itemize}
+\end{theorem}
+In order to prove \Cref{thm:valiant_vazirani}, we need to prove the following lemma:
+\begin{lemma}
+Let $H_{n,k}$ be a set of pairwise independent hash functions from $\{0,1\}^n$ to $\{0,1\}^k$. Let $S \subseteq \{0, 1\}^n$ such that $2^{k-2} \le |S| \le 2^{k-1}$. Then for all $h \in H_{n, k}$, the probability of a unique $x \in S$ satisfying $h(x) = 0^k$ is at least $\frac{1}{8}$.
+\end{lemma}
+\begin{proof}
+For all $x \in S$, denote $p$ be the probability that $h(x) = 0^k$. For any other $x'$, the probability of $h(x) = h(x')$ is $p^2$. Let $N$ be the random variable that is the number of $x \in S$ with $h(x) = 0^k$. We have $\mathbb{E}[N] = |S|p$, which is either $\frac{1}{4}$ or $\frac{1}{2}$. Therefore, we have:
+\[
+\Pr[N \ge 1] \ge \sum_{x \in S} \Pr[h(x) = 0^k] - \sum_{x < x'} \Pr[h(x) = h(x') = 0^k]
+\]
+which is just equal to $|S|p - {|S| \choose 2}p^2$. By the union bound, we have $\Pr[N \ge 2] \le {|S| \choose 2}p^2$. Therefore, subtracting these two quantities has $\Pr[N=1] = \Pr[N \ge 1] - \Pr[N \ge 2] \ge |S|p - |S|^2p^2 \ge \frac{1}{8}$.
+\end{proof}
+Now we prove \Cref{thm:valiant_vazirani}:
+\begin{proof}
+For any $\phi$ on $n$ variables, choose $k$ at random from $\{2, \cdots, n+1\}$ and a random hash function $h$. Consider $\exists_{x} \phi(x) \wedge h(x) = 0^k$. If $\phi \notin \SAT$, then this statement is false. If $\phi \in \SAT$, then with probability $\frac{1}{8n}$ there is a unique assignment $x$ satisfying the statement. If $S$ is the set of $\phi$'s satisfiable variable settings, then with probability $\frac{1}{n}$, $2^{k-2} \le |S| \le 2^{k-1}$, based on the previous lemma that with probability $\frac{1}{8}$ there is a unique $x$ that $\phi(x) \wedge h(x) = 0^k$ is true.
+
+\par So how do we construct the poly-time transformation? We create a formula $\tau$ on $x \in \{0, 1\}^n$ and $y \in \{0, 1\}^{p(n)}$ for a polynomial $p$, with the property that $h(x) = 0$ if and only if there is a unique $y$ with $\tau(x, y) = 1$. The output formula is $\phi(x) \wedge \tau(x, y)$. 
+\end{proof}
+
+Note that as a result, we have that there is a probabilistic poly-time algorithm $A$ such that:
+\begin{itemize}
+\item $\phi \in \SAT$ implies that $\Pr[A(\phi) \in \ParitySAT] \ge \frac{1}{8n}$,
+\item $\phi \notin \SAT$ implies that $\Pr[A(\phi) \in \ParitySAT] = 0$
+\end{itemize}
+
+We need more notation. Let $\#(\phi)$ be the number of satisfying assignments of $\phi$. We can construct a formula on two different formulas over different variables (say, the functions are $\phi, \psi$; variables are $x_i \in \{0, 1\}^n, y_i \in \{0, 1\}^m$) with $n+m$ variables called $\phi \cdot \psi$, and a $\max\{n, m\}+1$-variable formula $\phi+\psi$ with the properties:
+\begin{itemize}
+\item $\#(\phi \cdot \psi) = \#(\phi)\#(\psi)$,
+\item $\#(\phi+\psi) = \#(\phi)+\#(\psi)$.
+\end{itemize}
+The first formula is constructed by an $\wedge$ of the 2 formulas, and the second by mapping $(\phi+\psi)(z)$ to $((z_0=0) \wedge \phi(z_1, \cdots, z_n)) \vee ((z_0=1) \wedge (z_{m+1} = 0) \wedge \cdots \wedge (z_n = 0) \wedge \psi(z_1, \cdots, z_m))$ for some $m < n$. Also, we say $\phi+1$ is the same as $\phi+\psi$ but $\psi$ has a single satisfying assignment. 
+
+\par Now we describe the $\Parity$ operator; we can see that:
+\begin{itemize}
+\item $\Parity_x \phi(x) \wedge \Parity_y \psi(y)$ is true if and only if $\Parity_{x,y}(\phi \cdot \psi)(x, y)$ is true. The reason for this is that any polynomially many number of $\wedge, \vee$ of $\ParitySAT$ instances can be converted into a single equivalent $\ParitySAT$ instance.
+\item $\neg \Parity_x \phi(x)$ is true if and only if $\Parity_{x,z}(\phi+1)(x, z)$ is true. The reason for this is that $\ParityP$ is closed under complement (we can construct a formula in poly-time that is the complement of the original).
+\item $\Parity_x \phi(x) \vee \Parity_y \psi(y)$ is true if and only if $\Parity_{x,y,z} ((\phi+1)\cdot (\psi+1) + 1)(x,y,z)$ is true. The reasoning is the same as the first.
+\end{itemize}
+
+\par Now we prove \Cref{thm:parity_sat_randomized_reduction}, with the restriction that the formula only has the $\exists$ quantifier:
+\begin{proof}
+We already proved the $c=1$ case, which was $\NP$. Let $\phi$ be a boolean formula. We run the above algorithm $r = O(mn)$ times, and the final formula is the $\vee$ of all of the produced formulas. If $\phi \in \SAT$, then the result is with probability $\ge 1-(1-\frac{1}{8n})^r = 1-2^{-m}$. If $\phi \notin \SAT$, then the produced formula is not true either. We apply the third observation about the $\Parity$ operator $r$ times to convert it into a single $\Parity$ formula. We can do this since the size increase is only a polynomial.
+\end{proof}
+
+\par Now we do the general case. However, we abstract the V-V lemma to work with arbitrary formulas:
+\begin{lemma}
+There is a probabilistic poly-time algorithm $f$ that, on input $1^n$, produces a formula $\tau(x, y)$ with $x$ consisting of $n$ boolean variables such that, for any boolean function $\beta$:
+\begin{itemize}
+\item $\exists_{x_1}$ such that $\beta(x_1)$ is true implies that $\Pr[\Parity_{x_1,y}\tau(x_1,y) \wedge \beta(x_1) = 1] \ge \frac{1}{8n}$,
+\item $\neg\exists_{x_1}$ such that $\beta(x_1)$ is true implies that $\Pr[\Parity_{x_1,y}\tau(x_1,y) \wedge \beta(x_1) = 1] = 0$.
+\end{itemize}
+\end{lemma}
+With this, we prove the general case:
+\begin{proof}
+Let $\phi$ have $c$ alternations. Since $\ParityP$ (and of course, $\ParitySAT$) is closed under complement, we can assume the first quantifier is $\exists$. Therefore, $\phi = \exists_{x_1}\psi(x_1)$ with $\psi$ a quantified formula with $\le c-1$ alternations, and the variables in $x_1$ are free.
+
+\par Suppose $x_1$ has $n$ variables. By induction, there is a randomized reduction that, for each value of $x_1$, it produces an equivalent (to $\phi(x_1)$) $\ParitySAT$ formula $\beta$ such that $\beta(x_1) = \Parity_z \rho(z, x_1)$ with probability $\ge 1-2^{-m-2}$. 
+
+\par We run the abstract V-V lemma $r = O(mn)$ times, on independently random bits. Let $\{\tau_i (x_1, y)\}_{i=1}^r$ be the produced formulas.
+
+\par Consider $\alpha = \bigvee_{j=1}^{r} (\Parity_{x_1, y} \tau_j(x_1, y) \wedge \beta(x_1))$. If $\exists_{x_1}\beta(x_1)$ is true, then the probability that $\alpha$ is true is $\ge 1-(1-\frac{1}{8n})^r = 1-2^{-O(m)}$. Also, if $\exists_{x_1}\beta(x_1)$ is false, then this probability is 0. 
+
+\par To finish, we can have errors in converting $\phi(x_1)$ to an equivalent $\ParitySAT$ instance (with error $2^{-m-2}$), and when we replace $\exists_{x_1}$ in constructing $\alpha$, also with the same error. We have that the overall error is $2^{-m-1} \le 2^{-m}$, so we are done.
+\end{proof}
+
+\subsection*{Derandomization}
+We now make the reduction deterministic. 
+\begin{lemma}
+There is a deterministic poly-time reduction $f$ that for any boolean formula $\alpha$, there is a boolean formula $\beta = T(\alpha, 1^n)$ such that:
+\begin{itemize}
+\item $\alpha \in \ParitySAT$ implies that $\#(\beta) = -1 (\mod 2^{n+1})$
+\item $\alpha \notin \ParitySAT$ implies that $\#(\beta) = 0 (\mod 2^{n+1})$.
+\end{itemize}
+\end{lemma}
+\begin{proof}
+Note the constructions of $\#(\phi\cdot\tau), \#(\phi+\tau)$ from earlier. The resulting formulas are only a constant larger than either of $\phi, \tau$. Consider $4\tau^3 + 3\tau^4$, with $\tau^k = \tau \cdot (\tau^{k-1})$. We have that:
+\begin{itemize}
+\item $\#(\tau) = -1 (\mod 2^{2^i})$ implies that $(4\tau^3 + 3\tau^4) = -1 (\mod 2^{2^{i+1}})$.
+\item $\#(\tau) = 0 (\mod 2^{2^i})$ implies that $(4\tau^3 + 3\tau^4) = 0 (\mod 2^{2^{i+1}})$.
+\end{itemize}
+Let $\psi_0 = \alpha$, and $\psi_{i+1} = 4\psi_i^3 + 3\psi_i^4$, and let $\beta = \psi_{\lceil \log(n+1)\rceil}$. We have that repeated use of the 2 implications above has that if $\#(\psi)$ is odd, then $\#(\beta) = -1 (\mod 2^{n+1})$. If $\#(\psi)$ is even, then $\#(\beta) = 0 (\mod 2^{n+1})$. We have $|\beta| = \exp(O(\log n))|\alpha|$, and so its size is polynomial in the input length.
+\end{proof}
+
+\subsection*{Proving Toda's Theorem}
+\begin{proof}
+Let $f$ be the randomized poly-time reduction above with $m=2$. Since it is randomized, we can think of it as a deterministic one with 2 inputs: a quantified formula $\psi$ and a random string $r$, with $R = |r|$. Let $T$ be the deterministic poly-time reduction above with $n = R+2$, which runs in $\poly(R, |f(\psi)|)$ time. 
+
+\par Consider $T \cdot f$, and consider $\sum_{r \in \{0, 1\}^R} \#(T \cdot f(\psi, r)) (\mod 2^{n+1})$. If $\psi$ is true, then $\frac{3}{4}$ of the terms in the sum are $-1 (\mod 2^{n+1})$ and the others are $0 (\mod 2^{n+1})$. Therefore, the sum is between $-2^R$ and $-\lceil \frac{3}{4} \times 2^R \rceil$, both $(\mod 2^{n+1})$.
+
+\par If $\psi$ is false, then by similar analysis we get that the sum is between $-\lceil \frac{1}{4} \times 2^R\rceil$ and 0 $(\mod 2^{n+1})$. 
+
+\par Since $2^{n+1} > 2^{R+2}$, the ranges are disjoint. If we can evaluate the sum using a $\SharpSAT$ oracle, we can determine if $\psi$ is true or not. We can do this: let the variables of $T \cdot f(\phi, r)$ be $y$. We create a boolean formula $\Gamma(r, y, z)$ that is true for $(r, y, z)$ if and only if $y$ is a satisfying assignment for $T \cdot f(\phi, r)$. We can first compute $T \cdot(\phi, r)$ (with $\phi$ hard-coded into the circuit), and substitutes $y$ into this formula. The $z$ are the inner wires of the circuit. Since the circuit is deterministic, $z$ is uniquely determined by $y$ and $r$. 
+
+\par Therefore, $\#(\Gamma(r,y,z)) (\mod 2^{n+1})$ is exactly the same as the sum above. Therefore, we just query the $\SharpSAT$ oracle for $\#(\Gamma)$.
+\end{proof}
+What is more unintuitive is that we only need 1 query for the $\SharpSAT$ oracle, instead of polynomially many. 
