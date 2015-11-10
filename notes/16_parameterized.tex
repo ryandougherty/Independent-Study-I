@@ -119,7 +119,23 @@ The class $\FPT$ is the parameterized analog of the decision class $\P$. But wha
 A parameterized problem $(L, k)$ is in $\paraNP$ if there is a computable function $f: \mathbb{N} \rightarrow \mathbb{N}$, a polynomial $p$, and a nondeterministic TM that, when given $x$, decides if $x \in L$ within $f(k(x)) \times p(|x|)$ steps.
 \end{definition}
 
-\Comment{Add more proofs}
+Now we make a connection between $\ell$th slices and $\FPT$:
+\begin{theorem}
+The following are equivalent:
+\begin{enumerate}
+\item $(L, k)$ is $\paraNP$-complete under $\FPT$ reductions.
+\item Let $\ell, m_1, \cdots, m_{\ell} \in \mathbb{N}$. Then $\bigcup_{i=1}^{\ell} (L, k)_{m_i}$ is $\NP$-complete.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For notation: let $k_{one}(x) = 1$ for all $x$. We can see that $(L, k_{one}) \in \FPT$ if and only if $L \in \P$.
+
+\par For showing 1 implies 2, suppose that $(L, k)$ is $\paraNP$-complete under $\FPT$ reductions. Let $L'$ be any $\NP$-complete problem; we can see that $(L', k_{one}) \in \paraNP$. Let $R$ be an $\FPT$ reduction from $(L', k_{one}) \rightarrow (L, k)$. Let $p$ be the polynomial such that the reduction is done in $p(|x|)$ time. Let $f, g$ be the functions as defined above for $\FPT$-reductions (i.e., $R(x)$ is computable in time $f(k(x))\times p(|x|)$).
+
+\par For any $x'$ in the language of $(L', k_{one})$, $R(x')$ is computable in $f(1)\times p(|x'|)$ time, with $k(R(x')) \le g(1)$. Therefore, $R$ is a poly-time reduction from $L'$ to $\bigcup_{i=1}^{g(1)}(L, k)_{i}$. Since $L'$ is $\NP$-complete by assumption, we have that this union is $\NP$-complete.
+\end{proof}
+
+
 
 \subsection{$\W$ Hierarchy}
 As we have done with the polynomial hierarchy, we had a series of inclusions of classes. But what about parameterized complexity? There are quite a few hierarchies in parameterized complexity, but we give an introduction to one - the $\W$ hierarchy, as proposed by \cite{Downey1995109}. As a preliminary, we give some definitions:
