@@ -121,10 +121,24 @@ Unlike the reductions we have seen before, this reduction is not transitive. How
 \begin{definition}
 $\BP\cdot \NP = \{L \colon L \le_r \ThreeSAT\}$. 
 \end{definition}
-Note that this is quite different than $\NP$. There is even a large difference between $\ThreeSAT$ and $\overline{\ThreeSAT}$:
+Note that this is quite different than $\NP$. There is even a large difference between $\ThreeSAT$ and $\overline{\ThreeSAT}$, as we will show below. Now, we prove the following:
+
 \begin{theorem}
-If $\ThreeSAT \in \BP\cdot \NP$, then $\PH = \Sigma_3^\P$. 
+$\BP\cdot\NP \subseteq \lang{NP/poly}$.
+\end{theorem}
+\begin{proof}
+Let $L \in \BP\cdot\NP$, and $M$ be the PTM that does the reduction from $L$ to $\ThreeSAT$. For all $x$, $\Pr_r[L(x) = \ThreeSAT(M(x,r))] \ge \frac{2}{3}$ for all $r$ over $\{0, 1\}^{\poly(|x|)}$. As before, we can strengthen the bound to $1-\frac{1}{2^{|x|+1}}$. For a given $x$, the number of $r$ with $|r| = m$ that have $L(x) \ne \ThreeSAT(M(x,r))$ is $\le 2^{m-|x|-1}$. For a fixed $n$, the number of these $r$ over all $x$ is $\le 2^{n+m-|x|-1} = 2^{m-1}$, less than the total number of $r$ with $|r| = m$.
+
+\par Therefore, there is an $r^*$ such that for any $x$ with $|x| = n$, $L(x) = \ThreeSAT(M(x,r^*))$. Construct a non-deterministic circuit $C_n$ with input of length $n$, and certificate $y$. $C_n(x, y)$ computes if $y$ is a satisfying assignment of $M(x, r^*)$ (involves a poly-size circuit, done in poly-time). We have $r^*$ hard-coded for each input of length $n$. Therefore, $x \in L$ if and only if $M(x, r^*) \in \ThreeSAT$ if and only if there exists a $y$ such that $C_n(x, y) = 1$, implying that $L \in \lang{NP/poly}$. 
+\end{proof}
+\begin{theorem}
+If $\overline{\ThreeSAT} \in \BP\cdot \NP$, then $\PH = \Sigma_3^\P$. 
 \end{theorem}  
+\begin{proof}
+We just showed $\BP\cdot\NP \subseteq \lang{NP/poly}$. We also showed that if $\Pi_3^\P \subseteq \Sigma_3^\P$ then $\PH = \Sigma_3^\P$. We then just need to prove that $\overline{\ThreeSAT} \in \lang{NP/poly}$ implies that $\Pi_3^\P \subseteq \Sigma_3^\P$. 
+
+\par We use the $\Pi_3^\SAT$ problem, which is $\Pi_3^\P$-complete, and show it is in $\Sigma_3^\P$. The set of instances in this problem has them of the form $\forall x_1 \exists x_2 \forall x_3 \phi(a, b, c) = 1$. If we fix $x_1, x_2$, we have an $\overline{\ThreeSAT}$ instance $\forall x_3 \neg\phi(a, b, c) = 0$. By assumption, there is a poly-size circuit which decides $\overline{\ThreeSAT}$ with access to a poly-size certificate $y$. We have $\exists w \forall x_1 \exists y$ such that $w$ is the description of a circuit deciding whether $\phi(a, b, c)$ is true. Therefore, this is in $\Sigma_3^\P$.
+\end{proof}
 
 \newcommand{\UPATH}{\lang{UPATH}}
 \subsection{$\BPL, \RL$}
