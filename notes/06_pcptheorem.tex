@@ -15,12 +15,13 @@ We have that $L \in \PCP(r(n), q(n))$ if $L$ has a $(O(r(n)), O(q(n)))-\PCP$ ver
 \end{definition}
 
 \begin{theorem}[$\PCP$ theorem]
+\label{thm:1_pcp}
 $\NP = \PCP(\log n, 1)$.
 \end{theorem}
 
 Another ``scaled-up" version of the $\PCP$ theorem is:
 \begin{theorem}
-$\PCP(p(n), 1) = \NEXP$ for a polynomial $p$.
+$\PCP(\poly(n), 1) = \NEXP$.
 \end{theorem}
 
 \subsection{Hardness of Approximation}
@@ -33,5 +34,58 @@ Define $\texttt{val}(\phi)$ as the maximum possible fraction of clauses that can
 
 Therefore we have the equivalent definition of the $\PCP$ theorem:
 \begin{theorem}
+\label{thm:2_pcp}
 There exists a constant $\rho < 1$ such that for all $L \in \NP$ there is a poly-time function $f$ such that if $x \in L$, then $\texttt{val}(f(x)) = 1$, and if $x \notin L$, then $\texttt{val}f(x)) < \rho$.
 \end{theorem}
+
+This implies:
+\begin{corollary}
+If there is a $\rho$-approximation algorithm for $\MAXThreeSAT$ for $\rho < 1$, then $\P = \NP$.
+\end{corollary}
+
+Now we show equivalence. We introduce constraint satisfaction problems:
+\begin{definition}
+Let $q \in \mathbb{N}$. We have a $q\lang{CSP}$ instance $\phi$ to be a set of functions $\phi_1, \cdots, \phi_m \colon \{0, 1\}^n \rightarrow \{0, 1\}$ such that each $\phi_i$ depends on $\le q$ of its inputs. We say that an assignment $u \in \{0, 1\}^n$ \emph{satisfies} $\phi_i$ if $\phi_i(u) = 1$. Let $\lang{val}(\phi)$ be the maximum fraction of constraints satisfied by $u \in \{0, 1\}^n$. We say $\phi$ is satisfiable if $\lang{val}(\phi) = 1$. 
+\end{definition}
+As an example, $\ThreeSAT$ is a subcase of $q\lang{CSP}$ with $q = 3$, and the constraints are the $\vee$ of the literals. 
+
+\begin{definition}
+Let $q \in \mathbb{N}, \rho \le 1$. We have $\rho\lang{GAP}q\lang{CSP}$ to be the problem of determining whether a $q\lang{CSP}$ instance $\phi$ has $\lang{val}\phi = 1$ (the ``yes" instance) or $< \rho$ (the ``no" instance). We have $\rho\lang{GAP}q\lang{CSP}$ is $\NP$-hard if there is a poly-time reduction $f$ from every $L \in \NP$ that maps strings to $q\lang{CSP}$ instances with:
+\begin{itemize}
+\item $x \in L$ implies $\lang{val}(f(x)) = 1$ (``completeness"),
+\item $x \notin L$ implies $\lang{val}(f(x)) < \rho$ (``soundness").
+\end{itemize}
+
+\begin{theorem}
+\label{thm:3_pcp}
+There exist $q \in \mathbb{N}, 0 < \rho < 1$ such that $\rho\lang{GAP}q\lang{CSP}$ is $\NP$-hard.
+\end{theorem}
+
+\subsection{Equivalence of the Theorems}
+\begin{theorem}
+\Cref{thm:1_pcp} is the same as \Cref{thm:3_pcp}.
+\end{theorem}
+
+\begin{proof}
+We show the first direction. Assume $\NP \subseteq \PCP(\log n, 1)$. We reduce $\ThreeSAT$ to $\rho\lang{GAP}q\lang{CSP}$ for $\rho = \frac{1}{2}$. We have that $\ThreeSAT$ has a $\PCP$ system with the verifier making $q \in O(1)$ queries and $c \log n$ random coin flips for a constant $c$. For all $x$ and $r \in \{0, 1\}^{c \log n}$ (the coins), let $V_{x, r}$ be the function that on input a proof $\pi$ outputs 1 if the verifier accepts $\pi$ on input $x$ and $r$. We have that $V_{x, r}$ depends on $\le q$ locations. Therefore, $\phi = \{V_{x, r}\}$, where the collection is over all $x, r$, is a poly-size $q\lang{CSP}$ instance. Since $V$ runs in poly-time, the transformation is also done in poly-time. By completeness and soundness, if $x \in \ThreeSAT$, then $\lang{val}(\phi) = 1$, and if $x \notin \ThreeSAT$, then $\lang{val}(\phi) \le \frac{1}{2}$. 
+
+\par For the other direction, suppose $\rho\lang{GAP}q\lang{CSP}$ is $\NP$-hard for $q, \rho < 1$. This is a $\PCP$ system with $q$ queries, $\rho$ soundness, and $\log$ randomness for any $L$. Given an input $x$, the verifier runs the $f(x)$ reduction to get a $q\lang{CSP}$ instance $\phi = \{\phi_1, \cdots, \phi_m\}$. It expects a proof $\pi$ to be an assignment of variables, which if verifies by choosing some $1 \le i \le m$ randomly and checking if $\phi_i$ is satisfied ($q$ queries). If $x \in L$, then the verifier accepts with probability 1, and if $x \notin L$, then it accepts with probability at most $\rho$. 
+\end{proof}
+
+Now we prove another equality which implies that all three theorems are equivalent:
+
+\begin{theorem}
+\Cref{thm:2_pcp} is the same as \Cref{thm:3_pcp}.
+\end{theorem}
+
+\begin{proof}
+The $\Rightarrow$ direction is true because 3CNF instances are a special case of $3\lang{CSP}$ instances.
+
+\par For the $\Leftarrow$ direction, let $\epsilon > 0$ and $q \in \mathbb{N}$ such that $(1-\epsilon)\lang{GAP}q\lang{CSP}$ is $\NP$-hard, and $\phi$ a $q\lang{CSP}$ instance over $n$ variables, $m$ constraints. Each constraint is an $\wedge$ of at most $2^q$ clauses, and each clause is a $\vee$ of at most $q$ variables or negations.
+
+\par Let $\phi'$ be the collection of $\le m\times 2^q$ clauses with all constraints of $\phi$. If $\phi$ is satisfiable, then there is a satisfying assignment to all of its clauses. If it is not satisfiable, then every assignment does not satisfy at least an $\epsilon$ fraction of the constraints of $\phi$, and therefore does not satisfy at least an $\frac{\epsilon}{2q}$ fraction for $\phi'$. As in the proof of $\NP$-hardness for $\ThreeSAT$, we can transform any clause on $q$ variables into many clauses with at most 3 variables with auxiliary variables. 
+
+\par Let $\phi''$ be the $\le qm2^q$ clauses over $n+qm2^g$ variables (with the auxiliary ones) obtained from $\phi'$. We have that $\phi''$ is a 3CNF formula. The reduction is from $\phi$ to $\phi''$. If $\phi$ was satisfiable, then $\phi''$ would be also (completeness). If every assignment violates $\ge \epsilon$ fraction of the constraints of $\phi$, then every assignment violates $\ge \frac{\epsilon}{q2^q}$ fraction of those of $\phi''$ (soundness). Therefore, we are done. 
+\end{proof}
+
+\end{definition}

@@ -177,6 +177,7 @@ $\NC^1 \subseteq \L$.
 \begin{proof}
 Given $x \in L$ with $|x| = n$, we construct the $n$th circuit of the circuit family, and then just evaluate the circuit from the output gate. Since we only need to record the path to the current gate, and any results along the path, and the fact that the circuit has log-depth, we only need log space to do this.
 \end{proof}
+As an immediate consequence, we have $\NC^1 \ne \PSPACE$. 
 
 \begin{example}
 We will show how to add 2 $n$-bit numbers in $\AC^0$ (the result is an $n+1$-bit number). Let the two numbers be $x = x_1\cdots x_n, y = y_1\cdots y_n$. Let $q_i = x_i \wedge y_i, p_i = x_i \vee y_i$ for all $i$. Initialize $c_1 = 0$, and have $c_i = \bigvee_{j=1}^{i-1} (q_j \wedge \bigwedge_{k=j+1}^{i-1}p_k)$ for $i \ge 2$. Have $z_i = x_i \oplus y_i \oplus c_i$ for all $i$, and $z_{n+1} = c_{n+1}$. The output is $z_1\cdots z_{n+1}$. 
@@ -211,7 +212,7 @@ Let $C$ be an $\AC^0$ circuit with a simplification: every vertex has out-degree
 \[
 1-\sqrt{\left(\frac{c_i^{10}}{\sqrt[2^i+1]{n}}\right)^{c_{i+1}}} \ge 1 - \frac{1}{10n^c}
 \]
-for large-enough $n$, the function after the $(i+1)$-th iteration is expressible as a $c_{i+1}$-CNF. Since, for any CNF formula, the top gate is $\wedge$, we merge the $\wedge$ gates with the one above, which reduces the depth by 1. By the same reasoning, we can use HSL to transform the bottom-level $\vee$ gates, which has the level above it computes a $c_i$-CNF, into a $c_{i+1}$-DNF. We apply HSL at most once for each of the $n^c$ gates. Since by the union bound:
+for large-enough $n$, the function after the $(i+1)$-th iteration is expressible as a $c_{i+1}$-CNF. Since, for any CNF formula, the top gate is $\wedge$, we merge the $\wedge$ gates, which reduces the depth by 1. By the same reasoning, we can use HSL to transform the bottom-level $\vee$ gates, which has the level above it computes a $c_i$-CNF, into a $c_{i+1}$-DNF. We apply HSL at most once for each of the $n^c$ gates. Since by the union bound:
 \[
 \Pr[\bigcup_{i=1}^n A_i] \le \sum_{i=1}^n \Pr[A_i]
 \]
@@ -261,6 +262,8 @@ $\AC^0 \subseteq \ACC^0$, with strict inclusion.
 \begin{proof}
 Inclusion is obvious. We have strictness because $\ParityF \notin \AC^0$ above, and we have $\ParityF \in \ACC^0$ because we can just use 1 $MOD_2$ gate on all inputs.
 \end{proof}
+
+A recent result by Ryan Williams in 2010 shows that $\NEXP \not\subseteq \ACC^0$.
 
 \subsection{$\TC$ Hierarchy}
 Another hierarchy is the $\TC$ hierarchy, which instead of $MOD$ gates, has majority gates:
