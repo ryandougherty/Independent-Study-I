@@ -61,26 +61,6 @@ We are given 2 graphs $G_1, G_2$. The verifier randomly and uniformly picks eith
 \par If the graphs are not isomorphic, then there is a prover that has $\Pr[\text{verifier accepts}] = 1$ - the reason is that if a prover was all-powerful, it can tell which one of the graphs is isomorphic to the one sent. If the graphs are isomorphic, then the prover can only guess because any permutation of one graph is the same as that of the other graph. Therefore, $\Pr[\text{verifier accepts}] \le \frac{1}{2}$.
 \end{example}
 
-\subsection{$\AM, \MA$}
-Now we go to a motivating example for cryptography - how do we share items over the public internet without an attacker knowing? We use a similar example in complexity theory, called Arthur-Merlin protocols:
-
-\begin{definition}
-Define $\AM[k] \subseteq \IP[k]$ to be the class where we restrict the verifier's messages to be random bits, and the verifier must use these random bits (i.e., not part of the message). We have $\AM = \AM[2]$, which has the verifier send the first message (random string), the prover responds, and the verifier decides by applying a poly-time function to the entire transcript. Have $\MA$ be the same as $\AM$, but the prover sends the first message, the verifier computes a decision based off random coins and the transcript given by the prover.
-\end{definition}
-
-\subsection{$\IP = \PSPACE$}
-This is a nontrivial result that was not expected. We knew the $\IP \subseteq \PSPACE$ direction before, and many people did not expect the other direction. 
-\begin{theorem}
-$\IP \subseteq \PSPACE$
-\end{theorem}
-
-\begin{proof}
-Let $L \in \IP$, and let $V$ be the verifier, $P$ is the prover. We want to compute $\max_{P}\Pr[V \text{accepts} \leftrightarrow P \text{accepts $w$}$. Let this quantity be $x$. If $x \ge \frac{2}{3}$, then $w \in L$; if $x \le \frac{1}{3}$, then $w \notin L$ (by definition). The other values of $x$ cannot occur because $V$ is a verifier (all-powerful). All we need to do is to show how $x$ is computable in $\PSPACE$.
-
-\par Suppose $V$ runs in $p(|w|)$ time, and chooses $p(|w|)$ random numbers. Just recursively simulate $V$ by branching on each random number, and each possible response by $P$. The recursion is polynomial, therefore this can be done in $\PSPACE$. We also keep track of the count of accepting branches given by $P$, and the total number of branches. Their length is polynomial in $|w|$. Therefore, the ratio is exactly $z$, which also can be done in $\PSPACE$.
-\end{proof}
-
-Now we will work in the other direction. We introduce a new language:
 \newcommand{\CountSAT}{\lang{\#CountSAT}}
 \begin{definition}
 $\CountSAT = \{\langle \phi, k \rangle \colon \phi\;\text{is a 3-CNF formula with exactly $k$ satisfying assignments}\}$.
@@ -119,3 +99,58 @@ We claim that if the original sum is not $k$, then we reject with probability $\
 
 \par If $s(a) \ne h(a)$, then the prover has an incorrect claim that he/she needs to prove when we recurse. By the induction hypothesis, the prover fails to prove this claim with probability $\ge (1-\frac{d}{p})^{n-1}$. Therefore, the probability that the verifier rejects is $\ge (1-\frac{d}{p})^n$. 
 \end{proof}
+
+\subsection{$\AM, \MA$}
+Now we go to a motivating example for cryptography - how do we share items over the public internet without an attacker knowing? We use a similar example in complexity theory, called Arthur-Merlin protocols:
+
+\begin{definition}
+Define $\AM[k] \subseteq \IP[k]$ to be the class where we restrict the verifier's messages to be random bits, and the verifier must use these random bits (i.e., not part of the message). We have $\AM = \AM[2]$, which has the verifier send the first message (random string), the prover responds, and the verifier decides by applying a poly-time function to the entire transcript. Have $\MA$ be the same as $\AM$, but the prover sends the first message, the verifier computes a decision based off random coins and the transcript given by the prover.
+\end{definition}
+
+\subsection{$\IP = \PSPACE$}
+This is a nontrivial result that was not expected. We knew the $\IP \subseteq \PSPACE$ direction before, and many people did not expect the other direction. 
+\begin{theorem}
+$\IP \subseteq \PSPACE$
+\end{theorem}
+
+\begin{proof}
+Let $L \in \IP$, and let $V$ be the verifier, $P$ is the prover. We want to compute $\max_{P}\Pr[V \text{accepts} \leftrightarrow P \text{accepts $w$}$. Let this quantity be $x$. If $x \ge \frac{2}{3}$, then $w \in L$; if $x \le \frac{1}{3}$, then $w \notin L$ (by definition). The other values of $x$ cannot occur because $V$ is a verifier (all-powerful). All we need to do is to show how $x$ is computable in $\PSPACE$.
+
+\par Suppose $V$ runs in $p(|w|)$ time, and chooses $p(|w|)$ random numbers. Just recursively simulate $V$ by branching on each random number, and each possible response by $P$. The recursion is polynomial, therefore this can be done in $\PSPACE$. We also keep track of the count of accepting branches given by $P$, and the total number of branches. Their length is polynomial in $|w|$. Therefore, the ratio is exactly $z$, which also can be done in $\PSPACE$.
+\end{proof}
+
+Now we will work in the other direction by making a protocol for $TQBF$, the $\PSPACE$-complete problem:
+\begin{theorem}
+$\PSPACE \subseteq \IP$.
+\end{theorem}
+\begin{proof}
+We use arithmetization as before on the quantified boolean formula instance $\psi$. Therefore:
+\begin{center}
+$\Pi_{b_1 \in \{0, 1\}} \sum_{b_2 \in \{0, 1\}} \Pi_{b_3 \in \{0, 1\}} \cdots \sum_{b_n \in \{0, 1\}} p_{\psi}(b_1, \cdots, b_n) \ne 0$.
+\end{center}
+if and only if $\psi \in TQBF$. We observe that for any of the $b_i$, $b_i^j = b_i$ for all $j \ge 1$. Therefore, we can convert any polynomial $p_{\psi}$ into a multilinear polynomial $q_{\psi}$ that agrees with $p_{\psi}$ and has the degree of every $b_i$ at most 1. We define the linearization operator (which is linear in $x_i$) as follows:
+\begin{center}
+$L_i(p)(x_1, \cdots, x_n) = x_i \times p(x_1 \cdots, x_{i-1}, 1, x_{i+1}\cdots, x_n) + (1-x_i)\times p(x_1, \cdots, x_{i-1}, 0, x_{i+1}, \cdots, x_n)$
+\end{center}
+Therefore, $L_1(L_2(\cdots(L_n(p))\cdots))$ is a multilinear polynomial that agrees with $p$ on all $x_i$. Define $\forall x_i, \exists x_i$ as follows:
+\begin{enumerate}
+\item $\forall x_i p(x_1, \cdots, x_n) = p(x_1, \cdots, x_{i-1}, 0, x_{i+1}\cdots, x_n) \times p(x_1, \cdots, x_{i-1}, 1, x_{i+1}, \cdots, x_n)$.
+\item $\exists x_i p(x_1, \cdots, x_n) = p(x_1, \cdots, x_{i-1}, 0, x_{i+1}\cdots, x_n) + p(x_1, \cdots, x_{i-1}, 1, x_{i+1}, \cdots, x_n)$.
+\end{enumerate}
+We can phrase the original $\psi \in TQBF$ sentence as: if we apply $\forall x_1 \exists x_2 \cdots \exists x_n$ on $p_{\psi}(x_1, \cdots, x_n)$, then the result is $k \ne 0$. Of course, we can add linearization operators in between without changing the result. We use the following expression:
+\begin{center}
+$\forall x_1 L_1 \exists x_2 L_1 L_2 \forall x_3 L_1 L_2 L_3 \cdots \exists x_n L_1 \cdots L_n p_{\psi}(x_1, \cdots, x_n)$
+\end{center}
+It's clear that this expression is poly-sized. Suppose for a polynomial $g$ on $x_1, \cdots, x_k$ that the prover can convince the verifier that $g(a_1, \cdots, a_k) = c$ with probability 1 for any $a_1, \cdots, a_k, c$ when this expression is true, and probability $< \epsilon$ when it is false. Let $u(x_1, \cdots x_{\ell}) = M_g(x_1, \cdots, x_k)$, where $M \in \{\exists x_i, \forall x_i, L_{i}\}$. We can see that $\ell = k-1$ for the first two, and $k$ for the last. 
+
+\par Let $d \le 3m$ be the upper bound on the degree of $u$, and let the verifier know of $d$. We can show how the prover can convince the verifier that $u(a_1, \cdots, a_\ell) = f$ with probability 1 for any values when the expression is true and at most $\epsilon + \frac{d}{p}$ when it is false. 
+
+\par Assume wlog that $i=1$. We have the following cases:
+\begin{enumerate}
+\item $M = \exists x_1$. The prover provides a polynomial $s(x_1)$ which he/she claims is $g(x_1, a_2, \cdots, a_k)$. The verifier checks (like in the $\CountSAT$ proof before) that $s(0) + s(1) = f$. If not, reject. Otherwise, the verifier picks a random $a \in GF(p)$ and asks the prover, recursively, to prove $s(a) = g(a, a_2, \cdots, a_k)$. 
+\item $M = \forall x_1$. This is the same as the last case except we change the verification to be $s(0) \times s(1)$. 
+\item $M = L_1$. The prover wants to prove $u(a_1, \cdots, u_k) = f$. The prover provides a polynomial $s(x_1)$ of degree $\le d$ that he/she claims is $g(x_1, a_2, \cdots, a_k)$. The verifier checks if $a_1 \times s(0) + (1-a_1) s(1) = f$. If not, reject. Otherwise, the verifier picks a random $a \in GF(p)$ and asks the prover, recursively, to prove $s(a) = g(a, a_2, \cdots, a_k)$. 
+\end{enumerate}
+The proof of correctness follows the same way as $\CountSAT$.
+\end{proof}
+
