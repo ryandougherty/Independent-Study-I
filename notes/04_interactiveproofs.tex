@@ -102,5 +102,20 @@ Given $\phi$ and $k$, we construct $P_{\phi}$ as before. We see that the number 
 \]
 The prover $P$ wants to claim that the sum is exactly $k$. First, $P$ sends $V$ (the verifier) a prime $p$ between $2^n+1$ and $2^{2n}$. $V$ checks that $p$ is prime (using any prime-checking algorithm). All computations are done in $\mathbb{F}_p$ (integers $\mod p$). Since the sum above is between 0 and $2^n$, it has the same result over this field. We now use a general protocol called ``Sumcheck" to verify this equation.
 
-\par 
+\par The computation is as follows: given a polynomial $g$ of degree $d$ over $x_1, \cdots, x_n$, $k \in \mathbb{N}$, and $p$ a prime, we want to show that the prover can provide an interactive proof for $k = \sum_{b_1 \in \{0, 1\}} \cdots \sum_{b_n \in \{0, 1\}} g(x_1, \cdots, x_n)$ with all computations done modulo $p$. It is clear that given $b_1, \cdots, b_n$, the verifier can evaluate $g(b_1, \cdots, b_n)$ in poly-time.
+
+\par Define $h(x_i) = \sum_{b_{i+1} \in \{0, 1\}} \cdots \sum_{b_n \in \{0, 1\}} g(x_i, b_{i+1}, \cdots, b_n)$. If the equation of equaling $k$ is true, then $h(0) + h(1) = k$. Consider this protocol:
+\begin{enumerate}
+\item If $n=1$, verify that $h(0) + h(1) = k$. If it is, then accept.
+\item Otherwise, if $n \ge 2$, have the verifier ask the prover to send $h(x_1)$.
+\item The prover sends some polynomial $s(x_1)$.
+\item If $s(0) + s(1) \ne k$, reject (the prover sent the wrong polynomial). 
+\item Otherwise, pick a random $a \in GF(p)$. Recursively call the protocol to check that\\ $s(a) = \sum_{b_2 \in \{0, 1\}} \cdots \sum_{b_n \in \{0, 1\}} g(a, b_2, \cdots, b_n)$. 
+\end{enumerate}
+
+We claim that if the original sum is not $k$, then we reject with probability $\ge (1-\frac{d}{p})^n$. We have the theorem from this because if the sum is true, then the prover can make the verifier accept with probability 1, and with a choice of $p$, $(1-\frac{d}{p})^n \approx 1-\frac{dn}{p}$, approximately 1. 
+
+\par Assume the sum is false. For $n=1$, the verifier evaluates $g(0), g(1)$, and rejects with probability 1 if the sum is not $k$. Now assume that this is true for polynomials of degree $d$ with $n-1$ variables. In the first round, the prover should return the polynomial $h$. If so, then since $h(0) + h(1) \ne k$, the verifier automatically rejects. So suppose the prover returns $s(x_1) \ne h(x_1)$. Since $s(x_1) - h(x_1)$ has $\le d$ roots, there are $\le d$ values such that $s(a) = h(a)$. When we pick a random $a$, the probability that $s(a) \ne h(a)$ is $\ge 1-\frac{d}{p}$. 
+
+\par If $s(a) \ne h(a)$, then the prover has an incorrect claim that he/she needs to prove when we recurse. By the induction hypothesis, the prover fails to prove this claim with probability $\ge (1-\frac{d}{p})^{n-1}$. Therefore, the probability that the verifier rejects is $\ge (1-\frac{d}{p})^n$. 
 \end{proof}
