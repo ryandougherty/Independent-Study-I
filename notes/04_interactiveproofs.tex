@@ -100,12 +100,7 @@ We claim that if the original sum is not $k$, then we reject with probability $\
 \par If $s(a) \ne h(a)$, then the prover has an incorrect claim that he/she needs to prove when we recurse. By the induction hypothesis, the prover fails to prove this claim with probability $\ge (1-\frac{d}{p})^{n-1}$. Therefore, the probability that the verifier rejects is $\ge (1-\frac{d}{p})^n$. 
 \end{proof}
 
-\subsection{$\AM, \MA$}
-Now we go to a motivating example for cryptography - how do we share items over the public internet without an attacker knowing? We use a similar example in complexity theory, called Arthur-Merlin protocols:
 
-\begin{definition}
-Define $\AM[k] \subseteq \IP[k]$ to be the class where we restrict the verifier's messages to be random bits, and the verifier must use these random bits (i.e., not part of the message). We have $\AM = \AM[2]$, which has the verifier send the first message (random string), the prover responds, and the verifier decides by applying a poly-time function to the entire transcript. Have $\MA$ be the same as $\AM$, but the prover sends the first message, the verifier computes a decision based off random coins and the transcript given by the prover.
-\end{definition}
 
 \subsection{$\IP = \PSPACE$}
 This is a nontrivial result that was not expected. We knew the $\IP \subseteq \PSPACE$ direction before, and many people did not expect the other direction. 
@@ -154,3 +149,17 @@ It's clear that this expression is poly-sized. Suppose for a polynomial $g$ on $
 The proof of correctness follows the same way as $\CountSAT$.
 \end{proof}
 
+\subsection{$\AM, \MA$}
+Now we go to a motivating example for cryptography - how do we share items over the public internet without an attacker knowing? We use a similar example in complexity theory, called Arthur-Merlin protocols:
+
+\begin{definition}
+Define $\AM[k] \subseteq \IP[k]$ to be the class where we restrict the verifier's messages to be random bits, and the verifier must use these random bits (i.e., not part of the message). We have $\AM = \AM[2]$, which has the verifier send the first message (random string), the prover responds, and the verifier decides by applying a poly-time function to the entire transcript. Have $\MA$ be the same as $\AM$, but the prover sends the first message, the verifier computes a decision based off random coins and the transcript given by the prover.
+\end{definition}
+
+What else can we show with the $TQBF$ protocol? We can show the following:
+\begin{theorem}
+If $\PSPACE \subseteq \Ppoly$, then $\IP = \PSPACE = \MA$.
+\end{theorem}
+\begin{proof}
+With this assumption, we can replace the prover in the $TQBF$ protocol with a poly-size circuit. The prover (Merlin) can give the circuit to the verifier (Arthur) in the first round, and the verifier runs the interactive proof. There is no need for the verifier to trust the circuit, since the correctness of the protocol says that if the formula is not true, then there is no prover that can make the verifier accept with high probability. 
+\end{proof}
