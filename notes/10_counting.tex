@@ -190,7 +190,7 @@ Let $\phi$ have $c$ alternations. Since $\ParityP$ (and of course, $\ParitySAT$)
 \par To finish, we can have errors in converting $\phi(x_1)$ to an equivalent $\ParitySAT$ instance (with error $2^{-m-2}$), and when we replace $\exists_{x_1}$ in constructing $\alpha$, also with the same error. We have that the overall error is $2^{-m-1} \le 2^{-m}$, so we are done.
 \end{proof}
 
-\subsection*{Derandomization}
+\subsection{Derandomization}
 We now make the reduction deterministic. 
 \begin{lemma}
 There is a deterministic poly-time reduction $f$ that for any boolean formula $\alpha$, there is a boolean formula $\beta = T(\alpha, 1^n)$ such that:
@@ -208,7 +208,7 @@ Note the constructions of $\#(\phi\cdot\tau), \#(\phi+\tau)$ from earlier. The r
 Let $\psi_0 = \alpha$, and $\psi_{i+1} = 4\psi_i^3 + 3\psi_i^4$, and let $\beta = \psi_{\lceil \log(n+1)\rceil}$. We have that repeated use of the 2 implications above has that if $\#(\psi)$ is odd, then $\#(\beta) = -1 (\mod 2^{n+1})$. If $\#(\psi)$ is even, then $\#(\beta) = 0 (\mod 2^{n+1})$. We have $|\beta| = \exp(O(\log n))|\alpha|$, and so its size is polynomial in the input length.
 \end{proof}
 
-\subsection*{Proving Toda's Theorem}
+\subsection{Proving Toda's Theorem}
 \begin{proof}
 Let $f$ be the randomized poly-time reduction above with $m=2$. Since it is randomized, we can think of it as a deterministic one with 2 inputs: a quantified formula $\psi$ and a random string $r$, with $R = |r|$. Let $T$ be the deterministic poly-time reduction above with $n = R+2$, which runs in $\poly(R, |f(\psi)|)$ time. 
 

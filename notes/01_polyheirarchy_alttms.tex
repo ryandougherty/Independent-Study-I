@@ -109,7 +109,7 @@ $\Sigma_i^{\SAT}$ is $\Sigma_i^\P$-complete, and $\Pi_i^{\SAT}$ is $\Pi_i^\P$-co
 \end{theorem}
 
 \begin{proof}
-Proven in \cite{Wrathall197623}.
+Proven in \cite{Wrathall197623}, but we give a shorter proof here. It is easy to see that $\Sigma_i^{\SAT} \in \Sigma_i^\P$. We take a TM that evaluates the formula $\phi(x_1, \cdots, x_n)$. We have that $\phi \in \Sigma_i^{\SAT}$ if and only if $\exists u_1 \forall u_2 \cdots Qu_i [M(\phi, u_1, \cdots, u_i) = 1]$ is true, by definition. Any $L \in \Sigma_i^\P$ has a poly-time TM $M$, by definition. The computation of $M$ on $(x, y_1, \cdots, y_i)$ can be converted into a boolean formula $\phi_{x, y_1, \cdots, y_i}$, as was done in the proof of $\NP$-hardness for $\ThreeSAT$. Therefore, $L \le_p \ThreeSAT$. The proof for $\Pi_i^{\SAT}$ is very similar.
 \end{proof}
 
 However, there is an alternate definition of the polynomial hierarchy that we will now use:
