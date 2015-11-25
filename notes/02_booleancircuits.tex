@@ -167,7 +167,9 @@ $\NC^d = \NC^{d+1} \Rightarrow \NC = \NC^d$.
 \end{theorem}
 
 \begin{proof}
-We want to use the assumption that all circuits with depth $O(\log^{d+1} n)$ and size $O(n^c)$ can be converted to an equivalent circuit of depth $O(\log^{d} n)$ and size $O(n^{c'})$ (with different constants in the $O(\cdot)$ notation). Suppose again that we have a circuit $C$ of depth $m \times \log^{d+2} n$ ($m$ is a constant) and size $O(n^c)$. Look at all nodes at ``levels" $m \log^{d+1} n, 2m \log^{d+1} n, \cdots, m\log^{d+2} n$. For any constant $p$, a particular node at the $(pm\log^{d+1} n)$-th level is the value of a circuit with depth $m\log^{d+1} n$ and size $O(n^c)$, with leaves at the $((p+1)m\log^{d+1} n)$-th level. Replace each of the circuits by an equivalent circuit of size $m'\log^{d} n$ and size $O(n^c)$ (by assumption). The new circuit has depth $O(\log^{d+1} n)$ and size $O(n^{c+c'})$. Therefore, we get the result. 
+\par We can show that $\NC^d = \NC^{d+1} \Rightarrow \NC^{d} = \NC^{d+2}$, which gives the result.
+
+\par We want to use the assumption that all circuits with depth $O(\log^{d+1} n)$ and size $O(n^c)$ can be converted to an equivalent circuit of depth $O(\log^{d} n)$ and size $O(n^{c'})$ (with different constants in the $O(\cdot)$ notation). Suppose again that we have a circuit $C$ of depth $m \times \log^{d+2} n$ ($m$ is a constant) and size $O(n^c)$. Look at all nodes at ``levels" $m \log^{d+1} n, 2m \log^{d+1} n, \cdots, m\log^{d+2} n$. For any constant $p$, a particular node at the $(pm\log^{d+1} n)$-th level is the value of a circuit with depth $m\log^{d+1} n$ and size $O(n^c)$, with leaves at the $((p+1)m\log^{d+1} n)$-th level. Replace each of the circuits by an equivalent circuit of size $m'\log^{d} n$ and size $O(n^c)$ (by assumption). The new circuit has depth $O(\log^{d+1} n)$ and size $O(n^{c+c'})$. Therefore, we get the result. 
 \end{proof}
 Therefore, it is most likely that each inclusion of $\NC^d \subseteq \AC^d \subseteq \NC^{d+1}$ is strict (the only one proved, however, is $d = 0$).  So where does $\NC$ live in relation to other classes? We can show the following:
 \begin{theorem}
