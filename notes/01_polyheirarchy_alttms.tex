@@ -2,7 +2,7 @@
 
 \subsection{Polynomial Hierarchy}
 
-From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with the power of oracle machines. However, we don't have a generalization of a ``hierarchy" of such oracle machines (the theorem only concerns the ``first level"). Therefore, in \cite{originalpolyhierarchypaper}, the notion of a ``polynomial hierarchy" was created. The hierarchy is defined (equivalently) as follows:
+From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with the power of oracle machines. And of course, we have a hierarchy of $\lang{EXPTIME}$ classes (singly exponential, doubly exponential, $\cdots$). However, we don't have a generalization of a ``hierarchy" of such oracle machines (the theorem only concerns the ``first level"). Therefore, in \cite{originalpolyhierarchypaper}, the notion of a ``polynomial hierarchy" was created. The hierarchy is defined (equivalently) as follows:
 \begin{itemize}
 \item $\Sigma_1^\P$ = $\Pi_1^\P = \NP$,
 \item $\Sigma_i^\P = \NP^{\Sigma_{i-1}^\P}$, 
@@ -109,7 +109,7 @@ $\Sigma_i^{\SAT}$ is $\Sigma_i^\P$-complete, and $\Pi_i^{\SAT}$ is $\Pi_i^\P$-co
 \end{theorem}
 
 \begin{proof}
-Proven in \cite{Wrathall197623}, but we give a shorter proof here. It is easy to see that $\Sigma_i^{\SAT} \in \Sigma_i^\P$. We take a TM that evaluates the formula $\phi(x_1, \cdots, x_n)$. We have that $\phi \in \Sigma_i^{\SAT}$ if and only if $\exists u_1 \forall u_2 \cdots Qu_i [M(\phi, u_1, \cdots, u_i) = 1]$ is true, by definition. Any $L \in \Sigma_i^\P$ has a poly-time TM $M$, by definition. The computation of $M$ on $(x, y_1, \cdots, y_i)$ can be converted into a boolean formula $\phi_{x, y_1, \cdots, y_i}$, as was done in the proof of $\NP$-hardness for $\ThreeSAT$. Therefore, $L \le_p \ThreeSAT$. The proof for $\Pi_i^{\SAT}$ is very similar.
+Proven in \cite{Wrathall197623}, but we give a shorter proof here. It is easy to see that $\Sigma_i^{\SAT} \in \Sigma_i^\P$. We take a TM that evaluates the formula $\phi(x_1, \cdots, x_n)$. We have that $\phi \in \Sigma_i^{\SAT}$ if and only if $\exists u_1 \forall u_2 \cdots Qu_i [M(\phi, u_1, \cdots, u_i)]$ is true, by definition. Any $L \in \Sigma_i^\P$ has a poly-time TM $M$, by definition. The computation of $M$ on $(x, y_1, \cdots, y_i)$ can be converted into a boolean formula $\phi_{x, y_1, \cdots, y_i}$, as was done in the proof of $\NP$-hardness for $\ThreeSAT$. Therefore, $L \le_p \ThreeSAT$. The proof for $\Pi_i^{\SAT}$ is very similar.
 \end{proof}
 
 However, there is an alternate definition of the polynomial hierarchy that we will now use:

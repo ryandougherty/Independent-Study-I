@@ -117,7 +117,7 @@ So we have various randomized classes - what is the analog of a reduction in the
 \begin{definition}
 We say that $A$ \emph{randomly reduces} to $B$ ($B \le_r C$) if there is a poly-time PTM $M$ such that for all $x$, $\Pr[B(M(x)) = C(x)] \ge \frac{2}{3}$. 
 \end{definition}
-Unlike the reductions we have seen before, this reduction is not transitive. However, $\BPP$ is closed under randomized reductions (i.e., if $B \le_r C$ and $C \in \BPP$, then so is $B$). To use randomized reductions, we create a class that randomly reduces from the deterministic 3SAT:
+Unlike the reductions we have seen before, this reduction is not transitive. To use randomized reductions, we create a class that randomly reduces from the deterministic 3SAT:
 \begin{definition}
 $\BP\cdot \NP = \{L \colon L \le_r \ThreeSAT\}$. 
 \end{definition}
