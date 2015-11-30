@@ -109,7 +109,9 @@ $\FPT$ is closed under $\FPT$-reductions.
 \begin{proof}
 Let $M$ be an $\FPT$ reduction between the parameterized problems $(L_1, k_1)$ and $(L_2, k_2)$, and is computable in time $h(k_1(x)) \times p(|x|)$, and $k_2(y) \le g(k_1(x))$ for $y \in (L_2, k_2)$. 
 
-\par Let $T$ be a TM that decides $L_2$ in time $f'(k_2(x)) \times p'(|x|)$, and assume $f'$ is non-decreasing. Then we can decide $L_1$ by computing $y$ and then decide if $y \in L_2$ via $T$, which can be done in time $h(k_1(x)) \times p(|x|) + f'(k_2(y)) \times p'(|y|) \le h(k_1(x)) \times q(|x|) + f'(g(k_1(x))) \times p'(h(k_1(x)) \times q(|x|))$. This show
+\par Let $T$ be a TM that decides $L_2$ in time $f'(k_2(x)) \times p'(|x|)$, and assume $f'$ is non-decreasing. Then we can decide $L_1$ by computing $y$ and then decide if $y \in L_2$ via $T$, which can be done in time $h(k_1(x)) \times p(|x|) + f'(k_2(y)) \times p'(|y|) \le h(k_1(x)) \times q(|x|) + f'(g(k_1(x))) \times p'(h(k_1(x)) \times q(|x|))$.
+
+\par Since we know that $p'(h(k_1(x)) \times q(|x|)) \le p'(h(k_1(x))) \times p'(q(|x|))$, then we have the result. 
 \end{proof}
 
 \newcommand{\paraNP}{\lang{paraNP}}
