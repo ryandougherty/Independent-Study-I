@@ -4,14 +4,13 @@
 
 From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with the power of oracle machines. And of course, we have a hierarchy of $\lang{EXPTIME}$ classes (singly exponential, doubly exponential, $\cdots$). However, we don't have a generalization of a ``hierarchy" of such oracle machines (the theorem only concerns the ``first level"). Therefore, in \cite{originalpolyhierarchypaper}, the notion of a ``polynomial hierarchy" was created. The hierarchy is defined (equivalently) as follows:
 \begin{itemize}
+\item $\Sigma_0^\P = \Pi_0^\P = \P$,
 \item $\Sigma_1^\P = \NP, \Pi_1^\P = \coNP$,
-\item $\Sigma_i^\P = \NP^{\Sigma_{i-1}^\P}$, 
-\item $\Pi_i^\P = \coNP^{\Pi_{i-1}^\P}$.
+\item $\Sigma_i^\P = \NP^{\Sigma_{i-1}^\P}$ for $i \ge 2$, 
+\item $\Pi_i^\P = \coNP^{\Pi_{i-1}^\P}$ for $i \ge 2$.
 \end{itemize}
-
+In \Cref{fig:polyhierarchy}, we show the hierarchy with inclusions between each level. 
 \begin{figure}[!htb]
-\label{fig:polyhierarchy}
-\caption{Polynomial Hierarchy, taken from http://commons.wikimedia.org/wiki/File:Polynomial\_time\_hierarchy.svg. Each arrow represents inclusion: for example, $\Sigma_1^\P \subseteq \Sigma_2^\P$.}
 \centering
 \begin{tikzpicture}[->, node distance=2cm, semithick]
  \node (P) {$\Sigma_0^\P = \P = \Pi_0^\P$};
@@ -33,6 +32,8 @@ From \Cref{thm:relativizePandNP}, we have a notion of using {\P} and {\NP} with 
  \draw (Pi2)    -> (Pi3);
  \draw (Pi2)    -> (Sigma3);
 \end{tikzpicture}
+\caption{Polynomial Hierarchy, taken from http://commons.wikimedia.org/wiki/File:Polynomial\_time\_hierarchy.svg. Each arrow represents inclusion: for example, $\Sigma_1^\P \subseteq \Sigma_2^\P$.}
+\label{fig:polyhierarchy}
 \end{figure}
 
 %\begin{figure}
@@ -95,7 +96,7 @@ If there is a $\PH$-complete language, then $\PH$ only has a finite number of le
 Assume there exists a $\PH$-complete language $L$. By definition, $\PH = \bigcup_{k = 1}^{\infty} \Sigma_k^\P$. Therefore, for some $j$, we have that $L \in \Sigma_j^\P$, and every language in $\PH$ is polynomial-time reducible to $L$. However, any language $A$ that is polynomial-time reducible to some language $B \in \Sigma_j^\P$ has that $A \in \Sigma_j^\P$. Therefore, $\PH \subseteq \Sigma_j^\P$.
 \end{proof}
 
-This is quite a negative result compared to the complexity classes that we have studied earlier. However, for each $i$, there are many complete languages for $\Sigma_i^\P$ and $\Pi_i^\P$ (see \cite{Schaefer_completenessin}), by looking at a different definition of the hierarchy:
+This is quite a negative result compared to the complexity classes that we have studied earlier. However, for each $i$, there are many complete languages for $\Sigma_i^\P$ and $\Pi_i^\P$ (see \cite{Schaefer_completenessin}):
 \begin{definition}
 We define the following 2 languages:
 \begin{itemize}
@@ -109,7 +110,7 @@ $\Sigma_i^{\SAT}$ is $\Sigma_i^\P$-complete, and $\Pi_i^{\SAT}$ is $\Pi_i^\P$-co
 \end{theorem}
 
 \begin{proof}
-Proven in \cite{Wrathall197623}, but we give a shorter proof here. It is easy to see that $\Sigma_i^{\SAT} \in \Sigma_i^\P$. We take a TM that evaluates the formula $\phi(x_1, \cdots, x_n)$. We have that $\phi \in \Sigma_i^{\SAT}$ if and only if $\exists u_1 \forall u_2 \cdots Qu_i [M(\phi, u_1, \cdots, u_i)]$ is true, by definition. Any $L \in \Sigma_i^\P$ has a poly-time TM $M$, by definition. The computation of $M$ on $(x, y_1, \cdots, y_i)$ can be converted into a boolean formula $\phi_{x, y_1, \cdots, y_i}$, as was done in the proof of $\NP$-hardness for $\ThreeSAT$. Therefore, $L \le_p \ThreeSAT$. The proof for $\Pi_i^{\SAT}$ is very similar.
+Proven in \cite{Wrathall197623}, but we give a shorter proof here. It is easy to see that $\Sigma_i^{\SAT} \in \Sigma_i^\P$. We take a TM that evaluates the formula $\phi(x_1, \cdots, x_n)$. We have that $\phi \in \Sigma_i^{\SAT}$ if and only if $\exists u_1 \forall u_2 \cdots Qu_i [M(\phi, u_1, \cdots, u_i)]$ is true, by definition. Any $L \in \Sigma_i^\P$ has a poly-time TM $M$, by definition (note: this does not meant that $L \in \P$, but rather that the TM $M$ in the definition above runs in poly-time). The computation of $M$ on $(x, y_1, \cdots, y_i)$ can be converted into a boolean formula $\phi_{x, y_1, \cdots, y_i}$, as was done in the proof of $\NP$-hardness for $\ThreeSAT$. Therefore, $L \le_p \Sigma_i^\SAT$. The proof for $\Pi_i^{\SAT}$ is very similar.
 \end{proof}
 
 However, there is an alternate definition of the polynomial hierarchy that we will now use:
@@ -124,7 +125,7 @@ where $Q_i$ is either $\exists$ or $\forall$ depending on whether $i$ is odd or 
 We prove that the definitions are equivalent. It is sufficient to show the following:
 
 \begin{theorem}
-For all $i \ge 2$, $\Sigma_i^\P = \NP^{\Sigma_{i-1}\SAT}$.
+For all $i \ge 2$, $\Sigma_i^\P = \NP^{\Sigma_{i-1}\SAT}$ (the $\Sigma_i^\P$ is defined the ``new" way, and $\NP^{\Sigma_{i-1}\SAT}$ is defined the new way).
 \end{theorem}
 
 \begin{proof}
@@ -134,7 +135,7 @@ $\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} M(x, u_1, u
 \end{center}
 The part ``$\forall u_2 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2)$ accepts" is exactly the negation of $\neg (\forall u_2 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2)$ accepts$)$, which is in $\NP$. We can use the $\SAT$ oracle for this. Therefore, there exists a NDTM $N$ that, given oracle access to $\SAT$, decides $L$ (by nondeterministically guessing $u_1$). This shows $\Sigma_2^\P \subseteq \NP^{\SAT}$.
 
-\par Now we show $\NP^{\SAT} \subseteq \Sigma_2^\P$. Let $L \in \NP^{\SAT}$ - there exists a poly-time NDTM $N$ that decides $L$. Therefore, $x \in L$ if and only if there is a sequence of nondeterministic choices (and oracle answers) that has $N$ accept $x$. Let the choices be $c_1, \cdots, c_m \in \{0, 1\}$, and the answers be $a_1, \cdots, a_k \in \{0, 1\}$.
+\par Now we show $\NP^{\SAT} \subseteq \Sigma_2^\P$. Let $L \in \NP^{\SAT}$ - there exists a poly-time NDTM $N$ with oracle access to $\SAT$ that decides $L$. Therefore, $x \in L$ if and only if there is a sequence of nondeterministic choices (and oracle answers) that has $N$ accept $x$. Let the choices be $c_1, \cdots, c_m \in \{0, 1\}$, and the answers be $a_1, \cdots, a_k \in \{0, 1\}$.
 
 \par So, if $N$ uses these choices and receives $a_i$ from the oracle as the answer to the $i$th query made, then:
 \begin{enumerate}
@@ -178,7 +179,7 @@ We need to refine our definition of ``accepting" an input is, because of the qua
 \item We say $M$ accepts $x$ if, at the end of recursively applying rules, $C_{start}$ is labelled ``Accept."
 \end{enumerate}
 
-So how powerful is $\AP$? It seems that it can be very powerful! However, we show that it can only have polynomial space:
+So how powerful is $\AP$? It seems that it can be very powerful! However, we show that all $\AP$ languages can be simulated in poly-space:
 \begin{theorem}
 $\AP = \PSPACE$.
 \end{theorem}

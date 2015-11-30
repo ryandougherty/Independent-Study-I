@@ -14,7 +14,7 @@ A language $L$ is in $\BPTIME(T(n))$ if there exists a PTM $M$ that decides $L$ 
 \]
 \end{definition}
 
-We also give an alternate definition for $\BPP$:
+It is clear that $\P \subseteq \BPP$: the definition of $\P$ is the same except without coin flips, and has zero error in accepting/rejecting probability. We also give an alternate definition for $\BPP$:
 \begin{definition}
 $L \in \BPP$ if there exists a poly-time TM verifier $M$ and a polynomial $p$ such that for all $x \in \{0, 1\}^*$, $\Pr[L(M) = L] \ge \frac{2}{3}$ where $M$ has certificates of size $p(|x|)$.
 \end{definition}
@@ -23,7 +23,7 @@ $L \in \BPP$ if there exists a poly-time TM verifier $M$ and a polynomial $p$ su
 $\BPP \subseteq \Ppoly$.
 \end{theorem}
 
-This proof will use what is called as ``success amplification" - the essential idea is that, given we have polynomial time, we can make successive coin flips to reduce the error bound for $\BPP$ to even less error. We do this as follows:
+This proof will use what is called ``success amplification" - the essential idea is that, given we have polynomial time, we can make successive coin flips to reduce the error bound for $\BPP$ to even less error. We do this as follows:
 \begin{itemize}
 \item For a PTM $M$ that computes a language $L$ with error $\frac{1}{2} - \frac{1}{n^c}$, run $M$ for $k$ independent trials, and accept only if at least half of the trials accept. 
 \item Define $X_i = 1$ if the $i$-th trial accepts, and 0 otherwise, and $X = \Sigma_1^k X_i$. 
@@ -54,30 +54,31 @@ As before, assume that for an $L \in \BPP$ there is a poly-time TM $M$ such that
 
 \par For $x \in \{0, 1\}^n$, let $S_x$ be the set of certificates for which $M$ accepts $x$, and let $p$ be the polynomial that is the number of random bits $M$ uses. Therefore, either $|S_x| \ge (1-2^{-n})2^{p(n)}$, or $|S_x| \le 2^{p(n)-n}$, whether $x \in L$ or not. What we will show is that we can differentiate between these using only 2 quantifiers.
 
-\par For $A \subseteq \{0, 1\}^{p(n)}$ and $b \in \{0, 1\}^{p(n)}$, define $A+b = \{a+b \colon a \in A\}$, where the operation is done $(\mod 2)$. Let $k = \lceil {p(n)/n} \rceil +1$. We will show the following:
+\par For $A \subseteq \{0, 1\}^{p(n)}$ and $b \in \{0, 1\}^{p(n)}$, define $A+b = \{a+b \colon a \in A\}$, where the operation is done $\mod 2$. Let $k = \lceil {p(n)/n} \rceil +1$. We will show the following:
 
 \begin{enumerate}
-\item For all $S \subseteq \{0, 1\}^{p(n)}$ and $|S| \le 2^{p(n)-n}$ and any $k$ vectors $\{u_i\}_{1 \le i \le k}$ with $u_i \in \{0, 1\}^{p(n)}$, we have that $\bigcup_{i=1}^{k} (S+u_i) \ne \{0, 1\}^{p(n)}$.
+\item For all $S \subseteq \{0, 1\}^{p(n)}$ and $|S| \le 2^{p(n)-n}$ and any $k$ vectors $\{u_i\}_{1 \le i \le k}$ with $u_i \in \{0, 1\}^{p(n)}$, we have that $\bigcup_{i=1}^{k} (S+u_i) \ne \{0, 1\}^{p(n)}$ (i.e., if $|S|$ is ``small," then we cannot get all of $\{0, 1\}^{p(n)}$). 
 
-\item For all $S \subseteq \{0, 1\}^{p(n)}$ and $|S| \ge (1-2^{-n})2^{p(n)}$, there exist $k$ vectors $\{u_i\}_{1 \le i \le k}$ with $\bigcup_{i=1}^{k}(S+u_i) = \{0, 1\}^{p(n)}$.
+\item For all $S \subseteq \{0, 1\}^{p(n)}$ and $|S| \ge (1-2^{-n})2^{p(n)}$, there exist $k$ vectors $\{u_i\}_{1 \le i \le k}$ with $\bigcup_{i=1}^{k}(S+u_i) = \{0, 1\}^{p(n)}$ (i.e., if $|S|$ is ``large," then we can get all of $\{0, 1\}^{p(n)}$).
 \end{enumerate}
 In other words, we can establish that $x \in L$ with only 2 quantifiers. Proving these implies that $\BPP \subseteq \Sigma_2^\P \cap \Pi_2^\P$. For the first proof, we have that $|S + u_i| = |S|$, so the union is at most $k|S| < 2^{p(n)}$ for large enough $n$.
 
-\par For the second proof, if the $u_i$ are chosen independently randomly, then $\Pr[\bigcup_{i=1}^{k}(S+u_i) = \{0, 1\}] > 0$ will imply the proof. Let $B_r$ be the event that $r \notin \bigcup_{i=1}^{k}(S+u_i)$. This implies that we need to prove that $\Pr[\exists B_r] < 1$ for some $r \in \{0, 1\}^{p(n)}$. Equivalently, we can show that $\Pr[B_r] < 2^{-p(n)}$ for all $r$. 
+\par For the second proof, if the $u_i$ are chosen independently randomly, then $\Pr[\bigcup_{i=1}^{k}(S+u_i) = \{0, 1\}^{p(n)}] > 0$ will imply the proof. Let $B_r$ be the event that $r \notin \bigcup_{i=1}^{k}(S+u_i)$. This implies that we need to prove that $\Pr[\exists B_r] < 1$ for some $r \in \{0, 1\}^{p(n)}$. Equivalently, we can show that $\Pr[B_r] < 2^{-p(n)}$ for all $r$. 
 
 \par Define $B_r^i$ the event that $r \notin S + u_i$ (equivalently, $r + u_i \notin S$). We can see that $B_r = \bigcap_{1 \le i \le k}B_{r}^i$. However, $r+u_i$ is uniformly chosen from $\{0, 1\}^{p(n)}$, so $r+u_i \in S$ with probability $\ge 1-2^{-n}$. Also, since the $B_r^i$ are independent for all $i$, we have $\Pr[B_r] = (\Pr[B_r^i])^k \le 2^{-nk} < 2^{-p(n)}$. 
 \end{proof}
+It's surprising that we were able to prove the probability of $B_r$ being true less than $2^{-p(n)}$, whereas we only needed it to be less than 1. 
 
 \subsection{$\RP, \coRP, \ZPP$}
-Now we look at ``one-sided" error classes, where before we had $\BPP$ which was a randomized class with two sides of error (the probability of outputting ``accept" given that $x \in L$ was strictly less than 1, and that of ``reject" given $x \notin L$ was strictly greater than 0). 
+Now we look at ``one-sided" error classes, where before we had $\BPP$ which was a randomized class with two sides of error (the probability of outputting ``accept" given that $x \in L$ was strictly less than 1, and outputting ``accept" given $x \notin L$ was strictly greater than 0). 
 
 \newcommand{\RTIME}{\lang{RTIME}}
 \newcommand{\ZTIME}{\lang{ZTIME}}
 \begin{definition}
-We have $L \in \RTIME(T(n))$ if there is a $T(n)$-time PTM $M$ such that if $x \in L$, then $\Pr[M(x) = 1] \ge \frac{2}{3}$, and if $x \notin L$, then $\Pr[M(x) = 0] = 0$. Define $\RP = \bigcup_{c \ge 0}\RTIME(n^c)$. 
+We have $L \in \RTIME(T(n))$ if there is a $T(n)$-time PTM $M$ such that if $x \in L$, then $\Pr[M(x) = 1] \ge \frac{1}{2}$, and if $x \notin L$, then $\Pr[M(x) = 0] = 0$. Define $\RP = \bigcup_{c \ge 0}\RTIME(n^c)$. 
 \end{definition}
 
-We can also see that $\coRP$ has the ``other side" error. In order to define a complexity class with no error for a PTM (i.e., $\ZPP$), we need to define ``expected running time":
+Of course, we can make the constant exponentially close to 1 with success amplification, as we have done with $\BPP$. We can also see that $\coRP$ has the ``other side" error. In order to define a complexity class with no error for a PTM (i.e., $\ZPP$), we need to define ``expected running time":
 
 \begin{definition}
 Let $M$ be a PTM with input $x$. Let $T_{M,x}$ be the running time of $M$ on $x$. Therefore, $\Pr[T_{M, x} = T] = p$ has that $M$ halts on $x$ within $T$ steps with probability $p$. We define $M$ to have \emph{expected running time T(n)} if $\mathbb{E}[T_{M, x}] \le T(|x|)$ for all $x$. 
@@ -144,7 +145,7 @@ We just showed $\BP\cdot\NP \subseteq \lang{NP/poly}$. We also showed that if $\
 \subsection{$\BPL, \RL$}
 We develop an analog of $\BPP, \RP$ in the same way but for log-space:
 \begin{definition}
-We have $L \in \BPL$ if there is an $O(\log(n))$-space PTM $M$ such that $\Pr[M(x) = L(x)] \ge \frac{2}{3}$ for all $x$. Also, $L \in \RL$ if there is an $O(\log(n))$-space PTM $N$ such that if $x \in L$, then $\Pr[N(x) = 1] \ge \frac{2}{3}$ and if $x \notin L$, then $\Pr[N(x) = 1] = 0$. 
+We have $L \in \BPL$ if there is an $O(\log(n))$-space PTM $M$ such that $\Pr[M(x) = L(x)] \ge \frac{2}{3}$ for all $x$. Also, $L \in \RL$ if there is an $O(\log(n))$-space PTM $N$ such that if $x \in L$, then $\Pr[N(x) = 1] \ge \frac{1}{2}$ and if $x \notin L$, then $\Pr[N(x) = 1] = 0$. 
 \end{definition}
 Basically, all that we have changed is that we use $\log(n)$-space instead of poly-time. In fact, the very famous problem $\UPATH$ (undirected paths in graphs between two vertices) is in $\NL$ and $\RP$:
 \begin{theorem}
@@ -159,7 +160,7 @@ So how do $\BPL$ and $\RL$ relate? Although it seems intuitive, we will prove th
 $\RL \subseteq \BPL$.
 \end{theorem}
 \begin{proof}
-Run 2 independent trials so that the error probability is reduced from $\frac{1}{2}$ to $\frac{1}{3}$. 
+Run 2 independent trials (this reduces the error probability enough to fit the definition). 
 \end{proof}
 From this, we should prove where $\RL$ and $\BPL$ are compared to other complexity classes. We prove that:
 \begin{theorem}

@@ -43,7 +43,7 @@ $\P \subseteq \Ppoly$, and the inclusion is strict.
 \end{theorem}
 
 \begin{proof}
-Let $M$ be an ``oblivious" TM, which is one that has its head movement independent of the input. We need to show that for any $T(n)$-time oblivious TM, we can construct an equivalent $O(T(n))$-size circuit family. 
+Let $M$ be an ``oblivious" TM, which is one that has its head movement independent of the input contents, but may be dependent on the length of the input. We need to show that for any $T(n)$-time oblivious TM, we can construct an equivalent $O(T(n))$-size circuit family. 
 
 \par Let $x$ be an input for $M$, and look at the set of $M$'s configurations: $C_1, \cdots, C_{T(n)}$. Encode each configuration by a constant-size binary string. We can compute $C_i$ based on the following:
 \begin{itemize}
@@ -69,7 +69,7 @@ $\CKTSAT$ is $\NP$-complete.
 \end{theorem}
 
 \begin{proof}
-$\CKTSAT$ is clearly in $\NP$. For hardness, if $L \in \NP$, then there is a verifier $V$ such that, on input $x$, verifies if $x \in L$ in polynomial time. By \Cref{thm:p_subset_ppoly}, we can convert $V$ into an equivalent circuit $C$ in polynomial time. Therefore, $x \in L$ if and only if $C \in \CKTSAT$.
+$\CKTSAT$ is clearly in $\NP$ (the certificate is $w$). For hardness, if $L \in \NP$, then there is a verifier $V$ such that, on input $x$, verifies if $x \in L$ in polynomial time. By \Cref{thm:p_subset_ppoly}, we can convert $V$ into an equivalent circuit $C$ in polynomial time. Therefore, $x \in L$ if and only if $C \in \CKTSAT$.
 \end{proof}
 
 \subsection{Advice!}
@@ -105,45 +105,49 @@ $UHALT = \{1^n \colon n$'s binary expansion encodes $\langle M, w \rangle$ where
 \end{center}
 \end{proof}
 
-We have proved both of these, but how does $\NP$ relate to $\Ppoly$ (instead of the $\NTIME$ version)? We actually don't know for sure, as the polynomial hierarchy would collapse:
+We have proved both of these containments, but how does $\NP$ relate to $\Ppoly$ (instead of the $\NTIME$ version)? We actually don't know for sure, as the polynomial hierarchy would collapse:
 
 \begin{theorem}[Karp-Lipton]
 If $\NP \subseteq \Ppoly$, then $\PH = \Sigma_2^\P$.
 \end{theorem}
 
 \begin{proof}
-It is sufficient to show that $\NP \subseteq \Ppoly$ implies $\Sigma_3^\P \subseteq \Sigma_2^\P$. So fix a language $L \in \Sigma_3^\P$. By definition, there exists a poly-time TM $M$ and a polynomial $p$ such that if $x \in L$, then:
-\begin{center}
-$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \exists u_3 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2, u_3)$ accepts.
-\end{center}
-We re-arrange this as follows with a new language $L'$: $\langle x, u_1, u_2 \rangle \in L'$ if and only if:
-\begin{center}
-$\exists u_3 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2, u_3)$ accepts.
-\end{center}
-Therefore, $L' \in \NP$ and therefore $L' \le_P \ThreeSAT$. Therefore, $\langle x, u_1, u_2 \rangle \in L'$ if and only if there exists a $\ThreeSAT$ formula $\phi$ over $x, u_1, u_2$ (reduction done in poly time). Also a NDTM $M'$ decides $L'$.
+We just need to show that $\Pi_2^\P \subseteq \Sigma_2^\P$. If we have $\NP \subseteq \Ppoly$, then there is a poly-size circuit family $\{C_n\}$ such that $\phi \in \SAT$ if and only if $C_{|\phi|}(\phi)$ outputs a satisfying assignment to $\phi$. It suffices to show $\Pi_2^\SAT \in \Sigma_2^\P$. 
 
-\par Now just plug in $M'$: $x \in L$ if and only if:
-\begin{center}
-$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} M'(x, u_1, u_2)$ accepts.
-\end{center}
-This is equivalent to:
-\begin{center}
-$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \phi(x, u_1, u_2) \in \ThreeSAT$.
-\end{center}
-Now here is the central part of the proof. We assume that $\NP \subseteq \Ppoly$. Therefore, there exists a poly-size circuit $C$ for $\ThreeSAT$. We can just use $C$ to decide the expression above. So how do we find the circuit in the first place?
+\par The structure of an element of $\Pi_2^\SAT$ looks like ``$\forall x_1 \exists x_2 \phi(x_1, x_2)$ is true." The ``$\exists x_2 \phi(x_1, x_2)$ is true" part is exactly $\SAT$. We use nondeterminism (by assumption) to guess the circuit for $\SAT$, thereby removing the $\exists$ quantifier. Let $\phi_u (\cdots) = \phi(u, \cdots)$. Therefore, $\forall x_1 \exists x_2 \phi(x_1, x_2)$ is true if and only if $\exists C\;\text{a circuit}\;\forall u\;\phi_u(C(\phi_u))$ is true. Therefore, this is in $\Sigma_2^\P$. 
 
-\par We prove the following. There exists a poly-time TM $M_C$ that, on input 3CNF formula $\phi$ with $|\phi| = n$ and a circuit $C$ with $n$ inputs such that: 
-\begin{enumerate}
-\item If $C$ recognizes $\ThreeSAT$ for inputs of length $n$ and $\phi \in \ThreeSAT$, then $M_C$ accepts.
-\item If $\phi \notin \ThreeSAT$, then $M_C$ rejects.
-\end{enumerate}
-The idea is the following: repeatedly use the circuit $C$ to extract a satisfying assignment for $\phi$. Let the variables of $\phi$ be $x_1, ..., x_k$. If $C$ on input $\phi$ outputs 0, then $M_C$ rejects. Otherwise, fix $x_1$ to be false, and check if $C$ outputs 1 on the new circuit. If so, permanently fix $x_1$ to be false, and also have an array of $k$ values, and store $x_1$ to be the first element. Repeat for the other $k-1$ variables. Now we check: if $\phi$ with the assignments given have $\phi$ be true, then accept; otherwise, reject.
-
-\par So now we go back to the original proof: we modify the statement above to be:
-\begin{center}
-$\exists C$ of poly-size $\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \M_C(C, \langle x, u_1, u_2\rangle)$ accepts.
-\end{center}
-Therefore, $L \in \Sigma_2^\P$.
+%It is sufficient to show that $\NP \subseteq \Ppoly$ implies $\Sigma_3^\P \subseteq \Sigma_2^\P$. So fix a language $L \in \Sigma_3^\P$. By definition, there exists a poly-time TM $M$ and a polynomial $p$ such that if $x \in L$, then:
+%\begin{center}
+%$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \exists u_3 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2, u_3)$ accepts.
+%\end{center}
+%We re-arrange this as follows with a new language $L'$: $\langle x, u_1, u_2 \rangle \in L'$ if and only if:
+%\begin{center}
+%$\exists u_3 \in \{0, 1\}^{p(|x|)} M(x, u_1, u_2, u_3)$ accepts.
+%\end{center}
+%Therefore, $L' \in \NP$ and therefore $L' \le_\P \ThreeSAT$. Therefore, $\langle x, u_1, u_2 \rangle \in L'$ if and only if there exists a $\ThreeSAT$ formula $\phi$ over $x, u_1, u_2$ (reduction done in poly time). Also a NDTM $M'$ decides $L'$.
+%
+%\par Now just plug in $M'$: $x \in L$ if and only if:
+%\begin{center}
+%$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} M'(x, u_1, u_2)$ accepts.
+%\end{center}
+%This is equivalent to:
+%\begin{center}
+%$\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \phi(x, u_1, u_2) \in \ThreeSAT$.
+%\end{center}
+%Now here is the central part of the proof. We assume that $\NP \subseteq \Ppoly$. Therefore, there exists a poly-size circuit $C$ for $\ThreeSAT$. We can just use $C$ to decide the expression above. So how do we find the circuit in the first place?
+%
+%\par We prove the following. There exists a poly-time TM $M_C$ that, on input 3CNF formula $\phi$ with $|\phi| = n$ and a circuit $C$ with $n$ inputs such that: 
+%\begin{enumerate}
+%\item If $C$ recognizes $\ThreeSAT$ for inputs of length $n$ and $\phi \in \ThreeSAT$, then $M_C$ accepts.
+%\item If $\phi \notin \ThreeSAT$, then $M_C$ rejects.
+%\end{enumerate}
+%The idea is the following: repeatedly use the circuit $C$ to extract a satisfying assignment for $\phi$. Let the variables of $\phi$ be $x_1, ..., x_k$. If $C$ on input $\phi$ outputs 0, then $M_C$ rejects. Otherwise, fix $x_1$ to be false, and check if $C$ outputs 1 on the new circuit. If so, permanently fix $x_1$ to be false, and also have an array of $k$ values, and store $x_1$ to be the first element. Repeat for the other $k-1$ variables. Now we check: if $\phi$ with the assignments given have $\phi$ be true, then accept; otherwise, reject.
+%
+%\par So now we go back to the original proof: we modify the statement above to be:
+%\begin{center}
+%$\exists C$ of poly-size $\exists u_1 \in \{0, 1\}^{p(|x|)} \forall u_2 \in \{0, 1\}^{p(|x|)} \M_C(C, \langle x, u_1, u_2\rangle)$ accepts.
+%\end{center}
+%Therefore, $L \in \Sigma_2^\P$.
 \end{proof}
 
 \subsection{$\AC, \NC$}
@@ -152,7 +156,7 @@ We have dealt with circuits of polynomial size, but what about the other directi
 \begin{definition}
 For $d \in \mathbb{N}$, we say $L \in \NC^d$ if L is decided by a family of poly-size, $O(\log^d n)$-depth circuits $\{C_n\}$, and $L \in \AC^d$ the same way but the gates have unbounded fan-in. We also define $\NC = \bigcup_{d \ge 0}\NC^d$ and $\AC = \bigcup_{d \ge 0}\AC^d$.
 \end{definition}
-So how much power does unbounded fan-in give? It only gives enough power to add a log-factor:
+So how much power does unbounded fan-in give? It only gives enough power to add (at most) a log-factor in depth:
 
 \begin{theorem}
 $\NC^d \subseteq \AC^d \subseteq \NC^{d+1}$.
@@ -191,7 +195,7 @@ We will show how to add 2 $n$-bit numbers in $\AC^0$ (the result is an $n+1$-bit
 Our goal here is to separate $\AC^0$ and $\NC^1$.
 \newcommand{\ParityF}{\oplus}
 \begin{definition}
-Let $\ParityF(x_1, \cdots, x_n)$ be the function that computes the sum of the $x_i$ $(\mod 2)$.
+Let $\ParityF(x_1, \cdots, x_n)$ be the function that computes the sum of the $x_i$ $\mod 2$.
 \end{definition}
 The goal here (using the Switching Lemma) is to prove:
 \begin{theorem}
@@ -199,32 +203,36 @@ The goal here (using the Switching Lemma) is to prove:
 $\ParityF \notin \AC^0$.
 \end{theorem}
 H$\mathring{a}$stad proved the following (called the HSL):
-\begin{theorem}
-Let $f$ be a $k$-DNF formula (conjunction of disjunctions where each disjunction $\le k$ variables). Let $\rho$ be a random restriction by assigning random values to $t$ randomly selected input bits. Then for all $s \ge 2$, $\Pr_{\rho}[\text{$f$ restricted to $\rho$ is not expressible in CNF}] \le (\frac{(n-t)k^{10}}{n})^{s/2}$.
+\begin{theorem}[H$\mathring{a}$stad Switching Lemma]
+Let $f$ be a $k$-DNF formula (conjunction of disjunctions where each disjunction has $\le k$ variables). Let $\rho$ be a random restriction by assigning random values to $t$ randomly selected input bits. Then for all $s \ge 2$, $\Pr_{\rho}[\text{$f$ restricted to $\rho$ is not expressible in $s$-CNF}] \le (\frac{(n-t)k^{10}}{n})^{s/2}$.
 \end{theorem}
 \begin{lemma}
 HSL implies \Cref{thm:parity_not_in_ac0}.
 \end{lemma}
 \begin{proof}
-Let $C$ be an $\AC^0$ circuit with a simplification: every vertex has out-degree 1, all $\neg$ gates are right after the input gates, the $\wedge, \vee$ gates alternate, and the bottom level has $\wedge$ gates with in-degree also 1. It is clear that we can construct this equivalent circuit with a polynomial number of gates.
+Let $C$ be an $\AC^0$ circuit with a simplification: every vertex has out-degree 1, all $\neg$ gates are right after the input gates, the $\wedge, \vee$ gates alternate, and the bottom level has $\wedge$ gates with in-degree also 1. It is clear that we can construct this equivalent circuit with a polynomial number of gates. The reasoning is the following:
+\begin{itemize}
+\item We can remove $\neg$ gates by adding $n$ additional source gates which are the negation of the original $n$ inputs with only a constant-size blowup in the number of vertices,
+\item We can reduce the fan-out of each gate to 1 with a constant-size blowup (in terms of the depth $d$) in the number of vertices.
+\end{itemize}
 
 \par Let the upper bound on the number of gates be $n^c$. We restrict more variables at each step of the computation: if there are $n_i$ unrestricted variables at step $i$, then we restrict $n-\sqrt{n_i}$ of them for the next step. Therefore, $n_i = \sqrt[2^i]{n}$. Let $c_i = 10c \times 2^i$. With high probability, we prove that at step $i$, we have a $(d-i)$-depth circuit, with $c_i$ fan-in at the lowest level. 
 
 \par Suppose that the last level has $\wedge$ gates and the penultimate one has $\vee$ gates; it is easy to see that each $\vee$ gate computes a $c_i$-DNF. By HSL, with probability
 \[
-1-\sqrt{\left(\frac{c_i^{10}}{\sqrt[2^i+1]{n}}\right)^{c_{i+1}}} \ge 1 - \frac{1}{10n^c}
+1-\sqrt{\left(\frac{c_i^{10}}{\sqrt[2^{i+1}]{n}}\right)^{c_{i+1}}} \ge 1 - \frac{1}{10n^c}
 \]
-for large-enough $n$, the function after the $(i+1)$-th iteration is expressible as a $c_{i+1}$-CNF. Since, for any CNF formula, the top gate is $\wedge$, we merge the $\wedge$ gates, which reduces the depth by 1. By the same reasoning, we can use HSL to transform the bottom-level $\vee$ gates, which has the level above it computes a $c_i$-CNF, into a $c_{i+1}$-DNF. We apply HSL at most once for each of the $n^c$ gates. Since by the union bound:
+for large-enough $n$, the function after the $(i+1)$-th iteration \textbf{is} expressible as a $c_{i+1}$-CNF (the original statement said ``not," but this is the same since we subtract the probability from 1). Since, for any CNF formula, the top gate is $\wedge$, we merge the $\wedge$ gates with ones above them, which reduces the depth by 1. By the same reasoning, we can use HSL to transform the bottom-level $\vee$ gates, which has the level above it computes a $c_i$-CNF, into a $c_{i+1}$-DNF. We apply HSL at most once for each of the $n^c$ gates. Since by the union bound:
 \[
 \Pr[\bigcup_{i=1}^n A_i] \le \sum_{i=1}^n \Pr[A_i]
 \]
-we can achieve, with probability $\frac{9}{10}$, a depth-2 circuit with fan-in $c_{d-2}$ at the lowest level if we apply HSL $d-2$ times. The result is a $k$-CNF or DNF formula; we can make this constant by fixing $\le k$ variables (i.e., ensure the first clause in the DNF is true). Since $\ParityF$ is not constant under any restriction of $\le n$ variables, we have \Cref{thm:parity_not_in_ac0}.
+we can achieve, with probability $\frac{9}{10}$, a depth-2 circuit with fan-in $c_{d-2}$ at the lowest level if we apply HSL $d-2$ times. The result is a $k$-CNF or DNF formula; we can make this constant by fixing $\le k$ variables (i.e., ensure the first clause in the DNF is true). Since $\ParityF$ is not constant under any restriction of $< n$ variables (if we fix $n-1$ of them, the last variable still does not make it constant), we have \Cref{thm:parity_not_in_ac0}.
 \end{proof}
 Now we prove the Switching Lemma:
 \begin{proof}
-Let a \emph{min-term} $m$ of function $f$ be a partial assignment that makes $f$ output 1 no matter what the assignment to the other variables are (i.e., the other variables are ``useless"); similarly, a \emph{max-term} does the same for $f$ but outputs 0 instead. We can see that every term in a $k$-CNF gives a $k$-size min-term, and every clause gives a $k$-size min-term. We can assume w.l.o.g. that the max and min-terms are minimal in size (i.e., no smaller max/min-terms possible). Therefore, a function not expressible in $s$-CNF must have at least 1 max-term of length $s+1$. 
+Let a \emph{min-term} $m$ of function $f$ be a partial assignment that makes $f$ output 1 no matter what the assignment to the other variables are (i.e., the other variables are ``useless"); similarly, a \emph{max-term} does the same for $f$ but outputs 0 instead. We can see that every term in a $k$-DNF gives a $k$-size min-term, and every clause in a $k$-CNF formula gives a $k$-size max-term. We can assume w.l.o.g. that the max and min-terms are minimal in size (i.e., no smaller max/min-terms possible). Therefore, a function not expressible in $s$-CNF must have at least 1 max-term of length $s+1$. 
 
-\par For restrictions on disjoint sets of variables $A, B$, let $AB$ be the union of the restrictions.Let $R_t$ be the set of all restrictions on $t$ variables for $2t \ge n$ ($|R_t| = 2^t{n \choose t}$). Let $B$ be the restrictions $\rho \in R_t$ such that $f\vert_\rho$ is not expressible in $s$-CNF. We want to show $B$ is ``small." We show this by giving a 1-1 mapping between $B$ and $S = R_{t+s} \times \{0, 1\}^\ell$ for $\ell \in O(s \log k)$. We have $|S| = {n \choose t+s}2^{t+s}2^{O(s \log k)}$. Therefore,
+\par For restrictions on disjoint sets of variables $A, B$, let $AB$ be the union of the restrictions. Let $R_t$ be the set of all restrictions on $t$ variables for $2t \ge n$ ($|R_t| = 2^t{n \choose t}$). Let $B$ be the restrictions $\rho \in R_t$ such that $f\vert_\rho$ is not expressible in $s$-CNF. We want to show $B$ is ``small." We show this by giving a 1-1 mapping between $B$ and $S = R_{t+s} \times \{0, 1\}^\ell$ for $\ell \in O(s \log k)$. We have $|S| = {n \choose t+s}2^{t+s}2^{O(s \log k)}$. Therefore,
 \[
 \frac{|B|}{|R_t|} = \frac{{n \choose t+s}k^{O(s)}}{{n \choose t}}
 \]
